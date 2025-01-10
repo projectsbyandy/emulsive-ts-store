@@ -56,6 +56,14 @@
     --chart-5: 340 75% 55%
   }
 }
+
+/* Component Alignment */
+@layer components {
+  .align-element {
+    @apply mx-auto max-w-6xl px-8
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
