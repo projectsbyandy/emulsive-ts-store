@@ -10,3 +10,4 @@ export { default as Hero } from './Hero';
 export { default as HeroCarousel } from './HeroCarousel';
 export { default as ProductsGrid } from './ProductsGrid';
 export { default as SectionTitle } from './SectionTitle';
+export { default as ErrorElement } from './ErrorElement';

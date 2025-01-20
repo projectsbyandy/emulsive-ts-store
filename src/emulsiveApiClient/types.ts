@@ -1,0 +1,36 @@
+export type FilmsResponse = {
+  data: Film[],
+  meta: FilmsMeta;
+};
+
+export enum Format {
+  ThirtyFive, Medium, Large
+}
+
+export type Film = {
+  id: number,
+  attributes: {
+    name: string;
+    manufacturer: string;
+    format: Format;
+    iso: number;
+    createdAt: string;
+    description: string;
+    featured: boolean;
+    imageUrl: string;
+    price: string;
+  }
+}
+
+export type FilmsMeta = {
+  categories: string[];
+  companies: string[];
+  pagination: Pagination;
+};
+
+export type Pagination = {
+  page: number;
+  pageCount: number;
+  pageSize: number;
+  total: number;
+};

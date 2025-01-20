@@ -1,6 +1,7 @@
-import { useAppSelector } from './hooks'
-import { HomeLayout, Landing, Error, Products, SingleProduct, Cart, About, Register, Login, Checkout, Orders } from './pages';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { HomeLayout, Landing, Error, Products, SingleProduct, Cart, About, Register, Login, Checkout, Orders } from './pages';
+import { ErrorElement } from './components';
+import { loader as landingLoader} from './pages/Landing';
 
 const router = createBrowserRouter([
   { 
@@ -8,13 +9,13 @@ const router = createBrowserRouter([
     element:<HomeLayout/>,
     errorElement:<Error />,
     children: [
-      { index: true, element:<Landing/> },
-      { path: 'products', element: <Products/> },
-      { path: 'product/:id', element: <SingleProduct/> },
-      { path: 'cart', element: <Cart/> },
-      { path: 'about', element: <About/> },
-      { path: 'checkout', element: <Checkout/> },
-      { path: 'orders', element: <Orders/> },
+      { index: true, element:<Landing/>, errorElement: <ErrorElement/>, loader:landingLoader },
+      { path: 'products', element: <Products/>, errorElement: <ErrorElement/> },
+      { path: 'products/:id', element: <SingleProduct/>, errorElement: <ErrorElement/> },
+      { path: 'cart', element: <Cart/>, errorElement: <ErrorElement/> },
+      { path: 'about', element: <About/>, errorElement: <ErrorElement/> },
+      { path: 'checkout', element: <Checkout/>, errorElement: <ErrorElement/> },
+      { path: 'orders', element: <Orders/>, errorElement: <ErrorElement/> },
     ]
     
   },

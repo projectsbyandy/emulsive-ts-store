@@ -1,4 +1,4 @@
-import { IUser } from '@/api/models'
+import { type IUser } from '@/api/models'
 
 export default interface IUserRepository {
   getUsers(): Promise<Array<IUser> | null>,

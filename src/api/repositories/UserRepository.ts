@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
 import IUserRepository from './IUserRepository';
-import { User } from '../models';
+import { type IUser } from '../models';
 
 export class UserRepository implements IUserRepository {
 
-  UserSchema = new Schema<User>({
+  UserSchema = new Schema<IUser>({
     username: { type: String, required: true },
     email: { type: String, required: true },
     authentication: {
@@ -15,13 +15,13 @@ export class UserRepository implements IUserRepository {
   });
   
   UserModel = model('User', this.UserSchema);
-  async getUsers(): Promise<Array<User> | null> {
+  async getUsers(): Promise<Array<IUser> | null> {
     return await this.UserModel.find().lean().exec();
   }
   getUserByEmail(email: string) {
     throw new Error('Method not implemented.');
   }
-  getUsersBySessionToken(sessionToken: string): Array<User> {
+  getUsersBySessionToken(sessionToken: string): Array<IUser> {
     throw new Error('Method not implemented.');
   }
   getUserById(id: string) {
