@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from 'express'
 import { getFilms } from '../repositories/fakeFilmRepo';
+import { FilterParams } from '../repositories/Types/filterParams';
 
 export const films = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
   try {
 
-    const featured = req.query.featured || false;
-
-    let films = await getFilms();
-    
-    if (featured) {
-      films.data = films.data.filter(film => film.attributes.featured === true);
+    const filters : FilterParams = {
+      featured : req.query.featured as string | undefined === 'true',
+      keyword : req.query.keyword as string
     }
+
+    let films = await getFilms(filters);
 
     films.meta.pagination.total = films.data.length;
     return res.status(200).json(films).end();

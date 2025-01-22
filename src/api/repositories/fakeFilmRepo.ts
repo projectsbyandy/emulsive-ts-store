@@ -2,9 +2,9 @@ import { type IFilms } from "../models";
 import { promises as fs } from 'fs'
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { type FilterParams } from "./Types/filterParams";
 
-
-export const getFilms = async () : Promise<IFilms> => {
+export const getFilms = async (filters: FilterParams) : Promise<IFilms> => {
 
   let jsonData: string;
 
@@ -18,6 +18,23 @@ export const getFilms = async () : Promise<IFilms> => {
     throw error;
   }
   const parsedData = JSON.parse(jsonData);
-  const data : IFilms = parsedData;
+  let data : IFilms = parsedData;
+
+  data = filterData(data, filters);
+
   return data;
 }
+
+function filterData (films: IFilms, filters: FilterParams) : IFilms {
+  if(filters.featured) {
+    films.data = films.data.filter(films => films.attributes.featured === true);
+  }
+
+  if(filters.keyword) {
+    const keyword = filters.keyword.toLocaleLowerCase();
+    films.data = films.data.filter(film => 
+      film.attributes.name.toLocaleLowerCase().includes(keyword) || film.attributes.description.toLocaleLowerCase().includes(keyword) || film.attributes.manufacturer.toLocaleLowerCase().includes(keyword)
+    )
+  }
+  return films;
+} 

@@ -6,7 +6,7 @@ import { type LoaderFunction } from 'react-router-dom';
 const url = '/films'
 
 export const loader: LoaderFunction = async (): Promise<FilmsResponse> => {
-  const response = await emulsiveApi<FilmsResponse>(url);
+  const response = await emulsiveApi<FilmsResponse>(url, {params:{search:'kodak'}});
 
   // Testing - simulate delay in api
   await Sleep(300);
