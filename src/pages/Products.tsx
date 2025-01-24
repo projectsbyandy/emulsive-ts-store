@@ -1,17 +1,23 @@
 import { Filters, ProductsContainer, PaginationContainer } from '@/components';
-import { emulsiveApi, FilmsResponse } from '@/emulsiveApiClient';
+import { emulsiveApi } from '@/emulsiveApiClient';
 import { Sleep } from '@/utils';
+import { FilmsResponseWithParams } from '@/utils/types';
 import { type LoaderFunction } from 'react-router-dom';
 
 const url = '/films'
 
-export const loader: LoaderFunction = async (): Promise<FilmsResponse> => {
-  const response = await emulsiveApi<FilmsResponse>(url, {params:{search:'kodak'}});
+export const loader: LoaderFunction = async ({request}): Promise<FilmsResponseWithParams> => {
+ 
+  const params = Object.fromEntries([
+    ...new URL(request.url).searchParams.entries()
+  ]);
+  
+  const response = await emulsiveApi<FilmsResponseWithParams>(url, {params});
 
   // Testing - simulate delay in api
   await Sleep(300);
 
-  return {...response.data };
+  return {...response.data, params };
 }
 
 function Products() {

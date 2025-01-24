@@ -4,7 +4,7 @@ export type FilmsResponse = {
 };
 
 export enum Format {
-  ThirtyFive, Medium, Large
+  ThirtyFive = "35mm", Medium = "120mm"
 }
 
 export type Film = {

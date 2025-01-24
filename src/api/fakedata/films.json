@@ -131,7 +131,7 @@
       "attributes": {
         "name": "800T",
         "manufacturer": "Cinestill",
-        "format": "120",
+        "format": "120mm",
         "iso": "800",
         "description": "Cinestill 800T is a medium format film with high light sensitivity and is balanced for providing gorgeous natural colours and skin tones under artificial light. CineStill 800 Tungsten is the perfect companion for partygoers and night owls who want to capture an authentic view of their medium-format twilight world.",
         "featured": true,
@@ -145,7 +145,7 @@
       "attributes": {
         "name": "Rollei Infrared",
         "manufacturer": "Rollei",
-        "format": "120",
+        "format": "120mm",
         "iso": "400",
         "description": "Rollei Infrared is the optimum creative tool",
         "featured": true,

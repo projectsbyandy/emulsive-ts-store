@@ -1,3 +1,5 @@
+import { Format } from "@/emulsiveApiClient"
+
 export interface IFilms {
   data: Data[]
   meta: Meta
@@ -11,7 +13,7 @@ export interface Data {
 export interface Attributes {
   name: string
   manufacturer: string
-  format: string
+  format: Format
   iso: string
   description: string
   featured: boolean

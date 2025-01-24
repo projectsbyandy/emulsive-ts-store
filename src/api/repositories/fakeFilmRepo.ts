@@ -36,5 +36,9 @@ function filterData (films: IFilms, filters: FilterParams) : IFilms {
       film.attributes.name.toLocaleLowerCase().includes(keyword) || film.attributes.description.toLocaleLowerCase().includes(keyword) || film.attributes.manufacturer.toLocaleLowerCase().includes(keyword)
     )
   }
+
+  if(filters.format) {
+    films.data = films.data.filter(film => film.attributes.format === filters.format);
+  }
   return films;
 } 
