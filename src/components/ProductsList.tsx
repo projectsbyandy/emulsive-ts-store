@@ -1,7 +1,7 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatAsPounds } from '@/utils';
-import { type FilmsResponse } from '@/emulsiveApiClient';
+import { FilmsResponse } from '@/api/types';
 
 function ProductsList() {
   const { data: films } = useLoaderData() as FilmsResponse

@@ -1,4 +1,4 @@
-export interface IUser {
+export type User = {
   userId: string,
   username: string,
   email: string,

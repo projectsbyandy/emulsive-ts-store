@@ -1,24 +1,32 @@
 import { NextFunction, Request, Response } from 'express'
 import { getFilms } from '../repositories/fakeFilmRepo';
-import { FilterParams } from '../repositories/Types/filterParams';
-import { Format } from '@/emulsiveApiClient';
+import { FilmsResponse, FilterParams, Format } from '../types';
 
 export const films = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
   try {
-
-    const test = req.query.featured as boolean | undefined;
     const filters : FilterParams = {
       featured : req.query.featured as boolean | undefined,
       keyword : req.query.keyword as string,
-      format: req.query.format as Format
+      format: req.query.format as Format,
+      manufacturer: req.query.manufacturer as string,
+      orderby: req.query.orderby as string
     }
 
-    let films = await getFilms(filters);
+    let filmsResponse = await getFilms(filters);
+    parseMeta(filmsResponse);
 
-    films.meta.pagination.total = films.data.length;
-    return res.status(200).json(films).end();
+    return res.status(200).json(filmsResponse).end();
   } catch(error) {
     console.log(error);
     next(error);
   }
+}
+
+const parseMeta = (filmsResponse: FilmsResponse): FilmsResponse => {
+  filmsResponse.meta.manufacturers = Array.from(new Set(filmsResponse.data.map(film => film.attributes.manufacturer)));
+  filmsResponse.meta.manufacturers.unshift('all')
+  filmsResponse.meta.formats = Array.from(new Set(filmsResponse.data.map(film => film.attributes.format)));
+  filmsResponse.meta.formats.unshift('all')
+
+  return filmsResponse;
 }

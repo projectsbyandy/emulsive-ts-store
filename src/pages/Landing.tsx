@@ -1,6 +1,7 @@
 import { Hero, FeaturedProducts } from '@/components'
-import { useLoaderData, type LoaderFunction } from 'react-router-dom';
-import { emulsiveApi, FilmsResponse } from '@/emulsiveApiClient';
+import { type LoaderFunction } from 'react-router-dom';
+import { emulsiveApi } from '@/emulsiveApiClient';
+import { FilmsResponse } from '@/api/types';
 
 const url = '/films?featured=true';
 
@@ -9,10 +10,7 @@ export const loader: LoaderFunction = async () : Promise<FilmsResponse> => {
   return {...response.data};
 }
 
-function Landing() {
-  const result = useLoaderData() as FilmsResponse;
-  console.log(result);
-  
+function Landing() {  
   return (
     <>
     <Hero/>

@@ -1,19 +1,19 @@
 import { Form, useLoaderData, Link } from 'react-router-dom';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { FilmsResponseWithParams } from '@/utils/types';
+import FormInput from './FormInput';
+import FormSelect from './FormSelect';
 
 function Filters() {
   const {meta, params} = useLoaderData() as FilmsResponseWithParams
-  const {keyword} = params;
-
+  const {keyword, format, manufacturer, orderby } = params;
+  
   return (
     <Form className='border rounded-md px-8 py-4 grid gap-x-4 gap-y-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center'>
-      <div className='mb-2'>
-        <Label htmlFor='search'>Search Films</Label>
-        <Input id='keyword' name='keyword' type='text' defaultValue={keyword} />
-      </div>
+      <FormInput type='keyword' label='search films' name='keyword' defaultValue={keyword}/>
+      <FormSelect name='format' label='select format' options={meta.formats} defaultValue={format}/>
+      <FormSelect name='manufacturer' label='select manufacturers' options={meta.manufacturers} defaultValue={manufacturer}/>
+      <FormSelect name='orderby' label='order by' options={['a-z', 'z-a', 'highest-price-desc', 'lowest-price-desc']} defaultValue={orderby}/>
       <Button type='submit' size='sm' className='self-end mb-2'>
         Search
       </Button>

@@ -1,4 +1,4 @@
-import { FilterParams } from "@/api/repositories/Types/filterParams";
-import { FilmsResponse } from "@/emulsiveApiClient";
+import { FilterParams } from "@/api/types/FilterParams";
+import { FilmsResponse } from "../api/types"
 
 export type FilmsResponseWithParams = FilmsResponse & {params: FilterParams}

@@ -1,7 +1,7 @@
 import { model, Schema, Types }  from 'mongoose';
-import { type IUser } from '../models'
+import { type User } from '../types'
 
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema<User>({
   username: { type: String, required: true },
   email: { type: String, required: true },
   authentication: {
@@ -10,9 +10,9 @@ const UserSchema = new Schema<IUser>({
     sessionToken: { type: String, selected: false }
   }});
 
-const UserModel = model<IUser>('User', UserSchema);
+const UserModel = model<User>('User', UserSchema);
 
-export const getUsers = async () : Promise<IUser[]> => {
+export const getUsers = async () : Promise<User[]> => {
   let users = await UserModel.find().lean().exec();
 
   return users.map(user => ({
@@ -23,9 +23,9 @@ export const getUsers = async () : Promise<IUser[]> => {
   }));
 }
 
-export const getUserByEmail = (email: string) : Promise<IUser | null> => UserModel.findOne({ email }).lean().exec();
+export const getUserByEmail = (email: string) : Promise<User | null> => UserModel.findOne({ email }).lean().exec();
 
-export const getUserBySessionToken = async (sessionToken: string) : Promise<IUser | null> => {
+export const getUserBySessionToken = async (sessionToken: string) : Promise<User | null> => {
   let user = await UserModel.findOne( { 'authentication.sessionToken': sessionToken }).lean().exec();
 
   return user 
@@ -38,7 +38,7 @@ export const getUserBySessionToken = async (sessionToken: string) : Promise<IUse
     : null;
 }
 
-export const getUserById = async (id: string) : Promise<IUser | null> => {
+export const getUserById = async (id: string) : Promise<User | null> => {
   
   if (Types.ObjectId.isValid(id)) {
     let user = await UserModel.findById({ _id: id }).lean().exec();
@@ -65,7 +65,7 @@ export const createUser = (values: Record<string, any>) => new UserModel(values)
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findOneAndUpdate({ id, values });
 
-export const updateUserSessionByEmail = (email: string, sessionToken: string) : Promise<IUser | null > => 
+export const updateUserSessionByEmail = (email: string, sessionToken: string) : Promise<User | null > => 
 UserModel.findOneAndUpdate( 
     { email }, 
     { $set: { 'authentication.sessionToken': sessionToken }},

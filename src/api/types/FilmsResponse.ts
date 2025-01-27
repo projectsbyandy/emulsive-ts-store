@@ -18,13 +18,13 @@ export type Film = {
     description: string;
     featured: boolean;
     imageUrl: string;
-    price: string;
+    price: number;
   }
 }
 
 export type FilmsMeta = {
-  categories: string[];
-  companies: string[];
+  formats: string[];
+  manufacturers: string[];
   pagination: Pagination;
 };
 

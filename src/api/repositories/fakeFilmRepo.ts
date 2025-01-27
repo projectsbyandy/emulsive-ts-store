@@ -1,10 +1,10 @@
-import { type IFilms } from "../models";
 import { promises as fs } from 'fs'
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { type FilterParams } from "./Types/filterParams";
+import { type FilterParams } from "../types/FilterParams";
+import { FilmsResponse } from "../types";
 
-export const getFilms = async (filters: FilterParams) : Promise<IFilms> => {
+export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> => {
 
   let jsonData: string;
 
@@ -18,14 +18,14 @@ export const getFilms = async (filters: FilterParams) : Promise<IFilms> => {
     throw error;
   }
   const parsedData = JSON.parse(jsonData);
-  let data : IFilms = parsedData;
+  let filmsResponse : FilmsResponse = parsedData;
 
-  data = filterData(data, filters);
+  filmsResponse = filterData(filmsResponse, filters);
 
-  return data;
+  return filmsResponse;
 }
 
-function filterData (films: IFilms, filters: FilterParams) : IFilms {
+function filterData (films: FilmsResponse, filters: FilterParams) : FilmsResponse {
   if(filters.featured) {
     films.data = films.data.filter(films => films.attributes.featured === true);
   }
@@ -37,8 +37,30 @@ function filterData (films: IFilms, filters: FilterParams) : IFilms {
     )
   }
 
-  if(filters.format) {
+  if(filters.format && filters.format !== 'all') {
     films.data = films.data.filter(film => film.attributes.format === filters.format);
   }
+
+  if(filters.manufacturer && filters.manufacturer !== 'all') {
+    films.data = films.data.filter(film => film.attributes.manufacturer === filters.manufacturer);
+  }
+
+  if(filters.orderby) {
+    switch(filters.orderby) {
+      case "a-z":
+        films.data = films.data.sort((a, b) => a.attributes.name.localeCompare(b.attributes.name));
+        break;
+      case "z-a":
+        films.data = films.data.sort((a, b) => a.attributes.name.localeCompare(b.attributes.name)).reverse();
+        break;  
+      case "lowest-price-desc":
+        films.data = films.data.sort((a, b) => a.attributes.price - b.attributes.price)
+        break; 
+      case "highest-price-desc":
+        films.data = films.data.sort((a, b) => a.attributes.price - b.attributes.price).reverse();
+        break;
+    }
+  }
+
   return films;
 } 

@@ -1,7 +1,7 @@
 import { Link, useLoaderData } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatAsPounds } from '@/utils';
-import { type FilmsResponse } from '@/emulsiveApiClient';
+import { type FilmsResponse } from '../api/types';
 
 function ProductsGrid() {
   const {data: films} = useLoaderData() as FilmsResponse;
@@ -12,8 +12,7 @@ function ProductsGrid() {
         const {name, price, imageUrl} = film.attributes;
         const poundAmount = formatAsPounds(price);
          
-        return (
-        <Link to={`/products/${film.id}`} key={film.id}>
+        return (<Link to={`/products/${film.id}`} key={film.id}>
           <Card>
             <CardContent className='p-4'>
               <img src={imageUrl} alt={name} className='rounded-md h-64 md:h-48 w-full cover'/>
@@ -24,10 +23,10 @@ function ProductsGrid() {
             </CardContent>
           </Card>
         </Link>
-        )
+      )
       })
     }
     </div>
-  )
-  }
+  )};
+  
 export default ProductsGrid;
