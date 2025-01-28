@@ -10,7 +10,8 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
       format: req.query.format as Format,
       manufacturer: req.query.manufacturer as string,
       orderby: req.query.orderby as string,
-      price: req.query.price as undefined | number
+      price: req.query.price as undefined | number,
+      onsale : (req.query.onsale as string) === 'on' ? true : false,
     }
 
     let filmsResponse = await getFilms(filters);
@@ -28,6 +29,7 @@ const parseMeta = (filmsResponse: FilmsResponse): FilmsResponse => {
   filmsResponse.meta.manufacturers.unshift('all')
   filmsResponse.meta.formats = Array.from(new Set(filmsResponse.data.map(film => film.attributes.format)));
   filmsResponse.meta.formats.unshift('all')
+  filmsResponse.meta.pagination.total = filmsResponse.data.length;
 
   return filmsResponse;
 }

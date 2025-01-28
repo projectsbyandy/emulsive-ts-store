@@ -3,7 +3,7 @@ import ProductsGrid from "./ProductsGrid";
 import ProductsList from "./ProductsList";
 import { useState } from 'react';
 import { LayoutGrid, List } from "lucide-react";
-import { type FilmsResponse } from "@/emulsiveApiClient";
+import { type FilmsResponse } from "../api/types";
 import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 
@@ -48,4 +48,5 @@ function ProductsContainer() {
     </>
   )
 }
+
 export default ProductsContainer

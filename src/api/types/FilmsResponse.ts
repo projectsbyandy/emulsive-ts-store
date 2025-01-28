@@ -19,6 +19,7 @@ export type Film = {
     featured: boolean;
     imageUrl: string;
     price: number;
+    onSale: boolean;
   }
 }
 

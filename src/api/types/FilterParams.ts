@@ -6,5 +6,6 @@ export type FilterParams = {
   format?: Format | 'all',
   manufacturer?: string,
   price?: number,
-  orderby?: string
+  orderby?: string,
+  onsale?: boolean
 }
