@@ -9,7 +9,8 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
       keyword : req.query.keyword as string,
       format: req.query.format as Format,
       manufacturer: req.query.manufacturer as string,
-      orderby: req.query.orderby as string
+      orderby: req.query.orderby as string,
+      price: req.query.price as undefined | number
     }
 
     let filmsResponse = await getFilms(filters);

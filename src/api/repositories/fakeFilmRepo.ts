@@ -30,6 +30,10 @@ function filterData (films: FilmsResponse, filters: FilterParams) : FilmsRespons
     films.data = films.data.filter(films => films.attributes.featured === true);
   }
 
+  if(filters.price) {
+      films.data = films.data.filter(films => films.attributes.price <= Number(filters.price));
+  }
+
   if(filters.keyword) {
     const keyword = filters.keyword.toLocaleLowerCase();
     films.data = films.data.filter(film => 
