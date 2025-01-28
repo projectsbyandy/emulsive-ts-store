@@ -1,13 +1,8 @@
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { IUiComponentProps } from '@/utils';
 
-type FormCheckBoxProps = {
-  name: string;
-  label?: string;
-  defaultValue?: string;
-}
-
-function FormCheckBox({name, label, defaultValue}: FormCheckBoxProps) {
+function FormCheckBox({name, label, defaultValue}: IUiComponentProps) {
   const defaultChecked = defaultValue === 'on' ? true : false;
 
   return (

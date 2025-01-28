@@ -2,13 +2,9 @@ import { formatAsPounds } from "@/utils";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Slider } from './ui/slider';
+import { IUiComponentProps } from "@/utils";
 
-type FormRangeProps = {
-  name: string;
-  label?: string;
-  defaultValue?: string
-}
-function FormRange({name, label, defaultValue}: FormRangeProps) {
+function FormRange({name, label, defaultValue}: IUiComponentProps) {
   const step = 500;
   const maxPrice =  3000;
   const defaultPrice = defaultValue? Number(defaultValue) : maxPrice;

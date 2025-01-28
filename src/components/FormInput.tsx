@@ -1,14 +1,8 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { IFormInputProps } from '@/utils';
 
-type FormInputProps = {
-  name: string,
-  label?: string,
-  type: string,
-  defaultValue?: string
-}
-
-function FormInput({name, label, type, defaultValue}: FormInputProps) {
+function FormInput({name, label, type, defaultValue}: IFormInputProps) {
   
   return (
       <div className='mb-2'>

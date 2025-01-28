@@ -1,14 +1,8 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { ISelectInputProps } from '@/utils';
 
-type SelectInputProps = {
-  name: string;
-  label?: string;
-  defaultValue?: string;
-  options: string[];
-}
-
-function FormSelect({name, label, options, defaultValue} : SelectInputProps) {
+function FormSelect({name, label, options, defaultValue} : ISelectInputProps) {
   return (
     <div className='mb-2'>
       <Label htmlFor={name} className='capitalize'>
