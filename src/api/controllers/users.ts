@@ -17,7 +17,7 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     const { id } = req.params;
     await deleteUserById(id);
     
-    return res.set(204).json({message: `Deleted user with id: ${id}`}).end();
+    return res.status(204).json({message: `Deleted user with id: ${id}`}).end();
   } catch(error) {
     console.log(error);
     next(error);
@@ -30,10 +30,10 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) :
     let user = await getUserById(id);
 
     if(!user) {
-      return res.set(404).json({message: `User with id: ${id} not found`}).end();
+      return res.status(404).json({message: `User with id: ${id} not found`}).end();
     }
     
-    return res.set(200).json(user).end();
+    return res.status(200).json(user).end();
   } catch(error) {
     console.log(error);
     next(error);

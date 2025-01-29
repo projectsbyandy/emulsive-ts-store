@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getFilms } from '../repositories/fakeFilmRepo';
+import { getFilm, getFilms } from '../repositories/fakeFilmRepo';
 import { FilmsResponse, FilterParams, Format } from '../types';
 import { paginateSplit } from '../helpers/pagination';
 
@@ -31,6 +31,22 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
     next(error);
   }
 }
+
+export const film = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
+  try {
+      const {id} = req.params;
+      let filmResponse = await getFilm(Number(id));
+
+      return filmResponse 
+              ? res.status(200).json(filmResponse).end()
+              : res.status(404).json({message: `Film with id: ${id} not found`}).end();
+
+  } catch(error) {
+    console.log(error);
+    next(error);
+  }
+}
+
 
 const paginate = (filmsResponse: FilmsResponse) : FilmsResponse => {
   filmsResponse.data = paginateSplit(filmsResponse.data, pageSize, filmsResponse.meta.pagination.page)

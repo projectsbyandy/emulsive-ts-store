@@ -1,28 +1,34 @@
-import { promises as fs } from 'fs'
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import { type FilterParams } from "../types/FilterParams";
-import { FilmsResponse } from "../types";
+import { type Film, type FilmsResponse } from "../types";
+import { readFileToString } from '../helpers/fileReader';
+
+const PATHS_TO_FAKE_DATA = ['..', 'fakedata', 'films.json'];
 
 export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> => {
-
-  let jsonData: string;
-
-  try {
-    const __filename = fileURLToPath(import.meta.url); 
-    const __dirname = dirname(__filename);
-    var jsonPath = join(__dirname, '..', 'fakedata', 'films.json');
-    jsonData = await fs.readFile(jsonPath, 'utf-8');
-  } catch(error) {
-    console.log('Problem reading fake films file');
-    throw error;
-  }
+  const jsonData = await readFileToString(PATHS_TO_FAKE_DATA)
   const parsedData = JSON.parse(jsonData);
+
   let filmsResponse : FilmsResponse = parsedData;
 
   filmsResponse = filterData(filmsResponse, filters);
 
   return filmsResponse;
+}
+
+export const getFilm = async (id: number) : Promise<Film|undefined> => {
+
+  const jsonData = await readFileToString(PATHS_TO_FAKE_DATA)  
+  const parsedData = JSON.parse(jsonData);
+
+  let films : FilmsResponse = parsedData;
+  const film = films.data.find(film => film.id === id);
+  
+  if(film)
+    return film;
+
+  console.log("Unable to locate film");
+
+  return;
 }
 
 function filterData (films: FilmsResponse, filters: FilterParams) : FilmsResponse {
