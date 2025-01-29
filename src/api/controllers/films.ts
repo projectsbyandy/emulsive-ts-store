@@ -7,6 +7,12 @@ const pageSize = 5;
 
 export const films = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
   try {
+
+    const {id} = req.params;
+    if (id) {
+      return film(req, res, next);
+    }
+
     const filters : FilterParams = {
       featured : req.query.featured as boolean | undefined,
       keyword : req.query.keyword as string,
@@ -32,7 +38,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
   }
 }
 
-export const film = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
+const film = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
   try {
       const {id} = req.params;
       let filmResponse = await getFilm(Number(id));

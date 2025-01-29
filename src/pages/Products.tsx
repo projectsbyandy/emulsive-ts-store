@@ -1,6 +1,5 @@
 import { Filters, ProductsContainer, PaginationContainer } from '@/components';
 import { emulsiveApi } from '@/emulsiveApiClient';
-import { Sleep } from '@/utils';
 import { type FilmsResponseWithParams } from '@/utils/types';
 import { type LoaderFunction } from 'react-router-dom';
 
