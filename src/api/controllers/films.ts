@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { getFilms } from '../repositories/fakeFilmRepo';
 import { FilmsResponse, FilterParams, Format } from '../types';
+import { paginateSplit } from '../helpers/pagination';
+
+const pageSize = 5;
 
 export const films = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
   try {
@@ -12,10 +15,15 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
       orderby: req.query.orderby as string,
       price: req.query.price as undefined | number,
       onsale : (req.query.onsale as string) === 'on' ? true : false,
+      page: Number(req.query.page ?? 1)
     }
 
     let filmsResponse = await getFilms(filters);
-    parseMeta(filmsResponse);
+    parseMeta(filmsResponse, filters);
+
+    if (filters.page) {
+      filmsResponse = paginate(filmsResponse)
+    }
 
     return res.status(200).json(filmsResponse).end();
   } catch(error) {
@@ -24,12 +32,24 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
   }
 }
 
-const parseMeta = (filmsResponse: FilmsResponse): FilmsResponse => {
+const paginate = (filmsResponse: FilmsResponse) : FilmsResponse => {
+  filmsResponse.data = paginateSplit(filmsResponse.data, pageSize, filmsResponse.meta.pagination.page)
+
+  return filmsResponse;
+}
+
+const parseMeta = (filmsResponse: FilmsResponse, filterParams: FilterParams): FilmsResponse => {
   filmsResponse.meta.manufacturers = Array.from(new Set(filmsResponse.data.map(film => film.attributes.manufacturer)));
   filmsResponse.meta.manufacturers.unshift('all')
+
   filmsResponse.meta.formats = Array.from(new Set(filmsResponse.data.map(film => film.attributes.format)));
   filmsResponse.meta.formats.unshift('all')
+
   filmsResponse.meta.pagination.total = filmsResponse.data.length;
+
+  filmsResponse.meta.pagination.pageCount = Math.ceil(filmsResponse.data.length / pageSize);
+  filmsResponse.meta.pagination.pageSize = pageSize;
+  filmsResponse.meta.pagination.page = Number(filterParams.page);
 
   return filmsResponse;
 }

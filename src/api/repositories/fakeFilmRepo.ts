@@ -26,34 +26,34 @@ export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> =
 }
 
 function filterData (films: FilmsResponse, filters: FilterParams) : FilmsResponse {
-  if(filters.featured) {
+  if (filters.featured) {
     films.data = films.data.filter(films => films.attributes.featured === true);
   }
 
-  if(filters.price) {
+  if (filters.price) {
       films.data = films.data.filter(films => films.attributes.price <= Number(filters.price));
   }
 
-  if(filters.onsale) {
+  if (filters.onsale) {
     films.data = films.data.filter(films => films.attributes.onSale === filters.onsale);
   }
 
-  if(filters.keyword) {
+  if (filters.keyword) {
     const keyword = filters.keyword.toLocaleLowerCase();
     films.data = films.data.filter(film => 
       film.attributes.name.toLocaleLowerCase().includes(keyword) || film.attributes.description.toLocaleLowerCase().includes(keyword) || film.attributes.manufacturer.toLocaleLowerCase().includes(keyword)
     )
   }
 
-  if(filters.format && filters.format !== 'all') {
+  if (filters.format && filters.format !== 'all') {
     films.data = films.data.filter(film => film.attributes.format === filters.format);
   }
 
-  if(filters.manufacturer && filters.manufacturer !== 'all') {
+  if (filters.manufacturer && filters.manufacturer !== 'all') {
     films.data = films.data.filter(film => film.attributes.manufacturer === filters.manufacturer);
   }
 
-  if(filters.orderby) {
+  if (filters.orderby) {
     switch(filters.orderby) {
       case "a-z":
         films.data = films.data.sort((a, b) => a.attributes.name.localeCompare(b.attributes.name));
@@ -69,6 +69,6 @@ function filterData (films: FilmsResponse, filters: FilterParams) : FilmsRespons
         break;
     }
   }
-
+  
   return films;
-} 
+}

@@ -14,9 +14,6 @@ export const loader: LoaderFunction = async ({request}): Promise<FilmsResponseWi
   
   const response = await emulsiveApi<FilmsResponseWithParams>(url, {params});
 
-  // Testing - simulate delay in api
-  await Sleep(300);
-
   return {...response.data, params };
 }
 

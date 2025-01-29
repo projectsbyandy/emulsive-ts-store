@@ -7,5 +7,6 @@ export type FilterParams = {
   manufacturer?: string,
   price?: number,
   orderby?: string,
-  onsale?: boolean
+  onsale?: boolean,
+  page?: number
 }
