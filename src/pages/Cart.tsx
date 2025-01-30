@@ -4,19 +4,33 @@ import { useAppSelector } from "@/hooks";
 import { CartItemList, SectionTitle, CartTotals } from "@/components";
 
 function Cart() {
-  return (
-    <div>
-      <h1 className='text-4xl'>Cart Page</h1>
-      <Link to='/' className="text-7xl text-red-900">
-        Back Home
-      </Link>
+  const user = null;
+  const numberOfItemsInCart = useAppSelector(state => state.cartState.numberItemsInCart);
 
-      <div>
-        <Button asChild size='lg'>
-          <Link to='/'>Home Button</Link>
-        </Button>
+  if (numberOfItemsInCart === 0)
+    return <SectionTitle text='Empty Cart'/>
+  
+  return (
+   <>
+    <SectionTitle text='Shopping Cart'/>
+    <div className="mt-8 grid gap-8 lg:grid-cols-12">
+      <div className="lg:col-span-8">
+        <CartItemList />
       </div>
-    </div>  
+      <div className="lg:col-span-4 lg:pl-4">
+        <CartTotals />
+        { 
+          user ? 
+            <Button asChild className="mt-8 w-full">
+              <Link to='/checkout'>Proceed to checkout</Link>
+            </Button> 
+          : <Button asChild className="mt-8 w-full">
+              <Link to='/login'>Please Login</Link>
+            </Button> 
+        }
+      </div>
+    </div>
+   </>  
   );
 }
 export default Cart;

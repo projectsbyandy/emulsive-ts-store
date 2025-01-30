@@ -22,8 +22,7 @@ function SelectProductQuantity({mode, quantity, setQuantity}: SelectProductQuant
 
   return (
       <>
-      <br/>
-      <h4 className='font-medium mb-2'>Amount : </h4>
+      <h4 className='mt-8 font-medium mb-2'>Amount : </h4>
       <Select defaultValue={quantity.toString()} onValueChange={(value) => setQuantity(Number(value))}>
         <SelectTrigger className={isCartItem ? 'w-[75px]' : 'w-[150px]'}>
           <SelectValue placeholder={quantity} />
