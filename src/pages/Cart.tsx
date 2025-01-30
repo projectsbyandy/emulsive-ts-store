@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import { useAppSelector } from "@/hooks";
+import { CartItemList, SectionTitle, CartTotals } from "@/components";
 
 function Cart() {
   return (

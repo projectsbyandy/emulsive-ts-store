@@ -1,11 +1,15 @@
 import { useLoaderData, Link, type LoaderFunction } from 'react-router-dom';
-import { formatAsPounds } from '@/utils';
+import { type CartItem, formatAsPounds } from '@/utils';
 import { emulsiveApi } from '@/emulsiveApiClient';
-import { Film } from '@/api/types';
+import { type Film } from '@/api/types';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { SelectProductQuantity } from '@/components';
+import { QuantityMode } from '@/components/SelectProductQuantity';
+import { useAppDispatch } from '@/hooks';
+import { addItem } from '@/features/cart/cartSlice';
+
 
 export const loader: LoaderFunction = async({params}) : Promise<Film> => {
   const response = await emulsiveApi<Film>(`/films/${params.id}`);
@@ -14,14 +18,25 @@ export const loader: LoaderFunction = async({params}) : Promise<Film> => {
 }
 
 function SingleProduct() {
-  const { attributes: filmAttributes } = useLoaderData() as Film;
+  const { id: filmId, attributes: filmAttributes } = useLoaderData() as Film;
   const { imageUrl, name, price, description, manufacturer, iso, format } = filmAttributes;
   const poundsAmount = formatAsPounds(price);
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useAppDispatch();
 
-  const addToCart = () => {
-    console.log('Add to cart');
+  const cartProduct: CartItem = {
+    cartId: filmId.toString(),
+    productId: filmId,
+    imageUrl,
+    name,
+    price: price.toString(),
+    quantity,
+    manufacturer
   }
+  const addToCart = () => {
+    dispatch(addItem(cartProduct));
+  }
+  
   return (
     <section>
       <div className='flex gap-x-2 h-6 items-centre'>
@@ -46,7 +61,7 @@ function SingleProduct() {
             {poundsAmount}
           </p>
           <p className='mt-6 leading-8'>{description}</p>
-          <SelectProductQuantity/>
+          <SelectProductQuantity mode={QuantityMode.SingleProduct} quantity={quantity} setQuantity={setQuantity}/>
           <Button size='lg' className='mt-10' onClick={addToCart}>
             Add to Cart
           </Button>
