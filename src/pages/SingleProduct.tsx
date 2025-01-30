@@ -31,7 +31,8 @@ function SingleProduct() {
     name,
     price: price.toString(),
     quantity,
-    manufacturer
+    manufacturer,
+    format
   }
   const addToCart = () => {
     dispatch(addItem(cartProduct));

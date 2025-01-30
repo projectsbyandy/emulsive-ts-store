@@ -1,5 +1,5 @@
 import { FilterParams } from "@/api/types/FilterParams";
-import { FilmsResponse } from "../api/types"
+import { FilmsResponse, Format } from "../api/types"
 
 export type FilmsResponseWithParams = FilmsResponse & {params: FilterParams}
 
@@ -11,6 +11,7 @@ export type CartItem = {
   price: string;
   quantity: number;
   manufacturer: string;
+  format: Format
 }
 
 export type CartState = {

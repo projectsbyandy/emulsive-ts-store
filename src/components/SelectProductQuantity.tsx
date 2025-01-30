@@ -28,7 +28,7 @@ function SelectProductQuantity({mode, quantity, setQuantity}: SelectProductQuant
           <SelectValue placeholder={quantity} />
         </SelectTrigger>
         <SelectContent>
-          { Array.from({length: isCartItem ? quantity+10 : 10}, (_, index) => {
+          { Array.from({length: isCartItem ? quantity + 10 : 10}, (_, index) => {
             const selectValue = (index + 1).toString();
             return (
               <SelectItem key={index} value={selectValue}>
