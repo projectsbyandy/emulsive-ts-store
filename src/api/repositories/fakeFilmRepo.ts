@@ -1,14 +1,12 @@
 import { type FilterParams } from "../types/FilterParams";
 import { type Film, type FilmsResponse } from "../types";
-import { readFileToString } from '../helpers/fileReader';
+import { readFile } from '../helpers/fileReader';
 
 const PATHS_TO_FAKE_DATA = ['..', 'fakedata', 'films.json'];
 
 export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> => {
-  const jsonData = await readFileToString(PATHS_TO_FAKE_DATA)
-  const parsedData = JSON.parse(jsonData);
-
-  let filmsResponse : FilmsResponse = parsedData;
+  const rawData = await readFile(PATHS_TO_FAKE_DATA)
+  let filmsResponse : FilmsResponse = JSON.parse(rawData);
 
   filmsResponse = filterData(filmsResponse, filters);
 
@@ -16,11 +14,9 @@ export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> =
 }
 
 export const getFilm = async (id: number) : Promise<Film|undefined> => {
+  const rawData = await readFile(PATHS_TO_FAKE_DATA)
+  const films : FilmsResponse = JSON.parse(rawData);
 
-  const jsonData = await readFileToString(PATHS_TO_FAKE_DATA)  
-  const parsedData = JSON.parse(jsonData);
-
-  let films : FilmsResponse = parsedData;
   const film = films.data.find(film => film.id === id);
   
   if(film)

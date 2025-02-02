@@ -5,7 +5,7 @@ const UserSchema = new Schema<User>({
   username: { type: String, required: true },
   email: { type: String, required: true },
   authentication: {
-    password: { type: String, required: true, selected: false },
+    passwordHash: { type: String, required: true, selected: false },
     salt: { type: String, selected: false },
     sessionToken: { type: String, selected: false }
   }});
@@ -23,19 +23,12 @@ export const getUsers = async () : Promise<User[]> => {
   }));
 }
 
-export const getUserByEmail = (email: string) : Promise<User | null> => UserModel.findOne({ email }).lean().exec();
-
-export const getUserBySessionToken = async (sessionToken: string) : Promise<User | null> => {
-  let user = await UserModel.findOne( { 'authentication.sessionToken': sessionToken }).lean().exec();
-
+export const getUserByEmail = async (email: string) : Promise<User | null> => {
+  const user = await UserModel.findOne({ email }).lean().exec();
+ 
   return user 
-    ? {
-      userId: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      authentication: user.authentication
-      }
-    : null;
+  ? { userId: user._id.toString(), username: user.username, email: user.email, authentication: user.authentication }
+  : null;
 }
 
 export const getUserById = async (id: string) : Promise<User | null> => {
@@ -64,9 +57,3 @@ export const createUser = (values: Record<string, any>) => new UserModel(values)
   export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id });
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findOneAndUpdate({ id, values });
-
-export const updateUserSessionByEmail = (email: string, sessionToken: string) : Promise<User | null > => 
-UserModel.findOneAndUpdate( 
-    { email }, 
-    { $set: { 'authentication.sessionToken': sessionToken }},
-    { new: true, runValidators: true } ).lean().exec();

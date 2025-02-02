@@ -3,8 +3,7 @@ export type User = {
   username: string,
   email: string,
   authentication: {
-    password: string,
-    salt: string,
-    sessionToken: string
+    passwordHash: string,
+    salt: string
   }
 }

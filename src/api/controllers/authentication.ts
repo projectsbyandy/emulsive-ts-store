@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { createUser, getUserByEmail, updateUserSessionByEmail } from '../repositories/userRepo';
-import { generateRandom, generateAuthenticationCode} from '../helpers/auth';
+import { createUser, getUserByEmail } from '../repositories/userRepo';
+import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
 
 export const login = async(req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {
@@ -13,26 +13,22 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
     const retrievedUser = await getUserByEmail(email);
 
-    if(!retrievedUser) {
+    if (!retrievedUser) {
       console.log(`User: ${email} does not exist`);
       res.status(401).json({ message: 'Unable to login' });
       return;
     }
 
-    const expectedHash = generateAuthenticationCode(retrievedUser.authentication.salt, password);
-
-    if(retrievedUser.authentication.password !== expectedHash) {
+    if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
       console.log(`Password hash did not match for user: ${email}`);
       return res.status(401).json({ message: 'Unable to login' });
     }
 
-    const salt = generateRandom();
-    retrievedUser.authentication.sessionToken = generateAuthenticationCode(salt, retrievedUser.email);
+    const sessionToken = generateJwt(retrievedUser);
 
-    updateUserSessionByEmail(retrievedUser.email, retrievedUser.authentication.sessionToken);
-    res.cookie('EMULSIVE-STORE-AUTH', retrievedUser.authentication.sessionToken, { domain: 'localhost', path: '/' });
+    res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: 'localhost', path: '/' });
 
-    return res.status(200).json(retrievedUser).end();
+    return res.status(200).json({token: `${sessionToken}`});
   } catch(error) {
     console.log(error);
     next(error);
@@ -61,7 +57,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       username,
       authentication: {
         salt,
-        password: generateAuthenticationCode(salt, password)
+        passwordHash: generateAuthenticationCode(salt, password)
       }
     });
 

@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from "../router";
+import { loadConfig, getApiConfig } from '@/api/helpers/configManager';
 
 const app: Application = express();
 
@@ -28,13 +29,13 @@ app
 
 const server = http.createServer(app);
 
-const PORT = 8085;
-
-server.listen(PORT, () => {
-  console.log(`Server has started on http://localhost:${PORT}`);
+await loadConfig();
+const config = getApiConfig();
+server.listen(getApiConfig().port, () => {
+  console.log(`Server has started on http://localhost:${config.port}`);
 });
 
-const MONGO_URL = "mongodb+srv://emulsiveadmin:24aoAQVVQL7ey9gF@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive";
+const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);

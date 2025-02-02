@@ -5,6 +5,7 @@ The one stop location for all of your film needs
 Typescript 
 - with vite, react and shadcn for the store
 - express for backend
+    - Using HMAC (password handling) and jwt (auth)
     - Fake repo
     - Mongo repo
 

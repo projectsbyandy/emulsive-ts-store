@@ -1,9 +1,11 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import _ from 'lodash';
 
-import { getUserBySessionToken } from '../repositories/userRepo'
+import { verifyJwt } from '../helpers/auth';
+import { type User } from '../types';
+import { RequestWithUser } from '../interfaces/RequestWithUser';
 
-export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const isAuthenticated = async (req: RequestWithUser, res: Response, next: NextFunction) : Promise<any> => {
   try{
      const sessionToken = req.cookies["EMULSIVE-STORE-AUTH"];
 
@@ -12,14 +14,8 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
       return res.sendStatus(403);
      }
 
-     const existingUser = await getUserBySessionToken(sessionToken)
-
-     if (!existingUser) {
-      console.log('existing user with session cookie not found');
-      return res.sendStatus(403);
-     }
-
-     _.merge(req, { identity: existingUser});
+     const user = verifyJwt<User>(sessionToken);
+     req.user = user;
 
      next();
   } catch(error) {
@@ -28,12 +24,12 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
   }
 }
 
-export const isOwner = async (req: Request, res: Response, next: NextFunction ) : Promise<any> => {
+export const isOwner = async (req: RequestWithUser, res: Response, next: NextFunction ) : Promise<any> => {
   try  {
      const { id } = req.params;
-     
-     // identity._id during isAuthenticated merge
-     const loggedInUserId = _.get(req, 'identity.userId') as unknown as string;
+    
+     // userId retrieved from the cookies
+     const loggedInUserId = req.user?.userId;
 
      if (!loggedInUserId) {
       console.log("Unable to retrieve logged in user id");

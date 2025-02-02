@@ -1,0 +1,9 @@
+{
+  "port": 8085,
+  "jwtExpiry": "1h",
+  "useFake": true,
+  "mongoConfig": {
+    "username": "emulsiveadmin",
+    "password": "24aoAQVVQL7ey9gF"
+  }
+}
