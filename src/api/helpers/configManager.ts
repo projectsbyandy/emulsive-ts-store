@@ -4,7 +4,7 @@ import { readFile } from "./fileReader";
 let config: ApiConfig;
 
 const loadConfig = async () : Promise<void> => {
-  const rawData = await readFile(['..', 'apiConfig.json']);
+  const rawData = await readFile(['.', 'src/api', 'apiConfig.json']);
   config = JSON.parse(rawData);
 }
 

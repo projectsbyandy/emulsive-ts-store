@@ -5,7 +5,7 @@ import { IUserRepository } from "./IUserRepository";
 
 class FakeUserRepository implements IUserRepository {
 
-  private PATHS_TO_FAKE_DATA = ['..', 'fakedata', 'users.json'];
+  private PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'users.json'];
   private static initialRead = true;
 
   private static users: User[];

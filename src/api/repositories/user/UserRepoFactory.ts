@@ -5,9 +5,10 @@ import UserRepository from "./UserRepository";
 
 class UserRepositoryFactory {
   get = async () : Promise<IUserRepository> => {
-    const config = await getApiConfig();
-    
-    return config.useFake ? FakeUserRepository : UserRepository;
+    const config = await getApiConfig();    
+    const emulsiveFake = process.env.Emulsive_Fake?.toLocaleLowerCase() === 'true';
+
+    return config.useFake || emulsiveFake ? FakeUserRepository : UserRepository;
   }
 }
 

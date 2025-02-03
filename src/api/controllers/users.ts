@@ -1,9 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import userRepository from '../repositories/user/UserRepoFactory';
+import { IUserRepository } from '../repositories/user/IUserRepository';
 
-const userRepo = await userRepository.get();
+let userRepo: IUserRepository;
 
-export const getAllUsers = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+(async () => {
+  userRepo = await userRepository.get();
+})();
+
+export const getAllUsers = async (_req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {
     const users = await userRepo.getUsers();
     

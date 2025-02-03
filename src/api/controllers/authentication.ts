@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response } from 'express'
 import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
 import userRepository from '../repositories/user/UserRepoFactory';
+import { IUserRepository } from '../repositories/user/IUserRepository';
 
-const userRepo = await userRepository.get();
+let userRepo: IUserRepository;
+
+(async () => {
+  userRepo = await userRepository.get();
+})();
+
 
 export const login = async(req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {

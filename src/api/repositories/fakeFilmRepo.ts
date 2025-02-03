@@ -2,7 +2,7 @@ import { type FilterParams } from "../types/FilterParams";
 import { type Film, type FilmsResponse } from "../types";
 import { readFile } from '../helpers/fileReader';
 
-const PATHS_TO_FAKE_DATA = ['..', 'fakedata', 'films.json'];
+const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'films.json'];
 
 export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> => {
   const rawData = await readFile(PATHS_TO_FAKE_DATA)

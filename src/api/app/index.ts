@@ -6,39 +6,51 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from "../router";
-import { getApiConfig } from '@/api/helpers/configManager';
+import { getApiConfig } from "../helpers/configManager";
 
 const app: Application = express();
 
-const config = await getApiConfig();
-app
-  .use(cors ({
-    credentials: true
-    }))
-  .use(compression())
-  .use(cookieParser())
-  .use(bodyParser.json())
-  .use((err: Error, req: Request, res: Response, next: NextFunction) => 
-    { 
-      res.status(res.statusCode || 500); 
-      res.json({ 
-        message: err.message, 
-        // Only include stack trace in development mode 
-        stack: process.env.NODE_ENV === 'development' ? err.stack : {} 
-      }); 
-    });
+const initializeApp = async () => {
 
-const server = http.createServer(app);
+  const config = await getApiConfig();
 
-server.listen(config.port, () => {
-  console.log(`Server has started on http://localhost:${config.port}`);
-});
+    app
+    .use(cors ({
+      credentials: true
+      }))
+    .use(compression())
+    .use(cookieParser())
+    .use(bodyParser.json())
+    .use((err: Error, _req: Request, res: Response, _next: NextFunction) => 
+      { 
+        res.status(res.statusCode || 500); 
+        res.json({ 
+          message: err.message, 
+          // Only include stack trace in development mode 
+          stack: process.env.NODE_ENV === 'development' ? err.stack : {} 
+        }); 
+      });
+  
+  const server = http.createServer(app);
+  
+  server.listen(config.port, () => {
+    console.log(`Server has started on http://localhost:${config.port}`);
+  });
+  
+  const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
+  
+  mongoose.Promise = Promise;
+  mongoose.connect(MONGO_URL);
+  mongoose.connection.on('error', (error: Error) => console.log(error));
+  app.use('/', router());
 
-const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
+  return server;
+}
 
-mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
-mongoose.connection.on('error', (error: Error) => console.log(error));
-app.use('/', router());
+const serverPromise = (async () => 
+  { 
+    return await initializeApp(); 
+  })();
 
-export default app;
+
+export { app, serverPromise };

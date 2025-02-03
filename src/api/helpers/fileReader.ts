@@ -1,17 +1,14 @@
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import { promises as fs } from 'fs'
+import path from 'path';
 
-export const readFile = async (paths: string[]) : Promise<string> => {
+export const readFile = async (paths: string[]) : Promise<string> => {  
+  const filePath = path.join(process.cwd(), ...paths);
+  
   try {
-      const __filename = fileURLToPath(import.meta.url); 
-      const __dirname = dirname(__filename);
-      var jsonPath = join(__dirname, ...paths);
-      const rawData = await fs.readFile(jsonPath, 'utf-8');
-
-      return rawData;
-    } catch(error) {
-      console.log('Problem reading file');
-      throw error;
-    }
+    const data = await fs.readFile(filePath, 'utf-8');
+    return data;
+  } catch (err) {
+    console.log('There was a problem reading the file')
+    throw err;
+  }
 }
