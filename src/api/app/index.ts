@@ -6,10 +6,11 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from "../router";
-import { loadConfig, getApiConfig } from '@/api/helpers/configManager';
+import { getApiConfig } from '@/api/helpers/configManager';
 
 const app: Application = express();
 
+const config = await getApiConfig();
 app
   .use(cors ({
     credentials: true
@@ -29,9 +30,7 @@ app
 
 const server = http.createServer(app);
 
-await loadConfig();
-const config = getApiConfig();
-server.listen(getApiConfig().port, () => {
+server.listen(config.port, () => {
   console.log(`Server has started on http://localhost:${config.port}`);
 });
 
@@ -41,3 +40,5 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error', (error: Error) => console.log(error));
 app.use('/', router());
+
+export default app;

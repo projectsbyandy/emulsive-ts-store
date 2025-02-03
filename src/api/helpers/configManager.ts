@@ -1,16 +1,18 @@
 import { ApiConfig } from "../types/ApiConfig";
 import { readFile } from "./fileReader";
 
-let config: ApiConfig | null = null;
+let config: ApiConfig;
 
-export const loadConfig = async () : Promise<void> => {
+const loadConfig = async () : Promise<void> => {
   const rawData = await readFile(['..', 'apiConfig.json']);
   config = JSON.parse(rawData);
 }
 
-export const getApiConfig = () : ApiConfig => {
-  if(!config)
-    throw new Error('Api Configuration has not been loaded');
+const getApiConfig = async () : Promise<ApiConfig> => {
+  if (!config)
+    await loadConfig();
 
   return config;
 }
+
+export { getApiConfig }

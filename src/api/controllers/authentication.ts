@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import { createUser, getUserByEmail } from '../repositories/fakeUserRepo';
 import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
+import userRepository from '../repositories/user/UserRepoFactory';
+
+const userRepo = await userRepository.get();
 
 export const login = async(req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {
@@ -11,7 +13,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
       return res.sendStatus(400); 
     }
 
-    const retrievedUser = await getUserByEmail(email);
+    const retrievedUser = await userRepo.getUserByEmail(email);
 
     if (!retrievedUser) {
       console.log(`User: ${email} does not exist`);
@@ -28,6 +30,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
     res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: 'localhost', path: '/' });
 
+    console.log(`User successfully logged in ${email}`);
     return res.status(200).json({token: `${sessionToken}`});
   } catch(error) {
     console.log(error);
@@ -44,7 +47,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       return;
     }
 
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await userRepo.getUserByEmail(email);
 
     if (existingUser) {
       console.log(`Unable to register user as ${email} already exists`);
@@ -52,7 +55,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     }
 
     const salt = generateRandom();
-    const user = await createUser({
+    const user = await userRepo.createUser({
       email,
       username,
       authentication: {
