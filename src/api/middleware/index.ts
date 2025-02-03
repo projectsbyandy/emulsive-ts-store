@@ -11,7 +11,7 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
 
      if (!sessionToken) {
       console.log('Session cookie not found');
-      return res.sendStatus(403);
+      return res.sendStatus(401);
      }
 
      const user = verifyJwt<User>(sessionToken);

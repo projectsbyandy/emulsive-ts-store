@@ -34,7 +34,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
     const sessionToken = generateJwt(retrievedUser);
 
-    res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: 'localhost', path: '/' });
+    res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: process.env.Emulsive_Cookies_Test ? '127.0.0.1' : 'localhost', path: '/' });
 
     console.log(`User successfully logged in ${email}`);
     return res.status(200).json({token: `${sessionToken}`});
