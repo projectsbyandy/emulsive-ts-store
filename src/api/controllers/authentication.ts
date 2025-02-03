@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { createUser, getUserByEmail } from '../repositories/userRepo';
+import { createUser, getUserByEmail } from '../repositories/fakeUserRepo';
 import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
 
 export const login = async(req: Request, res: Response, next: NextFunction) : Promise<any> => {

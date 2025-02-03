@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUsers, deleteUserById, getUserById} from '../repositories/userRepo';
+import { getUsers, deleteUserById, getUserById} from '../repositories/fakeUserRepo';
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {

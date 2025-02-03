@@ -6,8 +6,7 @@ const UserSchema = new Schema<User>({
   email: { type: String, required: true },
   authentication: {
     passwordHash: { type: String, required: true, selected: false },
-    salt: { type: String, selected: false },
-    sessionToken: { type: String, selected: false }
+    salt: { type: String, selected: false }
   }});
 
 const UserModel = model<User>('User', UserSchema);
@@ -54,6 +53,6 @@ export const getUserById = async (id: string) : Promise<User | null> => {
 export const createUser = (values: Record<string, any>) => new UserModel(values)
   .save().then((user) => user.toObject());
 
-  export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id });
+export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id });
 
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findOneAndUpdate({ id, values });

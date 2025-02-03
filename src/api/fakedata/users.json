@@ -4,8 +4,8 @@
     "username": "BobDoe",
     "email": "bobdoe@test.com",
     "authentication": {
-      "passwordHash":"ib7PmO6nqkPzUfsPPIYYsYwm0VcOLEMOduuCfFmFd7o=",
       "salt": "3pkYjzWQJ0YWwGgOcvKqz8QQuI6n+Sirsmv36bapc+imTm6Jmw8uxj9zR/xXwC7z9xgndebyEX1hM8Jk2Hc4MJkdcP0XDKkCtVhpni593tns7uwSv6h7cCkEeRAu/oyuWxic45XX5coBDBjM/rydhpjftu52t5ahyR/xd5J8+hQ=",
+      "passwordHash":"ib7PmO6nqkPzUfsPPIYYsYwm0VcOLEMOduuCfFmFd7o="
     }
   }
 ]
