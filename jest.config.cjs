@@ -4,9 +4,14 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json'
-    }
-  }
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: 'tsconfig.json',
+      "__Emulsive_Fake__": true,
+       "__RCTProfileIsProfiling": false
+    }],
+  },
+  setupFiles: [
+    '<rootDir>/jest.env-variables.js'
+  ]
 };

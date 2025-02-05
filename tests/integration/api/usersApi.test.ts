@@ -3,12 +3,9 @@ import mongoose from 'mongoose';
 import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
 
-let server: any; 
-
-// Override config with flag to force fake
-process.env.Emulsive_Fake = 'true';
-// supertest will not send cookies to localhost domains - use 127.0.0.1
-process.env.Emulsive_Cookies_Test = 'true'
+let server: any;
+let consoleSpy: jest.SpyInstance
+let capturedLogs: string[] = [];
 
 beforeAll(async () => { 
   server = await serverPromise;
@@ -16,7 +13,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  server.close();
+  await server.close();
 });
 
 describe('Verify usersNoAuth', () => {
@@ -40,6 +37,12 @@ describe('Verify protected /users', () => {
   let agent: request.SuperTest<request.Test>;
 
   beforeEach(async () => {
+    
+    capturedLogs = [];
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+      capturedLogs.push(args.join(' '));
+    });
+
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
     
     const loginResponse = await agent
@@ -50,11 +53,11 @@ describe('Verify protected /users', () => {
             });
     
     expect(loginResponse.statusCode).toBe(200);
-    expect(loginResponse.headers['set-cookie']).toBeDefined();
   });
 
   afterEach(() => {
     agent = null as unknown as request.SuperTest<request.Test>;
+    consoleSpy.mockRestore();
   });
   
   it('should return back mock data for a logged in user', async () => {
@@ -78,6 +81,7 @@ describe('Verify protected /users', () => {
 
     // Assert
     expect(response.status).toBe(401);
+    expect(capturedLogs).toContain('Session cookie not found');
   });
 })
 

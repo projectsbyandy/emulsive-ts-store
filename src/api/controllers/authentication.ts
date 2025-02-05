@@ -15,21 +15,20 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     const { email, password } = req.body;
 
     if(!email || !password) {
-      res.statusMessage = 'One or more of the mandatory fields (email, password) have not been specified.'
-      return res.sendStatus(400); 
+      return res.status(400).send('One or more of the mandatory fields (email, password) have not been specified.');
     }
 
     const retrievedUser = await userRepo.getUserByEmail(email);
 
     if (!retrievedUser) {
       console.log(`User: ${email} does not exist`);
-      res.status(401).json({ message: 'Unable to login' });
+      res.status(401).send('Unable to login');
       return;
     }
 
     if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
       console.log(`Password hash did not match for user: ${email}`);
-      return res.status(401).json({ message: 'Unable to login' });
+      return res.status(401).send('Unable to login');
     }
 
     const sessionToken = generateJwt(retrievedUser);
@@ -37,7 +36,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: process.env.Emulsive_Cookies_Test ? '127.0.0.1' : 'localhost', path: '/' });
 
     console.log(`User successfully logged in ${email}`);
-    return res.status(200).json({token: `${sessionToken}`});
+    return res.status(200).send(sessionToken);
   } catch(error) {
     console.log(error);
     next(error);

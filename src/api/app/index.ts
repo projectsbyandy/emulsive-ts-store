@@ -33,9 +33,12 @@ const initializeApp = async () => {
   
   const server = http.createServer(app);
   
-  server.listen(config.port, () => {
-    console.log(`Server has started on http://localhost:${config.port}`);
-  });
+
+  if (process.env.NODE_ENV !== 'test') {
+    server.listen(config.port, () => {
+      console.log(`Server has started on http://localhost:${config.port}`);
+    });
+  }
   
   const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
   
