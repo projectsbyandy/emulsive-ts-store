@@ -48,7 +48,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const { email, password, username } = req.body;
 
     if(!email || !password || !username) {
-      res.status(400).json({ message: 'One or more of the mandatory fields (email, password, username) have not been specified.' });
+      res.status(400).send('One or more of the mandatory fields (email, password, username) have not been specified.');
       return;
     }
 
@@ -60,7 +60,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     }
 
     const salt = generateRandom();
-    const user = await userRepo.createUser({
+    const user = userRepo.createUser({
       email,
       username,
       authentication: {

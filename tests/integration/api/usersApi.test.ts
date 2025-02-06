@@ -37,22 +37,22 @@ describe('Verify protected /users', () => {
   let agent: request.SuperTest<request.Test>;
 
   beforeEach(async () => {
-    
     capturedLogs = [];
     consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
       capturedLogs.push(args.join(' '));
     });
 
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
-    
+
     const loginResponse = await agent
-            .post('/auth/login')
-            .send({
-              'email': 'bobdoe@test.com',
-              'password': '1234'
-            });
-    
+    .post('/auth/login')
+    .send({
+      'email': 'bobdoe@test.com',
+      'password': '1234'
+    });
+
     expect(loginResponse.statusCode).toBe(200);
+
   });
 
   afterEach(() => {
@@ -64,10 +64,10 @@ describe('Verify protected /users', () => {
     // Arrange
     const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'users.json'];
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
+    
     // Act
     const response = await agent.get('/users');
-
+        
     // Assert
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
@@ -75,9 +75,8 @@ describe('Verify protected /users', () => {
   });
 
   it('should return 404 for non-logged in user', async () => {
-    // Arrange
-    // Act
-    const response = await request.agent(app).get('/users');
+    // Arrange / Act
+    const response = await request(app).get('/users');
 
     // Assert
     expect(response.status).toBe(401);

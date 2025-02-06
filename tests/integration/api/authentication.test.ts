@@ -122,10 +122,10 @@ describe('Verify unsuccessful auth/login with mocks', () => {
     expect(loginResponse.text).toBe('One or more of the mandatory fields (email, password) have not been specified.');
   });
 
-  test.each([
-    ['no payload', {}], 
-    ['missing email', {'password': '1234'}], 
-    ['missing password', {'email': 'bobdoe@test.com'}]
+  it.each([
+    ['should return 400 for no payload', {}], 
+    ['should return 400 when missing email', {'password': '1234'}], 
+    ['should return 400 when missing password', {'email': 'bobdoe@test.com'}]
   ])(
     '%s',
     async (_, payload) => {
