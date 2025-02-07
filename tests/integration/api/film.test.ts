@@ -1,6 +1,5 @@
 import { app, serverPromise } from '@/api/app';
 import { readFile } from '@/api/helpers/fileReader';
-//import films from '@/api/router/films';
 import { FilmsResponse } from '@/api/types';
 import mongoose from 'mongoose';
 import request from 'supertest';
@@ -65,11 +64,11 @@ describe('Verify get /api/films with mocks', () => {
 
     // Arrange / Act
     const response = await agent.get('/api/films');
-
-    // Assert
     expect(response.status).toBe(200);
 
     var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
 
     expect(filmsResponse.meta.formats).toStrictEqual(['all', '35mm', '120mm'])
     expect(filmsResponse.meta.manufacturers).toStrictEqual(["all", "Kodak", "Ilford", "Kentmere", "Cinestill", "Rollei"]);
@@ -84,12 +83,117 @@ describe('Verify get /api/films with mocks', () => {
 
       // Arrange / Act
       const response = await agent.get(`/api/films?featured=${isFeatured}`)
+      expect(response.statusCode).toBe(200);
 
       var filmsResponse : FilmsResponse = response.body;
 
       // Assert
-      expect(response.statusCode).toBe(200);
       expect(filmsResponse.data.every(film => film.attributes.featured === Boolean(isFeatured))).toBe(true);
     }
   );
+
+  it.each([
+    ['should return items with Kodak in the name, description or manufacturer', "kodak", 5],
+    ['should return items with Cinestill in the name, description or manufacturer', "Cinestill", 1],
+    ['should return items with case-insensitive cinestill in the name, description or manufacturer', "cinestill", 1], 
+    ['should return items with best-selling in the name, description or manufacturer', "best-selling", 1]
+    ])(
+    '%s',
+    async (_, keyword, expectedCount) => {
+
+      // Arrange / Act
+      const response = await agent.get(`/api/films?keyword=${keyword}`)
+
+      var filmsResponse : FilmsResponse = response.body;
+
+      // Assert
+      keyword = keyword.toLocaleLowerCase();
+
+      expect(response.statusCode).toBe(200);
+      expect(filmsResponse.data.length).toBe(expectedCount);
+      expect(filmsResponse.data.every(film => 
+        film.attributes.name.toLocaleLowerCase().includes(keyword) || 
+        film.attributes.description.toLocaleLowerCase().includes(keyword) || 
+        film.attributes.manufacturer.toLocaleLowerCase().includes(keyword))).toBe(true);
+    }
+  );
+
+  it.each([
+    ['should return items with format of 35mm', "35mm"],
+    ['should return items with format of 120mm', "120mm"],
+    ])(
+    '%s',
+    async (_, format) => {
+
+      // Arrange / Act
+      const response = await agent.get(`/api/films?format=${format}`)
+      expect(response.statusCode).toBe(200);
+
+      var filmsResponse : FilmsResponse = response.body;
+
+      // Assert
+      expect(filmsResponse.data.every(film => film.attributes.format === format)).toBe(true);
+    }
+  );
+
+  it('should return all items when format is set to all', async () => {
+     // Arrange / Act
+     const response = await agent.get('/api/films?format=all')
+     expect(response.statusCode).toBe(200);
+
+     var filmsResponse : FilmsResponse = response.body;
+
+     // Assert
+     expect(filmsResponse.data.every(film => ["35mm", "120mm"].includes(film.attributes.format))).toBe(true);
+  });
+
+  it.each([
+    ['should filter on price - highest-first - less than or equal to 1000p', 1000, 4],
+    ['should filter on price - highest-first - less than or equal to 700p', 700, 1],
+    ])(
+    '%s',
+    async (_, price, expectedItemCount) => {
+
+      // Arrange / Act
+      const response = await agent.get(`/api/films?price=${price}`)
+      expect(response.statusCode).toBe(200);
+
+      var filmsResponse : FilmsResponse = response.body;
+      
+      // Assert
+      expect(filmsResponse.data.length).toBe(expectedItemCount)
+
+      const isSortedGreatestFirst = filmsResponse.data.every((film, index, array) => {
+        return index === 0 || film.attributes.price <=  array[index - 1].attributes.price;
+      });
+      
+      expect(isSortedGreatestFirst).toBe(true);
+    }
+  );
+
+  it('should filter for on-sale - on', async () => {
+    // Arrange / Act
+    const response = await agent.get(`/api/films?onsale=on`)
+    expect(response.statusCode).toBe(200);
+
+    var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
+    expect(filmsResponse.data.length).toBe(2);
+    expect(filmsResponse.meta.pagination.total).toBe(2);
+    expect(filmsResponse.data.every(film => film.attributes.onSale === true)).toBe(true);
+  });
+
+  it('should return paginated all when on-sale is set to off', async () => {
+    // Arrange / Act
+    const response = await agent.get(`/api/films?onsale=off`)
+    expect(response.statusCode).toBe(200);
+
+    var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
+    expect(filmsResponse.data.length).toBe(5);
+    expect(filmsResponse.meta.pagination.total).toBe(11);
+    expect(filmsResponse.data.every(film => typeof(film.attributes.onSale) === 'boolean')).toBe(true);
+  });
 });
