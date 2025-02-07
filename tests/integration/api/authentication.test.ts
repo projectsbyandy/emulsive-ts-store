@@ -98,7 +98,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
   it('should return 400 and log for a missing password', async ()=> {
     // Act
     const loginResponse = await agent
-    .post('/auth/login')
+    .post('/api/auth/login')
     .send({
       'email': 'bobdoe@test.com'
     });
@@ -116,7 +116,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
     '%s',
     async (_, payload) => {
       const loginResponse = await agent
-    .post('/auth/login')
+    .post('/api/auth/login')
     .send(payload);
 
     expect(loginResponse.statusCode).toBe(400);

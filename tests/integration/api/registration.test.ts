@@ -52,7 +52,7 @@ describe('Verify registration', () => {
     await performRegistration(agent, registeredUserDetails.email, registeredUserDetails.password, registeredUserDetails.username);
 
     // Act
-    const getUsersResponse = await agent.get('/usersNoAuth');
+    const getUsersResponse = await agent.get('/api/usersNoAuth');
     expect(getUsersResponse.statusCode).toBe(200);
     const users = getUsersResponse.body as User[]
     
@@ -65,11 +65,12 @@ describe('Verify registration', () => {
 
   it('should not register a user with the same email', async () => {
     // Arrange / Act
+
     const registrationResponse = await performRegistration(agent, "bobdoe@test.com", "test", "Bob Doe");
 
-    // Assert
-    expect(registrationResponse.statusCode).toBe(400);
-    expect(capturedLogs).toContain('Unable to register user as bobdoe@test.com already exists');
+      // Assert
+      expect(registrationResponse.statusCode).toBe(400);
+      expect(capturedLogs).toContain('Unable to register user as bobdoe@test.com already exists');
   });
 
   it.each([
@@ -80,7 +81,7 @@ describe('Verify registration', () => {
     '%s',
     async (_, payload) => {
       const loginResponse = await agent
-    .post('/auth/register')
+    .post('/api/auth/register')
     .send(payload);
 
     expect(loginResponse.statusCode).toBe(400);

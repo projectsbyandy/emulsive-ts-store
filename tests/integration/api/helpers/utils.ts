@@ -2,7 +2,7 @@ import request from 'supertest';
 
 export const performLogin = async (agent: request.SuperTest<request.Test>, email: string, password: string) : Promise<request.Response> => {
   const loginResponse = await agent
-    .post('/auth/login')
+    .post('/api/auth/login')
     .send({
       'email': email,
       'password': password
@@ -13,7 +13,7 @@ export const performLogin = async (agent: request.SuperTest<request.Test>, email
 
  export const performRegistration = async(agent: request.SuperTest<request.Test>, email: string, password: string, username: string): Promise<request.Response> => {
   const registrationResponse = await agent
-    .post('/auth/register')
+    .post('/api/auth/register')
     .send({
         "email": email,
         "password": password,

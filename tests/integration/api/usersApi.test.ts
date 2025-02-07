@@ -26,7 +26,7 @@ describe('Verify usersNoAuth', () => {
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
 
     // Act
-    const response = await request(app).get('/usersNoAuth');
+    const response = await request(app).get('/api/usersNoAuth');
 
     // Assert
     expect(response.status).toBe(200);
@@ -59,7 +59,7 @@ describe('Verify protected /users', () => {
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
     
     // Act
-    const response = await agent.get('/users');
+    const response = await agent.get('/api/users');
         
     // Assert
     expect(response.status).toBe(200);
@@ -69,7 +69,7 @@ describe('Verify protected /users', () => {
 
   it('should return 404 for non-logged in user', async () => {
     // Arrange / Act
-    const response = await request(app).get('/users');
+    const response = await request(app).get('/api/users');
 
     // Assert
     expect(response.status).toBe(401);
@@ -97,7 +97,7 @@ describe('Verify protected Delete /User', ()=> {
     // Arrange
     await performRegistration(agent, "larry.p@test.com", "test", "Larry Parker");
     await performLogin(agent, "larry.p@test.com", "test");
-    const userResponse = await agent.get('/users');
+    const userResponse = await agent.get('/api/users');
 
     const users: User[]= userResponse.body;
     const idForRegisteredUser = users.find(user => user.email === 'larry.p@test.com')?.userId;
@@ -105,7 +105,7 @@ describe('Verify protected Delete /User', ()=> {
     await performLogin(agent, "larry.p@test.com", "test");
 
     // Act
-    const deleteResponse = await agent.delete(`/user/${idForRegisteredUser}`);
+    const deleteResponse = await agent.delete(`/api/user/${idForRegisteredUser}`);
 
     // Assert
     expect(deleteResponse.statusCode).toBe(204);
@@ -115,7 +115,7 @@ describe('Verify protected Delete /User', ()=> {
   it('should return a 401 if not logged in', async ()=> {
 
     // Arrange / Act
-    const response = await request(app).delete('/user/thisIdDoesNoExist');
+    const response = await request(app).delete('/api/user/thisIdDoesNoExist');
 
     // Assert
     expect(response.statusCode).toBe(401);
@@ -128,11 +128,11 @@ describe('Verify protected Delete /User', ()=> {
     await performLogin(agent, 'bobdoe@test.com', '1234');
     
     // Act
-    const deleteResponse = await agent.delete('/user');
+    const deleteResponse = await agent.delete('/api/user');
 
     // Assert
     expect(deleteResponse.statusCode).toBe(404);
-    expect(deleteResponse.text).toContain('Cannot DELETE /user');
+    expect(deleteResponse.text).toContain('Cannot DELETE /api/user');
   });
 
   it('should return a 403 if authenticated delete is called with an invalid userId', async ()=> {
@@ -141,7 +141,7 @@ describe('Verify protected Delete /User', ()=> {
     const id = 1313131
 
     // Act
-    const deleteResponse = await agent.delete(`/user/${id}`);
+    const deleteResponse = await agent.delete(`/api/user/${id}`);
 
     // Assert
     expect(deleteResponse.statusCode).toBe(403);
@@ -152,7 +152,7 @@ describe('Verify protected Delete /User', ()=> {
   it('should not be able to delete a user if not logged in as that user', async ()=> {
     // Arrange
     await performLogin(agent, 'bobdoe@test.com', '1234');
-    const userResponse = await agent.get('/users');
+    const userResponse = await agent.get('/api/users');
 
     const users: User[]= userResponse.body;
     const idForExistingUser = users.find(user => user.email === 'bobdoe@test.com')?.userId;
@@ -161,7 +161,7 @@ describe('Verify protected Delete /User', ()=> {
     await performLogin(agent, "larry.p@test.com", "test");
 
     // Act
-    const deleteResponse = await agent.delete(`/user/${idForExistingUser}`);
+    const deleteResponse = await agent.delete(`/api/user/${idForExistingUser}`);
 
     // Assert
     expect(deleteResponse.statusCode).toBe(403);
@@ -190,7 +190,7 @@ describe('Verify Get with Id', () => {
     await performLogin(agent, "larry.p@test.com", "test");
 
     // Act
-    const response = await agent.get(`/user/${mockUser.userId}`);
+    const response = await agent.get(`/api/user/${mockUser.userId}`);
 
     // Assert
     expect(response.status).toBe(200);
@@ -202,7 +202,7 @@ describe('Verify Get with Id', () => {
     await performLogin(agent, "larry.p@test.com", "test");
 
     // Act
-    const response = await agent.get(`/user/11318`);
+    const response = await agent.get(`/api/user/11318`);
 
     // Assert
     expect(response.status).toBe(404);
