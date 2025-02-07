@@ -22,10 +22,11 @@ export const getAllUsers = async (_req: Request, res: Response, next: NextFuncti
 export const deleteUser = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
   try {
     const { id } = req.params;
+
     await userRepo.deleteUserById(id);
     
     console.log(`Deleted user with id: ${id}`);
-    return res.status(204).json({message: `Deleted user with id: ${id}`}).end();
+    return res.status(204).end();
   } catch(error) {
     console.log(error);
     next(error);
@@ -38,7 +39,7 @@ export const getUser = async (req: Request, res: Response, next: NextFunction) :
     let user = await userRepo.getUserById(id);
 
     if(!user) {
-      return res.status(404).json({message: `User with id: ${id} not found`}).end();
+      return res.status(404).send(`User with id: ${id} not found`);
     }
     
     return res.status(200).json(user).end();

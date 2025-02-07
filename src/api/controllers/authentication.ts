@@ -36,6 +36,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     res.cookie('EMULSIVE-STORE-AUTH', sessionToken, { domain: process.env.Emulsive_Cookies_Test ? '127.0.0.1' : 'localhost', path: '/' });
 
     console.log(`User successfully logged in ${email}`);
+
     return res.status(200).send(sessionToken);
   } catch(error) {
     console.log(error);
@@ -70,6 +71,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     });
 
     console.log(`User successfully registered ${email}`);
+    
     return res.status(201).json(user).end();
   } catch(error) {
     console.log(error);

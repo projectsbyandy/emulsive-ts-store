@@ -2,6 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { serverPromise, app } from '@/api/app';
 import { User } from '@/api/types';
+import { performRegistration } from './helpers/utils';
 
 let server: any;
 let consoleSpy: jest.SpyInstance
@@ -34,13 +35,7 @@ describe('Verify registration', () => {
 
   it('should return 201 with valid details', async () => {
     // Arrange / Act
-    const registrationResponse = await agent
-    .post('/auth/register')
-    .send({
-        "email": "larry.p@test.com",
-        "password": "test",
-        "username": "Larry Parker"
-      });
+    const registrationResponse = await performRegistration(agent, "larry.p@test.com", "test", "Larry Parker");
 
     // Assert
     expect(registrationResponse.status).toBe(201);
@@ -54,9 +49,7 @@ describe('Verify registration', () => {
       "username": "Larry Parker"
     };
     
-    await agent
-    .post('/auth/register')
-    .send(registeredUserDetails);
+    await performRegistration(agent, registeredUserDetails.email, registeredUserDetails.password, registeredUserDetails.username);
 
     // Act
     const getUsersResponse = await agent.get('/usersNoAuth');
@@ -72,17 +65,11 @@ describe('Verify registration', () => {
 
   it('should not register a user with the same email', async () => {
     // Arrange / Act
-    const registrationResponse = await agent
-    .post('/auth/register')
-    .send({
-        "email": "bobdoe@test.com",
-        "password": "test",
-        "username": "Bob Doe"
-      });
+    const registrationResponse = await performRegistration(agent, "bobdoe@test.com", "test", "Bob Doe");
 
-      // Assert
-      expect(registrationResponse.statusCode).toBe(400);
-      expect(capturedLogs).toContain('Unable to register user as bobdoe@test.com already exists');
+    // Assert
+    expect(registrationResponse.statusCode).toBe(400);
+    expect(capturedLogs).toContain('Unable to register user as bobdoe@test.com already exists');
   });
 
   it.each([

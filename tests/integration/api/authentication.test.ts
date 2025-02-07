@@ -2,6 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { serverPromise, app } from '@/api/app';
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import { performLogin } from './helpers/utils';
 
 let server: any;
 let consoleSpy: jest.SpyInstance
@@ -29,12 +30,7 @@ describe('Verify auth/login with mocks', () => {
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
     
     // Act
-    loginResponse = await agent
-            .post('/auth/login')
-            .send({
-              'email': 'bobdoe@test.com',
-              'password': '1234'
-            });
+    loginResponse = await performLogin(agent, 'bobdoe@test.com', '1234');
   });
 
   afterEach(() => {
@@ -82,13 +78,8 @@ describe('Verify unsuccessful auth/login with mocks', () => {
 
   it('should return 401 and log when an email address specified is not found', async ()=> {
     // Act
-    const loginResponse = await agent
-            .post('/auth/login')
-            .send({
-              'email': 'thisemail@doesnotexist.com',
-              'password': '1234'
-            });
-
+    const loginResponse = await performLogin(agent, 'thisemail@doesnotexist.com', '1234');
+          
     // Assert
     expect(loginResponse.statusCode).toBe(401);
     expect(capturedLogs).toContain('User: thisemail@doesnotexist.com does not exist');
@@ -97,12 +88,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
 
   it('should return 401 and log when an password does not match user', async ()=> {
     // Act
-    const loginResponse = await agent
-    .post('/auth/login')
-    .send({
-      'email': 'bobdoe@test.com',
-      'password': 'this is not correct'
-    });
+    const loginResponse = await performLogin(agent, 'bobdoe@test.com', 'This is not correct');
 
     // Assert
     expect(loginResponse.statusCode).toBe(401);
@@ -137,4 +123,5 @@ describe('Verify unsuccessful auth/login with mocks', () => {
     expect(loginResponse.text).toBe('One or more of the mandatory fields (email, password) have not been specified.');
     }
   );
-})
+});
+

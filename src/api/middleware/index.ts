@@ -11,7 +11,7 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
 
      if (!sessionToken) {
       console.log('Session cookie not found');
-      return res.sendStatus(401);
+      return res.status(401).send('Not authenticated');
      }
 
      const user = verifyJwt<User>(sessionToken);
@@ -27,19 +27,19 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
 export const isOwner = async (req: RequestWithUser, res: Response, next: NextFunction ) : Promise<any> => {
   try  {
      const { id } = req.params;
-    
+
      // userId retrieved from the cookies
      const loggedInUserId = req.user?.userId;
 
      if (!loggedInUserId) {
       console.log("Unable to retrieve logged in user id");
-      return res.sendStatus(403);
+      return res.status(403).send('Unable to authenticate');
      }
 
     if (loggedInUserId !== id) {
       console.log(`Logged in user is not authorized to delete user: ${id}`);
       
-      return res.sendStatus(403); 
+      return res.status(403).send('Problem with request'); 
     }
 
     next();

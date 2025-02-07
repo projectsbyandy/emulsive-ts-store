@@ -11,7 +11,7 @@
     "apiTemp": "npx tsx ./src/api/app/index.ts",
     "api": "nodemon",
     "all": "npm run api && npm run dev",
-    "api-test": "jest"
+    "api-test": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.3",
