@@ -196,4 +196,81 @@ describe('Verify get /api/films with mocks', () => {
     expect(filmsResponse.meta.pagination.total).toBe(11);
     expect(filmsResponse.data.every(film => typeof(film.attributes.onSale) === 'boolean')).toBe(true);
   });
+
+  it('should display', async () => {
+    // Arrange / Act
+    const response = await agent.get(`/api/films?onsale=off`)
+    expect(response.statusCode).toBe(200);
+
+    var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
+    expect(filmsResponse.data.length).toBe(5);
+    expect(filmsResponse.meta.pagination.total).toBe(11);
+    expect(filmsResponse.data.every(film => typeof(film.attributes.onSale) === 'boolean')).toBe(true);
+  });
+
+  it.each([
+    ['should filter by the Kodak manufacturer', 'Kodak', 7],
+    ['should filter by the Ilford manufacturer', 'Ilford', 1],
+    ['should filter by the Kentmere manufacturer', 'Kentmere', 1],
+    ])(
+    '%s',
+    async (_, manufacturer, total) => {
+
+      // Arrange / Act
+      const response = await agent.get(`/api/films?manufacturer=${manufacturer}`)
+      expect(response.statusCode).toBe(200);
+
+      var filmsResponse : FilmsResponse = response.body;
+      
+      // Assert
+      expect(filmsResponse.meta.pagination.total).toBe(total);
+      expect(filmsResponse.data.every(film => film.attributes.manufacturer === manufacturer)).toBe(true);
+    }
+  );
+
+  it.each([
+    ['should paginate correctly based on keyword - cinestill', 'cinestill', 1, 1, 1],
+    ['should paginate correctly based on keyword - kodak', 'kodak', 1, 2, 7],
+    ['should paginate correctly based on no keyword', '', 1, 3, 11],
+    ])(
+    '%s',
+    async (_, keyword, page, pageCount, total) => {
+
+      // Arrange / Act
+      const response = await agent.get(`/api/films?keyword=${keyword}`)
+      expect(response.statusCode).toBe(200);
+
+      var filmsResponse : FilmsResponse = response.body;
+      
+      // Assert
+      expect(filmsResponse.meta.pagination.page).toBe(page);
+      expect(filmsResponse.meta.pagination.pageSize).toBe(5);
+      expect(filmsResponse.meta.pagination.pageCount).toBe(pageCount);
+      expect(filmsResponse.meta.pagination.total).toBe(total);
+    }
+  );
+  
+  it.each([
+    ['should display the correct results when the first page is specified', 1, 0, 5],
+    ['should display the correct results when the second page is specified', 2, 5, 10],
+    ['should display the correct results when the third page is specified', 3, 10, 11],
+    ])(
+    '%s',
+    async (_, pageNumber, startRange, endRange) => {
+
+      // Arrange
+      const expectedFilmsForPage = mockFilms.data.slice(startRange, endRange);
+      
+      // Act
+      const response = await agent.get(`/api/films?page=${pageNumber}`)
+      expect(response.statusCode).toBe(200);
+
+      var filmsResponse : FilmsResponse = response.body;
+      
+      // Assert
+      expect(filmsResponse.data).toStrictEqual(expectedFilmsForPage);
+    }
+  );
 });
