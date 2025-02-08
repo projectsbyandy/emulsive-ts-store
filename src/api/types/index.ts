@@ -1,4 +1,4 @@
 export * from './FilmsResponse';
-export * from './FilterParams';
+export * from './FilmFilterParams';
 export * from './User';
 export * from './Order';

@@ -1,30 +1,30 @@
-import { FilmsResponse, FilterParams } from "@/api/types";
+import { FilmsResponse, FilmFilterParams } from "@/api/types";
 import { Rule } from "../rules/rule";
 
 export const filmFilterRules: Rule[] = [
   {
-    condition: (filters: FilterParams) => Boolean(filters.featured),
+    condition: (filters: FilmFilterParams) => Boolean(filters.featured),
     perform: (films): FilmsResponse => {
       films.data = films.data.filter(film => film.attributes.featured === true);
       return films;
     }
   },
   {
-    condition: (filters: FilterParams) => Boolean(filters.price),
+    condition: (filters: FilmFilterParams) => Boolean(filters.price),
     perform: (films, filters): FilmsResponse => {
       films.data = films.data.filter(film => film.attributes.price <= Number(filters.price));
       return films;
     }
   },
   {
-    condition: (filters: FilterParams) =>  Boolean(filters.onsale),
+    condition: (filters: FilmFilterParams) =>  Boolean(filters.onsale),
     perform: (films, filters): FilmsResponse => {
       films.data = films.data.filter(film => film.attributes.onSale === filters.onsale);
       return films;
     }
   },
   {
-    condition: (filters: FilterParams) =>  Boolean(filters.keyword),
+    condition: (filters: FilmFilterParams) =>  Boolean(filters.keyword),
     perform: (films, filters): FilmsResponse => {
       const keyword = filters.keyword?.toLocaleLowerCase();
       films.data = films.data.filter(film => 
@@ -36,21 +36,21 @@ export const filmFilterRules: Rule[] = [
     }
   },
   {
-    condition: (filters: FilterParams) => Boolean(filters.format && filters.format !== 'all'),
+    condition: (filters: FilmFilterParams) => Boolean(filters.format && filters.format !== 'all'),
     perform: (films, filters): FilmsResponse => {
       films.data = films.data.filter(film => film.attributes.format === filters.format);
       return films;
     }
   },
   {
-    condition: (filters: FilterParams) => Boolean(filters.manufacturer && filters.manufacturer !== 'all'),
+    condition: (filters: FilmFilterParams) => Boolean(filters.manufacturer && filters.manufacturer !== 'all'),
     perform: (films, filters): FilmsResponse => {
       films.data = films.data.filter(film => film.attributes.manufacturer === filters.manufacturer);
       return films;
     }
   },
   {
-    condition: (filters: FilterParams) => Boolean(filters.orderby),
+    condition: (filters: FilmFilterParams) => Boolean(filters.orderby),
     perform: (films, filters): FilmsResponse => {
       switch (filters.orderby) {
         case "a-z":

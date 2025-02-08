@@ -1,10 +1,10 @@
 import { readFile } from "@/api/helpers/fileReader";
-import { Film, FilmsResponse, FilterParams } from "@/api/types";
+import { Film, FilmsResponse, FilmFilterParams } from "@/api/types";
 import { filmFilterRules } from "./filmFilterRules";
 
 const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'films.json'];
 
-export const getFilms = async (filters: FilterParams) : Promise<FilmsResponse> => {
+export const getFilms = async (filters: FilmFilterParams) : Promise<FilmsResponse> => {
   const rawData = await readFile(PATHS_TO_FAKE_DATA)
   let filmsResponse : FilmsResponse = JSON.parse(rawData);
 
@@ -27,7 +27,7 @@ export const getFilm = async (id: number) : Promise<Film|undefined> => {
   return;
 }
 
-function filterData(films: FilmsResponse, filters: FilterParams): FilmsResponse {
+function filterData(films: FilmsResponse, filters: FilmFilterParams): FilmsResponse {
   filmFilterRules.forEach(rule => {
     if (rule.condition && rule.condition(filters)) {
       films = rule.perform(films, filters);

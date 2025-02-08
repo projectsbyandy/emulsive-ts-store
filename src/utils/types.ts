@@ -1,7 +1,7 @@
-import { FilterParams } from "@/api/types/FilterParams";
+import { FilmFilterParams } from "@/api/types/FilmFilterParams";
 import { FilmsResponse, Format } from "../api/types"
 
-export type FilmsResponseWithParams = FilmsResponse & {params: FilterParams}
+export type FilmsResponseWithParams = FilmsResponse & {params: FilmFilterParams}
 
 export type CartItem = {
   cartId: string;

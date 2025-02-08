@@ -1,6 +1,6 @@
-import { Format } from "../types"
+import { Format } from "."
 
-export type FilterParams = {
+export type FilmFilterParams = {
   featured?: boolean,
   keyword?: string,
   format?: Format | 'all',

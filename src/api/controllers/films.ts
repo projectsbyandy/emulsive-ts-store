@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { getFilm, getFilms } from '../repositories/film/fakeFilmRepo';
-import { FilmsResponse, FilterParams, Format } from '../types';
+import { FilmsResponse, FilmFilterParams, Format } from '../types';
 import { paginateSplit } from '../helpers/pagination';
 
 const pageSize = 5;
@@ -13,7 +13,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
       return film(req, res, next);
     }
 
-    const filters : FilterParams = {
+    const filters : FilmFilterParams = {
       featured : req.query.featured as boolean | undefined,
       keyword : req.query.keyword as string,
       format: req.query.format as Format,
@@ -60,7 +60,7 @@ const paginate = (filmsResponse: FilmsResponse) : FilmsResponse => {
   return filmsResponse;
 }
 
-const parseMeta = (filmsResponse: FilmsResponse, filterParams: FilterParams): FilmsResponse => {
+const parseMeta = (filmsResponse: FilmsResponse, FilmFilterParams: FilmFilterParams): FilmsResponse => {
   filmsResponse.meta.manufacturers = Array.from(new Set(filmsResponse.data.map(film => film.attributes.manufacturer)));
   filmsResponse.meta.manufacturers.unshift('all')
 
@@ -71,7 +71,7 @@ const parseMeta = (filmsResponse: FilmsResponse, filterParams: FilterParams): Fi
 
   filmsResponse.meta.pagination.pageCount = Math.ceil(filmsResponse.data.length / pageSize);
   filmsResponse.meta.pagination.pageSize = pageSize;
-  filmsResponse.meta.pagination.page = Number(filterParams.page);
+  filmsResponse.meta.pagination.page = Number(FilmFilterParams.page);
 
   return filmsResponse;
 }
