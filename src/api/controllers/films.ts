@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getFilm, getFilms } from '../repositories/fakeFilmRepo';
+import { getFilm, getFilms } from '../repositories/film/fakeFilmRepo';
 import { FilmsResponse, FilterParams, Format } from '../types';
 import { paginateSplit } from '../helpers/pagination';
 
