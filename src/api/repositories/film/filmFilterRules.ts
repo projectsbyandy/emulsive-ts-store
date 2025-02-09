@@ -3,9 +3,9 @@ import { Rule } from "../rules/rule";
 
 export const filmFilterRules: Rule<FilmFilterParams, FilmsResponse>[] = [
   {
-    condition: (filters: FilmFilterParams) => Boolean(filters.featured),
-    perform: (films): FilmsResponse => {
-      films.data = films.data.filter(film => film.attributes.featured === true);
+    condition: (filters: FilmFilterParams) => filters.featured !== undefined,
+    perform: (films, filters): FilmsResponse => {
+      films.data = films.data.filter(film => film.attributes.featured === filters.featured);
       return films;
     }
   },

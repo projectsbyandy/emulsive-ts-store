@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { getFilm, getFilms } from '../repositories/film/fakeFilmRepo';
 import { FilmsResponse, FilmFilterParams, Format } from '../types';
 import { paginateSplit } from '../helpers/pagination';
+import { stringToBoolean } from '../helpers/booleanConvert';
 
 const pageSize = 5;
 
@@ -14,7 +15,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
     }
 
     const filters : FilmFilterParams = {
-      featured : req.query.featured as boolean | undefined,
+      featured : typeof req.query.featured === 'string' ? stringToBoolean(req.query.featured) : undefined,
       keyword : req.query.keyword as string,
       format: req.query.format as Format,
       manufacturer: req.query.manufacturer as string,

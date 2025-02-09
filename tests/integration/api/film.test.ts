@@ -76,11 +76,11 @@ describe('Verify get /api/films with mocks', () => {
 
   //TODO: Fix featured flag
   it.each([
-    ['should return featured films with flag on', "true"], 
-    ['should return featured films with flag off', "false"]
+    ['should return featured films with flag on', true, 5], 
+    ['should return featured films with flag off', false, 6]
   ])(
     '%s',
-    async (_, isFeatured) => {
+    async (_, isFeatured, expectedFilmCount) => {
 
       // Arrange / Act
       const response = await agent.get(`/api/films?featured=${isFeatured}`)
@@ -89,7 +89,8 @@ describe('Verify get /api/films with mocks', () => {
       var filmsResponse : FilmsResponse = response.body;
 
       // Assert
-      expect(filmsResponse.data.every(film => film.attributes.featured === Boolean(isFeatured))).toBe(true);
+      expect(filmsResponse.data.every(film => film.attributes.featured === isFeatured)).toBe(true);
+      expect(filmsResponse.meta.pagination.total).toBe(expectedFilmCount);
     }
   );
 
