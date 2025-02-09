@@ -1,6 +1,4 @@
-import { FilmsResponse, FilmFilterParams } from "@/api/types";
-
-export interface Rule {
-  condition?: (filters: FilmFilterParams) => boolean;
-  perform: (films: FilmsResponse, filters: FilmFilterParams) => FilmsResponse;
+export interface Rule<T, Y> {
+  condition?: (paramFilters: T) => boolean;
+  perform: (response: Y, paramFilters: T) => Y;
 }

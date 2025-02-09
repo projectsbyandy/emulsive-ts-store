@@ -1,7 +1,8 @@
 import { readFile } from "../../helpers/fileReader";
 import { generateId } from "../../helpers/mongo";
-import { User } from "../../types";
+import { User, UserFilterParams } from "../../types";
 import { IUserRepository } from "./IUserRepository";
+import { filterData } from "./userFilterRules";
 
 class FakeUserRepository implements IUserRepository {
 
@@ -10,9 +11,10 @@ class FakeUserRepository implements IUserRepository {
 
   private static users: User[];
   
-  async getUsers(): Promise<User[]> {
+  async getUsers(filterParams: UserFilterParams): Promise<User[]> {
     FakeUserRepository.users = await this.readUsers();
-    return FakeUserRepository.users;
+    
+    return filterData(FakeUserRepository.users, filterParams);
   }
 
   async getUserByEmail(email: string): Promise<User | null> {

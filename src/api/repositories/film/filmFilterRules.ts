@@ -1,7 +1,7 @@
 import { FilmsResponse, FilmFilterParams } from "@/api/types";
 import { Rule } from "../rules/rule";
 
-export const filmFilterRules: Rule[] = [
+export const filmFilterRules: Rule<FilmFilterParams, FilmsResponse>[] = [
   {
     condition: (filters: FilmFilterParams) => Boolean(filters.featured),
     perform: (films): FilmsResponse => {

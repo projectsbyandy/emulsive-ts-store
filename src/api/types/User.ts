@@ -5,5 +5,6 @@ export type User = {
   authentication: {
     passwordHash: string,
     salt: string
-  }
+  },
+  active: boolean
 }

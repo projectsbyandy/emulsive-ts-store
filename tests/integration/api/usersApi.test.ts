@@ -19,6 +19,21 @@ afterAll(async () => {
   await server.close();
 });
 
+beforeEach(async () => {
+  capturedLogs = [];
+  consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+    capturedLogs.push(args.join(' '));
+  });
+});
+
+afterEach(async () => {
+  consoleSpy.mockRestore();
+
+  if (server) {
+    await server.close();
+  }
+});
+
 describe('Verify usersNoAuth', () => {
   it('should return back mock data', async () => {
 
@@ -51,7 +66,6 @@ describe('Verify protected /users', () => {
 
   afterEach(() => {
     agent = null as unknown as request.SuperTest<request.Test>;
-    consoleSpy.mockRestore();
   });
   
   it('should return back mock data for a logged in user', async () => {
@@ -79,6 +93,7 @@ describe('Verify protected /users', () => {
 
 describe('Verify protected Delete /User', ()=> {
   let agent: request.SuperTest<request.Test>;
+  
   beforeEach(async () => {
     capturedLogs = [];
     consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
@@ -90,26 +105,6 @@ describe('Verify protected Delete /User', ()=> {
 
   afterEach(() => {
     agent = null as unknown as request.SuperTest<request.Test>;
-    consoleSpy.mockRestore();
-  });
-  
-  it('should be able to delete a user if logged in as that user', async ()=> {
-    // Arrange
-    await performRegistration(agent, "larry.p@test.com", "test", "Larry Parker");
-    await performLogin(agent, "larry.p@test.com", "test");
-    const userResponse = await agent.get('/api/users');
-
-    const users: User[]= userResponse.body;
-    const idForRegisteredUser = users.find(user => user.email === 'larry.p@test.com')?.userId;
-
-    await performLogin(agent, "larry.p@test.com", "test");
-
-    // Act
-    const deleteResponse = await agent.delete(`/api/user/${idForRegisteredUser}`);
-
-    // Assert
-    expect(deleteResponse.statusCode).toBe(204);
-    expect(capturedLogs).toContain(`Deleted user with id: ${idForRegisteredUser}`);
   });
 
   it('should return a 401 if not logged in', async ()=> {
@@ -168,6 +163,25 @@ describe('Verify protected Delete /User', ()=> {
     expect(deleteResponse.text).toContain('Problem with request');
     expect(capturedLogs).toContain(`Logged in user is not authorized to delete user: ${idForExistingUser}`);
   });
+
+  it('should be able to delete a user if logged in as that user', async ()=> {
+    // Arrange
+    await performRegistration(agent, "larry.p@test.com", "test", "Larry Parker");
+    await performLogin(agent, "larry.p@test.com", "test");
+    const userResponse = await agent.get('/api/users');
+
+    const users: User[]= userResponse.body;
+    const idForRegisteredUser = users.find(user => user.email === 'larry.p@test.com')?.userId;
+
+    await performLogin(agent, "larry.p@test.com", "test");
+
+    // Act
+    const deleteResponse = await agent.delete(`/api/user/${idForRegisteredUser}`);
+
+    // Assert
+    expect(deleteResponse.statusCode).toBe(204);
+    expect(capturedLogs).toContain(`Deleted user with id: ${idForRegisteredUser}`);
+  });
 });
 
 describe('Verify Get with Id', () => {
@@ -187,7 +201,7 @@ describe('Verify Get with Id', () => {
     const mockUsers: User[] = JSON.parse(rawData);
     const mockUser = mockUsers[0];
 
-    await performLogin(agent, "larry.p@test.com", "test");
+    await performLogin(agent, 'bobdoe@test.com', '1234');
 
     // Act
     const response = await agent.get(`/api/user/${mockUser.userId}`);
@@ -199,7 +213,7 @@ describe('Verify Get with Id', () => {
 
   it('should return 404 with invalid Id', async () => {
     // Arrange
-    await performLogin(agent, "larry.p@test.com", "test");
+    await performLogin(agent, 'bobdoe@test.com', '1234');
 
     // Act
     const response = await agent.get(`/api/user/11318`);
@@ -210,3 +224,31 @@ describe('Verify Get with Id', () => {
   });
 });
 
+describe('Verify User filtering options', () => {
+  let agent: request.SuperTest<request.Test>;
+
+  beforeEach(async () => {
+    agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
+  });
+
+  afterEach(() => {
+    agent = null as unknown as request.SuperTest<request.Test>;
+  });
+
+  it.each([
+    ['should 0 users when active is false', "false", 0], 
+    ['should 1 user when active is true', "true", 1]
+  ])(
+    '%s',
+    async (_, isActive, expectedUserCount) => {
+      await performLogin(agent, 'bobdoe@test.com', '1234');
+      const usersResponse = await agent.get(`/api/users?active=${isActive}`);
+
+    expect(usersResponse.statusCode).toBe(200);
+
+    let users : User[] = usersResponse.body;
+
+    expect(users.length).toBe(expectedUserCount);
+    }
+  );
+});

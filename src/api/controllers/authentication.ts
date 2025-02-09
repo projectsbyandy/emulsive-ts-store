@@ -67,7 +67,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       authentication: {
         salt,
         passwordHash: generateAuthenticationCode(salt, password)
-      }
+      },
+      active: true
     });
 
     console.log(`User successfully registered ${email}`);

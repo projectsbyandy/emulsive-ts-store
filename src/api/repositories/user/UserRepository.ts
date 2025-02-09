@@ -1,6 +1,7 @@
 import { model, Schema, Types } from "mongoose";
-import { User } from "../../types";
+import { User, UserFilterParams } from "../../types";
 import { IUserRepository } from "./IUserRepository";
+import { filterData } from "./userFilterRules";
 
 class UserRepository implements IUserRepository {
 
@@ -10,26 +11,29 @@ class UserRepository implements IUserRepository {
     authentication: {
       passwordHash: { type: String, required: true, selected: false },
       salt: { type: String, selected: false }
-    }});
+    },
+    active: {type: Boolean, required: true
+  }});
   
   private UserModel = model<User>('User', this.UserSchema);
   
-  async getUsers(): Promise<User[]> {
+  async getUsers(filterParams: UserFilterParams): Promise<User[]> {
     let users = await this.UserModel.find().lean().exec();
 
-    return users.map(user => ({
+    return filterData(users.map(user => ({
       userId: user._id.toString(),
       username: user.username,
       email: user.email,
-      authentication: user.authentication
-    }));
+      authentication: user.authentication,
+      active: user.active
+    })), filterParams);
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
     const user = await this.UserModel.findOne({ email }).lean().exec();
  
     return user 
-    ? { userId: user._id.toString(), username: user.username, email: user.email, authentication: user.authentication }
+    ? { userId: user._id.toString(), username: user.username, email: user.email, authentication: user.authentication, active: user.active}
     : null;
   }
   
@@ -45,7 +49,8 @@ class UserRepository implements IUserRepository {
         userId: user._id.toString(),
           username: user.username,
           email: user.email,
-          authentication: user.authentication
+          authentication: user.authentication,
+          active: user.active
       }
     }
   

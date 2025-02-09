@@ -74,6 +74,7 @@ describe('Verify get /api/films with mocks', () => {
     expect(filmsResponse.meta.manufacturers).toStrictEqual(["all", "Kodak", "Ilford", "Kentmere", "Cinestill", "Rollei"]);
   });
 
+  //TODO: Fix featured flag
   it.each([
     ['should return featured films with flag on', "true"], 
     ['should return featured films with flag off', "false"]
@@ -185,19 +186,6 @@ describe('Verify get /api/films with mocks', () => {
   });
 
   it('should return paginated all when on-sale is set to off', async () => {
-    // Arrange / Act
-    const response = await agent.get(`/api/films?onsale=off`)
-    expect(response.statusCode).toBe(200);
-
-    var filmsResponse : FilmsResponse = response.body;
-    
-    // Assert
-    expect(filmsResponse.data.length).toBe(5);
-    expect(filmsResponse.meta.pagination.total).toBe(11);
-    expect(filmsResponse.data.every(film => typeof(film.attributes.onSale) === 'boolean')).toBe(true);
-  });
-
-  it('should display', async () => {
     // Arrange / Act
     const response = await agent.get(`/api/films?onsale=off`)
     expect(response.statusCode).toBe(200);
