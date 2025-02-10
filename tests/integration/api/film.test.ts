@@ -1,6 +1,6 @@
 import { app, serverPromise } from '@/api/app';
 import { readFile } from '@/api/helpers/fileReader';
-import { FilmsResponse } from '@/api/types';
+import { Film, FilmsResponse } from '@/api/types';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
@@ -74,7 +74,6 @@ describe('Verify get /api/films with mocks', () => {
     expect(filmsResponse.meta.manufacturers).toStrictEqual(["all", "Kodak", "Ilford", "Kentmere", "Cinestill", "Rollei"]);
   });
 
-  //TODO: Fix featured flag
   it.each([
     ['should return featured films with flag on', true, 5], 
     ['should return featured films with flag off', false, 6]
@@ -164,12 +163,7 @@ describe('Verify get /api/films with mocks', () => {
       
       // Assert
       expect(filmsResponse.data.length).toBe(expectedItemCount)
-
-      const isSortedGreatestFirst = filmsResponse.data.every((film, index, array) => {
-        return index === 0 || film.attributes.price <=  array[index - 1].attributes.price;
-      });
-      
-      expect(isSortedGreatestFirst).toBe(true);
+      expect(isSortedBy(true, filmsResponse)).toBe(true);
     }
   );
 
@@ -262,4 +256,36 @@ describe('Verify get /api/films with mocks', () => {
       expect(filmsResponse.data).toStrictEqual(expectedFilmsForPage);
     }
   );
+
+  it('should return correct data when filtered by keyword, price limit and order by price desc', async () => {
+    
+    // Arrange
+    const keyword = "kodak";
+    const maxPrice = 1500;
+
+    const keywordCondition = (keyword: string, film: Film) : boolean => film.attributes.name.toLocaleLowerCase().includes(keyword) || 
+    film.attributes.description.toLocaleLowerCase().includes(keyword) || 
+    film.attributes.manufacturer.toLocaleLowerCase().includes(keyword)
+
+    mockFilms.data = mockFilms.data.filter(film => keywordCondition(keyword, film));
+
+    mockFilms.data = mockFilms.data.filter(film => film.attributes.price <= maxPrice);
+
+    // Act
+    const response = await agent.get(`/api/films?keyword=${keyword}&price=${maxPrice}&orderby=lowest-price-desc`);
+
+    // Assert
+    expect(response.statusCode).toBe(200);
+    var filmsResponse : FilmsResponse = response.body;
+
+    expect(filmsResponse.data.every(film => keywordCondition(keyword, film))).toBe(true);
+    expect(filmsResponse.data.every(film => film.attributes.price <= maxPrice)).toBe(true);
+    expect(isSortedBy(false, filmsResponse)).toBe(true);
+  })
+
+  const isSortedBy = (isGreatestFirst: boolean, filmsResponse: FilmsResponse) : boolean => {
+    return filmsResponse.data.every((film, index, array) => {
+      return index === 0 || (isGreatestFirst ? Number(film.attributes.price) <=  Number(array[index - 1].attributes.price) : Number(film.attributes.price) >=  Number(array[index - 1].attributes.price));
+    });
+  };
 });
