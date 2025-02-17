@@ -40,11 +40,13 @@ const initializeApp = async () => {
     });
   }
   
-  const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
+  if(config.useFake === false) {
+    const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
+    mongoose.Promise = Promise;
+    mongoose.connect(MONGO_URL);
+    mongoose.connection.on('error', (error: Error) => console.log(error));
+  }
   
-  mongoose.Promise = Promise;
-  mongoose.connect(MONGO_URL);
-  mongoose.connection.on('error', (error: Error) => console.log(error));
   app.use('/', router());
 
   return server;
