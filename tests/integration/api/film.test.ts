@@ -74,6 +74,32 @@ describe('Verify get /api/films with mocks', () => {
     expect(filmsResponse.meta.manufacturers).toStrictEqual(["all", "Kodak", "Ilford", "Kentmere", "Cinestill", "Rollei"]);
   });
 
+  it('should not display the all option in manufacturer if the items come from the same manufacturer', async () => {
+
+    // Arrange / Act
+    const response = await agent.get('/api/films?keyword=cinestill');
+    expect(response.status).toBe(200);
+
+    var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
+    expect(filmsResponse.meta.manufacturers).not.toContain(["all"]);
+    expect(filmsResponse.meta.manufacturers).toStrictEqual(["Cinestill"]);
+  });
+
+  it('should not display the all option in format if the items come from the same format', async () => {
+
+    // Arrange / Act
+    const response = await agent.get('/api/films?keyword=cinestill');
+    expect(response.status).toBe(200);
+
+    var filmsResponse : FilmsResponse = response.body;
+    
+    // Assert
+    expect(filmsResponse.meta.formats).not.toContain(["all"]);
+    expect(filmsResponse.meta.formats).toStrictEqual(["120mm"]);
+  });
+
   it.each([
     ['should return featured films with flag on', true, 5], 
     ['should return featured films with flag off', false, 6]

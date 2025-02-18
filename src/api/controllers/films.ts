@@ -3,6 +3,7 @@ import { getFilm, getFilms } from '../repositories/film/fakeFilmRepo';
 import { FilmsResponse, FilmFilterParams, Format } from '../types';
 import { paginateSplit } from '../helpers/pagination';
 import { stringToBoolean } from '../helpers/booleanConvert';
+import { areAllArrayItemsSame } from '../helpers/checker';
 
 const pageSize = 5;
 
@@ -63,10 +64,14 @@ const paginate = (filmsResponse: FilmsResponse) : FilmsResponse => {
 
 const parseMeta = (filmsResponse: FilmsResponse, FilmFilterParams: FilmFilterParams): FilmsResponse => {
   filmsResponse.meta.manufacturers = Array.from(new Set(filmsResponse.data.map(film => film.attributes.manufacturer)));
-  filmsResponse.meta.manufacturers.unshift('all')
+
+  if(areAllArrayItemsSame(filmsResponse.meta.manufacturers) === false)
+    filmsResponse.meta.manufacturers.unshift('all')
 
   filmsResponse.meta.formats = Array.from(new Set(filmsResponse.data.map(film => film.attributes.format)));
-  filmsResponse.meta.formats.unshift('all')
+  
+  if(areAllArrayItemsSame(filmsResponse.meta.formats) === false)
+    filmsResponse.meta.formats.unshift('all')
 
   filmsResponse.meta.pagination.total = filmsResponse.data.length;
 

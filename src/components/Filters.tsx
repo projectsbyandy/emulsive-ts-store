@@ -21,7 +21,7 @@ function Filters() {
       <Button type='submit' size='sm' className='self-end mb-2'>
         Search
       </Button>
-      <Button type='button' asChild size='sm' variant='outline' className='self-end mb-2'>
+      <Button type='button' asChild size='sm' data-testid='reset' variant='outline' className='self-end mb-2'>
         <Link to='/products'>Reset</Link>
       </Button>
     </Form>
