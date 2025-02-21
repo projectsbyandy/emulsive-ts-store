@@ -6,7 +6,7 @@ import { type FilmsResponse } from '../api/types';
 function ProductsGrid() {
   const {data: films} = useLoaderData() as FilmsResponse;
   return (
-    <div className='pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+    <div data-testid='products' className='pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
     {
       films.map((film) => {
         const {name, price, imageUrl} = film.attributes;
