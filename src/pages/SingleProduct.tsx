@@ -49,19 +49,19 @@ function SingleProduct() {
           <Link to='/products'>Products</Link>
         </Button>
       </div>
-      <div className='mt-6 grid gap-y-8 lg:grid-cols-2 lg:gap-x-16'>
+      <div data-testid='productDetails' className='mt-6 grid gap-y-8 lg:grid-cols-2 lg:gap-x-16'>
         {/* Image first col*/}
-        <img src={imageUrl} title={name} className='w-96 h-96 object-cover rounded-lg lg:w-full'/>
+        <img data-testid='imageUrl' src={imageUrl} title={name} className='w-96 h-96 object-cover rounded-lg lg:w-full'/>
         {/* Film info second col*/}
         <div>
-          <h1 className='capitalize text-3xl font-bold'>{name}</h1>
-          <h4 className='text-xl mt-2'>{manufacturer}</h4>
-          <h5 className='text-l mt-2'>ISO: {iso}</h5>
-          <h5 className='text-l mt-2'>Format: {format}</h5>
-          <p className='mt-3 text-md bg-muted inline-block p-2 rounded-md'>
+          <h1 data-testid='name' className='capitalize text-3xl font-bold'>{name}</h1>
+          <h4 data-testid='manufacturer' className='text-xl mt-2'>{manufacturer}</h4>
+          <h5 data-testid='iso' className='text-l mt-2'>ISO: {iso}</h5>
+          <h5 data-testid='format' className='text-l mt-2'>Format: {format}</h5>
+          <p data-testid='price' className='mt-3 text-md bg-muted inline-block p-2 rounded-md'>
             {poundsAmount}
           </p>
-          <p className='mt-6 leading-8'>{description}</p>
+          <p data-testid='description' className='mt-6 leading-8'>{description}</p>
           <SelectProductQuantity mode={QuantityMode.SingleProduct} quantity={quantity} setQuantity={setQuantity}/>
           <Button size='lg' className='mt-10' onClick={addToCart}>
             Add to Cart
