@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
 import userRepository from '../repositories/user/UserRepoFactory';
 import { IUserRepository } from '../repositories/user/IUserRepository';
+import { AuthResponse } from '../types/AuthResponse';
 
 let userRepo: IUserRepository;
 
@@ -37,7 +38,17 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
     console.log(`User successfully logged in ${email}`);
 
-    return res.status(200).send(sessionToken);
+    const authResponse : AuthResponse = {
+      jwt: sessionToken,
+      user: {
+        userId: retrievedUser.userId,
+        username: retrievedUser.username,
+        email: retrievedUser.email,
+        active: retrievedUser.active
+      }
+    }
+
+    return res.status(200).send(authResponse);
   } catch(error) {
     console.log(error);
     next(error);
@@ -61,7 +72,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     }
 
     const salt = generateRandom();
-    const user = userRepo.createUser({
+    userRepo.createUser({
       email,
       username,
       authentication: {
@@ -71,9 +82,27 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       active: true
     });
 
+    const registeredUser = await userRepo.getUserByEmail(email);
+
+    if(registeredUser === null) {
+      throw Error(`Problem reading registered user ${email}`);
+    }
+    
+    const sessionToken = generateJwt(registeredUser);
+
     console.log(`User successfully registered ${email}`);
     
-    return res.status(201).json(user).end();
+    const authResponse : AuthResponse = {
+      jwt: sessionToken,
+      user: {
+        userId: registeredUser.userId,
+        username: registeredUser.username,
+        email: registeredUser.email,
+        active: registeredUser.active
+      }
+    }
+    
+    return res.status(201).json(authResponse).end();
   } catch(error) {
     console.log(error);
     next(error);

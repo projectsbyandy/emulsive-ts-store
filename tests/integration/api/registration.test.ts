@@ -39,6 +39,10 @@ describe('Verify registration', () => {
 
     // Assert
     expect(registrationResponse.status).toBe(201);
+    expect(registrationResponse.body.jwt.length).toBeGreaterThan(10);
+    expect(registrationResponse.body.user.email).toBe('larry.p@test.com');
+    expect(registrationResponse.body.user.username).toBe('Larry Parker');
+    expect(registrationResponse.body.user.userId.length).toBeGreaterThan(10);
   });
 
   it('should return registered user on get', async () => {

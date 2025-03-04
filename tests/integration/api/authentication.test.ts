@@ -51,13 +51,21 @@ describe('Verify auth/login with mocks', () => {
 
   it('should return a valid jwt ', async () => {
     // Assert
-    expect(() => jwt.verify(loginResponse.text, "EmulsiveFilm")).not.toThrow(JsonWebTokenError);
+    expect(() => jwt.verify(loginResponse.body.jwt, "EmulsiveFilm")).not.toThrow(JsonWebTokenError);
   });
 
   it('should should drop a session cookie on successful login', async () => {
     // Assert
     expect(loginResponse.headers['set-cookie']).toHaveLength(1);
     expect(loginResponse.headers['set-cookie'][0]).toContain("EMULSIVE-STORE-AUTH=");
+  });
+
+  it('should return user details', async () => {
+    // Assert
+    expect(loginResponse.body.user.userId).not.toBeNull;
+    expect(loginResponse.body.user.username).toBe('BobDoe');
+    expect(loginResponse.body.user.email).toBe('bobdoe@test.com');
+    expect(loginResponse.body.user.active).toBe(true);
   });
 });
 
