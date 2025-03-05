@@ -1,5 +1,7 @@
+import { stringToBoolean } from '@/api/helpers/booleanConvert';
 import { Filters, ProductsContainer, PaginationContainer } from '@/components';
 import { emulsiveApi } from '@/emulsiveApiClient';
+import { Sleep } from '@/utils';
 import { type FilmsResponseWithParams } from '@/utils/types';
 import { type LoaderFunction } from 'react-router-dom';
 
@@ -12,6 +14,10 @@ export const loader: LoaderFunction = async ({request}): Promise<FilmsResponseWi
   ]);
   
   const response = await emulsiveApi<FilmsResponseWithParams>(url, {params});
+
+  if (stringToBoolean(import.meta.env.VITE_QA_TEST_PRODUCT_DELAY)) {
+    await Sleep(1000);
+  }
 
   return {...response.data, params };
 }

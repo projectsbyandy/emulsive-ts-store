@@ -11,5 +11,7 @@ export default defineConfig({
   },
   server: {
     port: 5500
-  }
+  },
+  envDir: 'storeConfig',
+  mode: 'qa'
 });

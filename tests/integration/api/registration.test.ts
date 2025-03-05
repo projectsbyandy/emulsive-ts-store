@@ -89,7 +89,7 @@ describe('Verify registration', () => {
     .send(payload);
 
     expect(loginResponse.statusCode).toBe(400);
-    expect(loginResponse.text).toBe('One or more of the mandatory fields (email, password, username) have not been specified.');
+    expect(loginResponse.body.error).toBe('One or more of the mandatory fields (email, password, username) have not been specified.');
     }
   );
 });

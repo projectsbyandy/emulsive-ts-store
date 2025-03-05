@@ -113,7 +113,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
 
     // Assert
     expect(loginResponse.statusCode).toBe(400);
-    expect(loginResponse.text).toBe('One or more of the mandatory fields (email, password) have not been specified.');
+    expect(loginResponse.body.error).toBe('One or more of the mandatory fields (email, password) have not been specified.');
   });
 
   it.each([
@@ -128,7 +128,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
     .send(payload);
 
     expect(loginResponse.statusCode).toBe(400);
-    expect(loginResponse.text).toBe('One or more of the mandatory fields (email, password) have not been specified.');
+    expect(loginResponse.body.error).toBe('One or more of the mandatory fields (email, password) have not been specified.');
     }
   );
 });

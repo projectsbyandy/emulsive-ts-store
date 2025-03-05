@@ -16,20 +16,19 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     const { email, password } = req.body;
 
     if(!email || !password) {
-      return res.status(400).send('One or more of the mandatory fields (email, password) have not been specified.');
+      return res.status(400).send({error:'One or more of the mandatory fields (email, password) have not been specified.'});
     }
 
     const retrievedUser = await userRepo.getUserByEmail(email);
 
     if (!retrievedUser) {
       console.log(`User: ${email} does not exist`);
-      res.status(401).send('Unable to login');
-      return;
+      return res.status(401).send({ error:'Unable to login' });
     }
 
     if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
       console.log(`Password hash did not match for user: ${email}`);
-      return res.status(401).send('Unable to login');
+      return res.status(401).send({ error:'Unable to login' });
     }
 
     const sessionToken = generateJwt(retrievedUser);
@@ -60,15 +59,14 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const { email, password, username } = req.body;
 
     if(!email || !password || !username) {
-      res.status(400).send('One or more of the mandatory fields (email, password, username) have not been specified.');
-      return;
+      return res.status(400).send({ error:'One or more of the mandatory fields (email, password, username) have not been specified.' });
     }
 
     const existingUser = await userRepo.getUserByEmail(email);
 
     if (existingUser) {
       console.log(`Unable to register user as ${email} already exists`);
-      return res.status(400).json({ message: 'Unable to register user' });
+      return res.status(400).send({ error: 'Unable to register user' });
     }
 
     const salt = generateRandom();
@@ -85,7 +83,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const registeredUser = await userRepo.getUserByEmail(email);
 
     if(registeredUser === null) {
-      throw Error(`Problem reading registered user ${email}`);
+      return res.status(500).send({ error: 'Problem reading user' });
     }
     
     const sessionToken = generateJwt(registeredUser);
