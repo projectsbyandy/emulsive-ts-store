@@ -31,27 +31,30 @@ export const action: ActionFunction = async ({request}) : Promise<Response | nul
 }
 
 function Register() {
-  return (<section className="h-screen grid place-items-center">
-    <Card className="w-96 gb-muted">
-      <CardHeader>
-        <CardTitle className="text-center">
-          Register
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form method='post'>
-          <FormInput type='text' name='username'></FormInput>
-          <FormInput type='email' name='email'></FormInput>
-          <FormInput type='password' name='password'></FormInput>
-          <SubmitButton text='register' className="w-full mt-4"/>
-          <p className="text-center mt-4">Already a member?{' '}<Button type='button' asChild variant='link'>
-             <Link to='/login'>Login</Link>
-            </Button>
-          </p>
-        </Form>
-      </CardContent>
-    </Card>
-  </section>
+  return (
+    <section className="h-screen grid place-items-center">
+      <Card className="w-96 gb-muted">
+        <CardHeader>
+          <CardTitle className="text-center">
+            Register
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form method='post'>
+            <FormInput type='text' name='username'></FormInput>
+            <FormInput type='email' name='email'></FormInput>
+            <FormInput type='password' name='password'></FormInput>
+            <SubmitButton text='Register' className="w-full mt-4"/>
+            <p className="text-center mt-4">
+              Already a member?{' '}
+              <Button type='button' asChild variant='link'>
+                  <Link to='/login'>Login</Link>
+              </Button>
+            </p>
+          </Form>
+        </CardContent>
+      </Card>
+    </section>
   );
 }
 export default Register;

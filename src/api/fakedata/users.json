@@ -5,8 +5,18 @@
     "email": "bobdoe@test.com",
     "authentication": {
       "salt": "3pkYjzWQJ0YWwGgOcvKqz8QQuI6n+Sirsmv36bapc+imTm6Jmw8uxj9zR/xXwC7z9xgndebyEX1hM8Jk2Hc4MJkdcP0XDKkCtVhpni593tns7uwSv6h7cCkEeRAu/oyuWxic45XX5coBDBjM/rydhpjftu52t5ahyR/xd5J8+hQ=",
-      "passwordHash":"ib7PmO6nqkPzUfsPPIYYsYwm0VcOLEMOduuCfFmFd7o="
+      "passwordHash": "ib7PmO6nqkPzUfsPPIYYsYwm0VcOLEMOduuCfFmFd7o="
     },
     "active": true
+  },
+  {
+    "email": "test@test.com",
+    "username": "Dave Test",
+    "authentication": {
+      "salt": "zxsy3FzwJJuVDU7NUXuWC7xl9rNWdtImq2w4iXOKYjaklhiHL21uM815Mal/1BZ/SuQaudRVrk/xxU/0fcWCNQFfTa6pE0yNEHS6WcWVAC6+25KFdM5PadpSxPh6+mCJAklxSslxfG62+BXc/lgB+JbDrZQCndilmXj8Qn6FJv0=",
+      "passwordHash": "0fWEJjoWHp4Cr1szVgUT5nC26x5IWkbwMe4c8JPjl0Y="
+    },
+    "active": true,
+    "userId": "67c9c180eb030c9d17a89fdb"
   }
 ]

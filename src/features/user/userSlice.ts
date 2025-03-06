@@ -26,9 +26,9 @@ const userSlice = createSlice({
     loginUser:(state, action:PayloadAction<User>) => {
       const user = action.payload;
       state.user = user;
-      localStorage.setItem('user', JSON.stringify('user'));
+      localStorage.setItem('user', JSON.stringify(user));
 
-      if (user.username === 'demo user') {
+      if (user.username === import.meta.env.VITE_GUEST_USERNAME) {
         toast({description: 'Welcome Guest User'});
         return;
       }
