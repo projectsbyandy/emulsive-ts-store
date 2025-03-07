@@ -11,8 +11,13 @@ Typescript
 - Jest API tests
   - note to switch to using mocks set the environment variable `process.env.Emulsive_Fake` or update the `/api/appConfig.json`
 
+# Setup
+1. From the location `emulsive-store`
+2. Run `npm install`
+
 # Start
 - start full stack `npm run all`
+  - If there are any issues with running concurrently install globally `npm i -g concurrently`
 - api only `npm run api`
 - frontend only `npm run ui`
 - tests `npm run tests`
