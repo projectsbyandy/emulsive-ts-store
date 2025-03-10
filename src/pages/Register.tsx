@@ -35,9 +35,7 @@ function Register() {
     <section className="h-screen grid place-items-center">
       <Card className="w-96 gb-muted">
         <CardHeader>
-          <CardTitle className="text-center">
-            Register
-          </CardTitle>
+          <CardTitle className="text-center">Register</CardTitle>
         </CardHeader>
         <CardContent>
           <Form method='post'>

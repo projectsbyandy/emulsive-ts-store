@@ -52,24 +52,31 @@ function Login() {
     }
   }
 
-  return(
-    <section className="h-screen grid place-items-center">
-      <Card className="w-96 bg-muted">
+  return (
+    <section className='h-screen grid place-items-center'>
+      <Card className='w-96 bg-muted'>
         <CardHeader>
-          <CardTitle className="text-centre">Login</CardTitle>
+          <CardTitle className='text-center'>Login</CardTitle>
         </CardHeader>
         <CardContent>
           <Form method='post'>
             <FormInput type='email' label='email' name='email' />
-            <FormInput type='password' label='password' name='password' />
-            <SubmitButton text='Login' className="w-full mt-6" />
-            <Button type='button' variant='outline' onClick={loginAsGuest} className="w-full mt-4">
+            <FormInput type='password' name='password' />
+            <SubmitButton text='Login' className='w-full mt-4' />
+            <Button
+              type='button'
+              variant='outline'
+              onClick={loginAsGuest}
+              className='w-full mt-4'
+            >
               Guest User
             </Button>
-            <p className="text-center mt-4">Not a member yet?{' '}<Button type='button' asChild variant='link'>
-             <Link to='/register'>Register</Link>
-            </Button>
-          </p>
+            <p className='text-center mt-4'>
+              Not a member yet?{' '}
+              <Button type='button' asChild variant='link'>
+                <Link to='/register'>Register</Link>
+              </Button>
+            </p>
           </Form>
         </CardContent>
       </Card>
