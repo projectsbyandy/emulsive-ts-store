@@ -24,3 +24,4 @@ export { default as SelectProductQuantity } from './SelectProductQuantity';
 export { default as CartTotals } from './CartTotals';
 export { default as CartItemList } from './CartItemList';
 export { default as SubmitButton } from './SubmitButton';
+export { default as CheckoutForm } from './CheckoutForm';
