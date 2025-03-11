@@ -10,7 +10,7 @@ let userRepo: IUserRepository;
   userRepo = await userRepository.get();
 })();
  
-export const getAllUsers = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const getAllUsers = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const filters : UserFilterParams = {
       active : typeof req.query.active === 'string' ? stringToBoolean(req.query.active) : undefined
@@ -18,37 +18,39 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 
     const users = await userRepo.getUsers(filters);
     
-    return res.status(200).json(users).end();
+    res.status(200).json(users).end();
   } catch(error) {
     console.log(error);
     next(error);
   }
 }
 
-export const deleteUser = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const { id } = req.params;
 
     await userRepo.deleteUserById(id);
     
     console.log(`Deleted user with id: ${id}`);
-    return res.status(204).end();
+    res.status(204).end();
+    return;
   } catch(error) {
     console.log(error);
     next(error);
   }
 }
 
-export const getUser = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const getUser = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const { id } = req.params;
     let user = await userRepo.getUserById(id);
 
     if(!user) {
-      return res.status(404).send(`User with id: ${id} not found`);
+      res.status(404).send(`User with id: ${id} not found`);
+      return;
     }
     
-    return res.status(200).json(user).end();
+    res.status(200).json(user).end();
   } catch(error) {
     console.log(error);
     next(error);

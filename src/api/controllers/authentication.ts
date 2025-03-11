@@ -3,6 +3,7 @@ import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword
 import userRepository from '../repositories/user/UserRepoFactory';
 import { IUserRepository } from '../repositories/user/IUserRepository';
 import { AuthResponse } from '../types/AuthResponse';
+import { User } from '../types';
 
 let userRepo: IUserRepository;
 
@@ -11,24 +12,25 @@ let userRepo: IUserRepository;
 })();
 
 
-export const login = async(req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const login = async(req: Request, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const { email, password } = req.body;
 
     if(!email || !password) {
-      return res.status(400).send({error:'One or more of the mandatory fields (email, password) have not been specified.'});
+      res.status(400).send({error:'One or more of the mandatory fields (email, password) have not been specified.'});
     }
 
-    const retrievedUser = await userRepo.getUserByEmail(email);
+    const retrievedUser: User | null = await userRepo.getUserByEmail(email);
 
     if (!retrievedUser) {
       console.log(`User: ${email} does not exist`);
-      return res.status(401).send({ error:'Unable to login' });
+       res.status(401).send({ error:'Unable to login' });
+       return;
     }
 
     if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
       console.log(`Password hash did not match for user: ${email}`);
-      return res.status(401).send({ error:'Unable to login' });
+       res.status(401).send({ error:'Unable to login' });
     }
 
     const sessionToken = generateJwt(retrievedUser);
@@ -47,26 +49,28 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
       }
     }
 
-    return res.status(200).send(authResponse);
+     res.status(200).send(authResponse);
   } catch(error) {
     console.log(error);
     next(error);
   }
 }
 
-export const register = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+export const register = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const { email, password, username } = req.body;
 
     if(!email || !password || !username) {
-      return res.status(400).send({ error:'One or more of the mandatory fields (email, password, username) have not been specified.' });
+      res.status(400).send({ error:'One or more of the mandatory fields (email, password, username) have not been specified.' });
+      return;
     }
 
     const existingUser = await userRepo.getUserByEmail(email);
 
     if (existingUser) {
       console.log(`Unable to register user as ${email} already exists`);
-      return res.status(400).send({ error: 'Unable to register user' });
+      res.status(400).send({ error: 'Unable to register user' });
+      return;
     }
 
     const salt = generateRandom();
@@ -83,7 +87,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const registeredUser = await userRepo.getUserByEmail(email);
 
     if(registeredUser === null) {
-      return res.status(500).send({ error: 'Problem reading user' });
+      res.status(500).send({ error: 'Problem reading user' });
+      return;
     }
     
     const sessionToken = generateJwt(registeredUser);
@@ -100,7 +105,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       }
     }
     
-    return res.status(201).json(authResponse).end();
+    res.status(201).json(authResponse).end();
   } catch(error) {
     console.log(error);
     next(error);

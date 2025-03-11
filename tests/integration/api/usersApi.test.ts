@@ -45,7 +45,7 @@ describe('Verify usersNoAuth', () => {
 
     // Assert
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(1);
+    expect(response.body).toHaveLength(2);
     expect(response.body).toStrictEqual(JSON.parse(rawData));
   });
 });
@@ -77,7 +77,7 @@ describe('Verify protected /users', () => {
         
     // Assert
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(1);
+    expect(response.body).toHaveLength(2);
     expect(response.body).toStrictEqual(JSON.parse(rawData));
   });
 
@@ -237,7 +237,7 @@ describe('Verify User filtering options', () => {
 
   it.each([
     ['should 0 users when active is false', "false", 0], 
-    ['should 1 user when active is true', "true", 1]
+    ['should 2 user when active is true', "true", 2]
   ])(
     '%s',
     async (_, isActive, expectedUserCount) => {

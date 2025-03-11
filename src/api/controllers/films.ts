@@ -7,12 +7,12 @@ import { areAllArrayItemsSame } from '../helpers/checker';
 
 const pageSize = 5;
 
-export const films = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
+export const films = async (req: Request, res: Response, next: NextFunction) : Promise<void>  =>  {
   try {
 
     const {id} = req.params;
     if (id) {
-      return film(req, res, next);
+      film(req, res, next);
     }
 
     const filters : FilmFilterParams = {
@@ -33,19 +33,19 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
       filmsResponse = paginate(filmsResponse)
     }
 
-    return res.status(200).json(filmsResponse).end();
+    res.status(200).json(filmsResponse).end();
   } catch(error) {
     console.log(error);
     next(error);
   }
 }
 
-const film = async (req: Request, res: Response, next: NextFunction) : Promise<any>  =>  {
+const film = async (req: Request, res: Response, next: NextFunction) : Promise<void>  =>  {
   try {
       const {id} = req.params;
       let filmResponse = await getFilm(Number(id));
 
-      return filmResponse 
+      filmResponse 
               ? res.status(200).json(filmResponse).end()
               : res.status(404).json({message: `Film with id: ${id} not found`}).end();
 

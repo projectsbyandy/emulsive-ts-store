@@ -2,7 +2,7 @@ import { Response, NextFunction } from "express";
 import { getOrderForUser } from "../repositories/orderRepo";
 import { RequestWithUser } from "../interfaces/RequestWithUser";
 
-export const getOrder = async (req: RequestWithUser, res: Response, next: NextFunction) : Promise<any> => {
+export const getOrder = async (req: RequestWithUser, res: Response, next: NextFunction) : Promise<void> => {
   try {
     const { orderId } = req.params;
 
@@ -14,9 +14,9 @@ export const getOrder = async (req: RequestWithUser, res: Response, next: NextFu
       const order = await getOrderForUser(orderId, req.user.userId);
 
       if (!order) {
-        return res.status(404).json({message: `Order with id: ${orderId} not found`}).end();
+        res.status(404).json({message: `Order with id: ${orderId} not found`}).end();
       }
-      return res.status(200).json(order).end();
+       res.status(200).json(order).end();
     }
   } catch(error) {
     console.log(error);
