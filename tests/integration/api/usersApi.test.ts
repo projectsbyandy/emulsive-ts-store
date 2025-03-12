@@ -1,4 +1,4 @@
-import request from 'supertest';
+import request, {Response} from 'supertest';
 import mongoose from 'mongoose';
 import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
@@ -251,4 +251,40 @@ describe('Verify User filtering options', () => {
     expect(users.length).toBe(expectedUserCount);
     }
   );
+});
+
+describe('Verify protected /users with Jwt in Auth Header', () => {
+  let agent: request.SuperTest<request.Test>;
+  let extractedJwt: string;
+
+  beforeEach(async () => {
+    capturedLogs = [];
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+      capturedLogs.push(args.join(' '));
+    });
+
+    agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
+
+    var response: Response = await performLogin(agent, 'bobdoe@test.com', '1234');
+    const {jwt} = response.body;
+    extractedJwt = jwt;
+  });
+
+  afterEach(() => {
+    agent = null as unknown as request.SuperTest<request.Test>;
+  });
+  
+  it('should successfully call protected endpoint with auth header', async () => {
+    // Arrange
+    const rawData = await readFile(PATHS_TO_FAKE_DATA)
+
+    // Act - Use a fresh agent to simulate not having a session cookie drop
+    agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
+    const response = await agent.get('/api/users').set('Authorization', `Bearer ${extractedJwt}`);
+        
+    // Assert
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(2);
+    expect(response.body).toStrictEqual(JSON.parse(rawData));
+  });
 });

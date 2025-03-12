@@ -1,4 +1,21 @@
 export type Order = {
-  id: string,
-  userId: string
+  orderId?: number
+  userId?: string
+  name: string
+  address: string
+  chargeTotal: number
+  orderTotal: string
+  cartItems: CartItem[]
+  numberOfItemsInCart: number
+}
+
+export type CartItem = {
+  cartId: string
+  productId: number
+  imageUrl: string
+  name: string
+  price: string
+  quantity: number
+  manufacturer: string
+  format: string
 }

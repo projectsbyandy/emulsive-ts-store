@@ -5,13 +5,21 @@ import { verifyJwt } from '../helpers/auth';
 import { type User } from '../types';
 import { RequestWithUser } from '../interfaces/RequestWithUser';
 
-export const isAuthenticated = async (req: RequestWithUser, res: Response, next: NextFunction) : Promise<any> => {
+export const isAuthenticated = async (req: RequestWithUser, res: Response, next: NextFunction) : Promise<void> => {
   try{
-     const sessionToken = req.cookies["EMULSIVE-STORE-AUTH"];
+     let sessionToken = req.cookies["EMULSIVE-STORE-AUTH"];
+
+     if (!sessionToken) {
+        const authHeader = req.headers.authorization;
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+          sessionToken = authHeader.split(' ')[1];
+        }
+     }
 
      if (!sessionToken) {
       console.log('Session cookie not found');
-      return res.status(401).send('Not authenticated');
+      res.status(401).send('Not authenticated');
+      return;
      }
 
      const user = verifyJwt<User>(sessionToken);
@@ -24,7 +32,7 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
   }
 }
 
-export const isOwner = async (req: RequestWithUser, res: Response, next: NextFunction ) : Promise<any> => {
+export const isOwner = async (req: RequestWithUser, res: Response, next: NextFunction ) : Promise<void> => {
   try  {
      const { id } = req.params;
 
@@ -33,13 +41,15 @@ export const isOwner = async (req: RequestWithUser, res: Response, next: NextFun
 
      if (!loggedInUserId) {
       console.log("Unable to retrieve logged in user id");
-      return res.status(403).send('Unable to authenticate');
+      res.status(403).send('Unable to authenticate');
+      return;
      }
 
     if (loggedInUserId !== id) {
       console.log(`Logged in user is not authorized to delete user: ${id}`);
       
-      return res.status(403).send('Problem with request'); 
+      res.status(403).send('Problem with request');
+      return;
     }
 
     next();

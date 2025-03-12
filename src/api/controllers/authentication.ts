@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { generateRandom, generateAuthenticationCode, generateJwt, verifyPassword} from '../helpers/auth';
-import userRepository from '../repositories/user/UserRepoFactory';
+import userRepository from '../repositories/user/UserRepositoryFactory';
 import { IUserRepository } from '../repositories/user/IUserRepository';
 import { AuthResponse } from '../types/AuthResponse';
 import { User } from '../types';

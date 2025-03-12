@@ -1,0 +1,33 @@
+[
+  {
+    "orderId": 1,
+    "userId": "679f961099319abc13a97ed3",
+    "name": "Bob Renny",
+    "address": "12 North lane, London",
+    "chargeTotal": 3816,
+    "orderTotal": "£38.16",
+    "cartItems": [
+      {
+        "cartId": "12",
+        "productId": 12,
+        "imageUrl": "https://iili.io/2iqmZZl.webp",
+        "name": "Ultra Max",
+        "price": "820",
+        "quantity": 2,
+        "manufacturer": "Kodak",
+        "format": "35mm"
+      },
+      {
+        "cartId": "7",
+        "productId": 7,
+        "imageUrl": "https://iili.io/2iqmm67.webp",
+        "name": "Portra 400",
+        "price": "1290",
+        "quantity": 1,
+        "manufacturer": "Kodak",
+        "format": "35mm"
+      }
+    ],
+    "numberItemsInCart": 3
+  }
+]

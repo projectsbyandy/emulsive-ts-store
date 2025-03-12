@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import userRepository from '../repositories/user/UserRepoFactory';
+import userRepository from '../repositories/user/UserRepositoryFactory';
 import { IUserRepository } from '../repositories/user/IUserRepository';
 import { UserFilterParams } from '../types';
 import { stringToBoolean } from '../helpers/booleanConvert';
