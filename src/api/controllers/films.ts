@@ -13,6 +13,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
     const {id} = req.params;
     if (id) {
       film(req, res, next);
+      return;
     }
 
     const filters : FilmFilterParams = {
@@ -45,12 +46,9 @@ const film = async (req: Request, res: Response, next: NextFunction) : Promise<v
       const {id} = req.params;
       let filmResponse = await getFilm(Number(id));
 
-      if(!filmResponse) {
-        res.status(404).json({message: `Film with id: ${id} not found`});
-        return;
-      }        
-
-      res.status(200).json(filmResponse)
+      filmResponse
+        ? res.status(200).json(filmResponse)
+        : res.status(404).json({message: `Film with id: ${id} not found`});               
   } catch(error) {
     console.log(error);
     next(error);
