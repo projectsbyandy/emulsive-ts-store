@@ -12,7 +12,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
 
     const {id} = req.params;
     if (id) {
-      film(req, res, next);
+      await film(req, res, next);
       return;
     }
 

@@ -44,6 +44,27 @@ describe('Verify get /api/films with mocks', () => {
     expect(filmsResponse.meta.formats).toStrictEqual(['all', '35mm', '120mm'])
   });
 
+  it('should return the film with id 12', async () => {
+
+    // Arrange / Act
+    const response = await agent.get('/api/films/12');
+
+    // Assert
+    expect(response.status).toBe(200);
+
+    var filmsResponse : Film = response.body;
+    expect(filmsResponse.id).toStrictEqual(12);
+  });
+
+  it('should return 404 when film with id 1 not located', async () => {
+
+    // Arrange / Act
+    const response = await agent.get('/api/films/1');
+
+    // Assert
+    expect(response.status).toBe(404);
+  });
+
   it('should return the correct default paginated metadata mock films', async () => {
 
     // Arrange / Act
