@@ -16,7 +16,7 @@ export const getOrders = async (req: RequestWithUser, res: Response, next: NextF
       
       if (!req.user.userId) {
         res.status(401).send({ error:'UserId not found' });
-          return;
+        return;
       }
 
       const orders = await orderRepo.getOrders();

@@ -47,7 +47,6 @@ export const isOwner = async (req: RequestWithUser, res: Response, next: NextFun
 
     if (loggedInUserId !== id) {
       console.log(`Logged in user is not authorized to delete user: ${id}`);
-      
       res.status(403).send('Problem with request');
       return;
     }

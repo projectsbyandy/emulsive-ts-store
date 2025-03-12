@@ -28,7 +28,8 @@ const initializeApp = async () => {
           message: err.message, 
           // Only include stack trace in development mode 
           stack: process.env.NODE_ENV === 'development' ? err.stack : {} 
-        }); 
+        });
+        return;
       });
   
   const server = http.createServer(app);

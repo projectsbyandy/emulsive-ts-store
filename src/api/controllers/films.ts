@@ -45,10 +45,12 @@ const film = async (req: Request, res: Response, next: NextFunction) : Promise<v
       const {id} = req.params;
       let filmResponse = await getFilm(Number(id));
 
-      filmResponse 
-              ? res.status(200).json(filmResponse).end()
-              : res.status(404).json({message: `Film with id: ${id} not found`}).end();
+      if(!filmResponse) {
+        res.status(404).json({message: `Film with id: ${id} not found`});
+        return;
+      }        
 
+      res.status(200).json(filmResponse)
   } catch(error) {
     console.log(error);
     next(error);

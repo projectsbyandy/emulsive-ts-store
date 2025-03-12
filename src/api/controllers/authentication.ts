@@ -18,6 +18,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
     if(!email || !password) {
       res.status(400).send({error:'One or more of the mandatory fields (email, password) have not been specified.'});
+      return
     }
 
     const retrievedUser: User | null = await userRepo.getUserByEmail(email);
@@ -31,6 +32,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
       console.log(`Password hash did not match for user: ${email}`);
        res.status(401).send({ error:'Unable to login' });
+       return
     }
 
     const sessionToken = generateJwt(retrievedUser);
