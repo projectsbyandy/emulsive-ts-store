@@ -119,7 +119,7 @@ describe('Verify protected get orders', () => {
 
     // Assert
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(1);
+    expect(response.body).toHaveLength(2);
     expect(response.body).toStrictEqual(JSON.parse(rawData));
   });
 })
@@ -141,7 +141,7 @@ describe('Verify protected create order', () => {
     agent = null as unknown as request.SuperTest<request.Test>;
   });
 
-  it('should return order number 2 for a newly created order', async () => {
+  it('should return order number 3 for a newly created order', async () => {
     // Arrange / Act
     const response = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
 
@@ -151,7 +151,7 @@ describe('Verify protected create order', () => {
     const {message, order} = response.body;
 
     expect(message).toStrictEqual("Created Order");
-    expect(order.orderId).toStrictEqual(2);
+    expect(order.orderId).toStrictEqual(3);
     expect(capturedLogs).toContain('Order successfully created');
   });
 

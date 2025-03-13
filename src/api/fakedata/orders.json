@@ -29,5 +29,56 @@
       }
     ],
     "numberItemsInCart": 3
+  },
+  {
+    "orderId": 2,
+    "userId": "67c9c180eb030c9d17a89fdb",
+    "name": "Test Guest",
+    "address": "12 Brandon Drive, Bug City",
+    "chargeTotal": 37140,
+    "orderTotal": "£371.40",
+    "cartItems": [
+        {
+            "cartId": "12",
+            "productId": 12,
+            "imageUrl": "https://iili.io/2iqmZZl.webp",
+            "name": "Ultra Max",
+            "price": "820",
+            "quantity": 5,
+            "manufacturer": "Kodak",
+            "format": "35mm"
+        },
+        {
+            "cartId": "19",
+            "productId": 19,
+            "imageUrl": "https://iili.io/2iqmyF9.webp",
+            "name": "Gold 200",
+            "price": "950",
+            "quantity": 8,
+            "manufacturer": "Kodak",
+            "format": "35mm"
+        },
+        {
+            "cartId": "24",
+            "productId": 24,
+            "imageUrl": "https://iili.io/2iqmiyG.webp",
+            "name": "800T",
+            "price": "1900",
+            "quantity": 5,
+            "manufacturer": "Cinestill",
+            "format": "120mm"
+        },
+        {
+            "cartId": "25",
+            "productId": 25,
+            "imageUrl": "https://iili.io/2iqm43X.webp",
+            "name": "Rollei Infrared",
+            "price": "1900",
+            "quantity": 5,
+            "manufacturer": "Rollei",
+            "format": "120mm"
+        }
+    ],
+    "numberItemsInCart": 23
   }
 ]

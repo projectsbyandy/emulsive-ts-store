@@ -10,13 +10,13 @@
     "active": true
   },
   {
-    "email": "test@test.com",
+    "userId": "67c9c180eb030c9d17a89fdb",
     "username": "Dave Test",
+    "email": "test@test.com",
     "authentication": {
       "salt": "zxsy3FzwJJuVDU7NUXuWC7xl9rNWdtImq2w4iXOKYjaklhiHL21uM815Mal/1BZ/SuQaudRVrk/xxU/0fcWCNQFfTa6pE0yNEHS6WcWVAC6+25KFdM5PadpSxPh6+mCJAklxSslxfG62+BXc/lgB+JbDrZQCndilmXj8Qn6FJv0=",
       "passwordHash": "0fWEJjoWHp4Cr1szVgUT5nC26x5IWkbwMe4c8JPjl0Y="
     },
-    "active": true,
-    "userId": "67c9c180eb030c9d17a89fdb"
+    "active": true
   }
 ]
