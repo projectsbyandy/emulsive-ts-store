@@ -147,7 +147,11 @@ describe('Verify protected create order', () => {
 
     // Assert
     expect(response.statusCode).toBe(201);
-    expect(response.body).toStrictEqual({ "message": "Created Order", "orderId": 2 });
+
+    const {message, order} = response.body;
+
+    expect(message).toStrictEqual("Created Order");
+    expect(order.orderId).toStrictEqual(2);
     expect(capturedLogs).toContain('Order successfully created');
   });
 
@@ -277,16 +281,14 @@ describe('Verify protected create order', () => {
   });
 
   it('should should populate the order with the correct userId', async () => {
-    // Arrange
+    // Arrange / Act
+
     const createOrderResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
     expect(createOrderResponse.statusCode).toBe(201);
-    const {orderId} = createOrderResponse.body;
+    const { order } = createOrderResponse.body;
+    order as Order;
 
-    // Act
-    const getOrdersResponse = await agent.get('/api/orders');
-    
     // Assert
-    const orders : Order[] = getOrdersResponse.body;
-    expect(orders.find(order => order.orderId === orderId)?.userId).toStrictEqual("679f961099319abc13a97ed3");
+    expect(order.userId).toStrictEqual("679f961099319abc13a97ed3");
   });
 });

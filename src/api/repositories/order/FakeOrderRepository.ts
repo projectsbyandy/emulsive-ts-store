@@ -16,7 +16,7 @@ class FakeOrderRepository implements IOrderRepository {
 
   async getOrders(): Promise<Order[]> { return await this.readOrders()};
 
-  async createOrder(orderToCreate: CreateOrderRequest, userId: string): Promise<number | null> {
+  async createOrder(orderToCreate: CreateOrderRequest, userId: string): Promise<Order | null> {
     try {
       FakeOrderRepository.orders = await this.readOrders();
       const newOrderId = (FakeOrderRepository.orders.sort((a, b) => (b.orderId as number) - (a.orderId as number))[0]?.orderId as number) + 1;
@@ -28,7 +28,7 @@ class FakeOrderRepository implements IOrderRepository {
   
       FakeOrderRepository.orders.push(order);
   
-      return newOrderId;
+      return order;
     } catch (error) {
       console.log(`Problem creating Order: ${error}}`)
       return null;

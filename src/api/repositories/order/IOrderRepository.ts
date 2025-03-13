@@ -5,5 +5,5 @@ export interface IOrderRepository
 { 
   getOrdersForUser(userId: string) : Promise<Order[]>;
   getOrders() : Promise<Order[]>;
-  createOrder(order: CreateOrderRequest, userId: string) : Promise<number | null>;
+  createOrder(order: CreateOrderRequest, userId: string) : Promise<Order | null>;
 }

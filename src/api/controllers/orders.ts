@@ -37,10 +37,10 @@ export const createOrder = async (req: RequestWithUser, res: Response, next: Nex
       return;
     }
 
-    var createdOrderId = await orderRepo.createOrder(order, req.user?.userId as string);
+    var createdOrder = await orderRepo.createOrder(order, req.user?.userId as string);
     
     console.log('Order successfully created');
-    res.status(201).send({message: "Created Order", orderId: createdOrderId})
+    res.status(201).send({message: "Created Order", order: createdOrder})
   } catch(error) {
     console.log(error);
     next(error);
