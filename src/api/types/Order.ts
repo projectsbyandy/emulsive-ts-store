@@ -1,14 +1,3 @@
-import { Pagination } from ".";
-
-export type OrdersResponse = {
-  data: Order[],
-  meta: OrderMeta;
-}
-
-export type OrderMeta = {
-  pagination: Pagination
-}
-
 export type Order = {
   orderId?: number
   userId?: string

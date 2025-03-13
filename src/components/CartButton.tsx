@@ -5,14 +5,14 @@ import { useAppSelector } from '@/hooks';
 
 function CartButton() {
 
-  const numberItemsInCart = useAppSelector(state => state.cartState.numberItemsInCart)
+  const numberOfItemsInCart = useAppSelector(state => state.cartState.numberOfItemsInCart)
 
   return (
     <Button asChild variant='outline' size='icon' className='flex justify-center relative'>
       <Link to='/cart'>
         <ShoppingCart />
         <span className='absolute -top-3 -right-3 bg-primary text-white rounded-full h-6 w-6 flex items-center justify-center text-xs'>
-          { numberItemsInCart }
+          { numberOfItemsInCart }
         </span>
       </Link>
     </Button>

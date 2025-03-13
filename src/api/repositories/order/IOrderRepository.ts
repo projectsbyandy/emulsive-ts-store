@@ -1,9 +1,9 @@
 import { CreateOrderRequest } from "@/api/interfaces/CreateOrderRequest";
-import { Order, OrderResponse } from "@/api/types";
+import { Order } from "@/api/types";
 
 export interface IOrderRepository 
 { 
-  getOrdersForUser(userId: string) : Promise<OrderResponse>;
-  getOrders() : Promise<OrderResponse>;
+  getOrdersForUser(userId: string) : Promise<Order[]>;
+  getOrders() : Promise<Order[]>;
   createOrder(order: CreateOrderRequest, userId: string) : Promise<Order | null>;
 }

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
 import { performLogin } from './helpers/utils';
-import { Order, OrderResponse } from '@/api/types';
+import { Order, OrdersResponse } from '@/api/types';
 
 let server: any;
 let consoleSpy: jest.SpyInstance
@@ -37,7 +37,7 @@ const VALID_ORDER_REQUEST = {
         "format": "35mm"
       }
     ],
-    "numberItemsInCart": 3
+    "numberOfItemsInCart": 3
   }
 };
 
@@ -103,8 +103,8 @@ describe('Verify calling get all order endpoints with no auth returns 200', () =
 
     // Assert
     expect(response.status).toBe(200);
-    const orderResponse:OrderResponse = response.body
-    expect(orderResponse.data.length).toStrictEqual(2);
+    const OrdersResponse:OrdersResponse = response.body
+    expect(OrdersResponse.data.length).toStrictEqual(5);
   });
 });
 
@@ -118,8 +118,8 @@ describe('Verify correct meta data returned for /orders/all', () => {
 
     // Assert
     expect(response.status).toBe(200);
-    const orderResponse:OrderResponse = response.body
-    expect(orderResponse.meta).toStrictEqual({"pagination": {"page": 1, "pageCount": 1, "pageSize": 5, "total": 2}});
+    const OrdersResponse:OrdersResponse = response.body
+    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 1, "pageCount": 2, "pageSize": 5, "total": 8}});
   });
 
   it('should return correct meta data when page filter params passed in', async () => {
@@ -131,8 +131,8 @@ describe('Verify correct meta data returned for /orders/all', () => {
 
     // Assert
     expect(response.status).toBe(200);
-    const orderResponse:OrderResponse = response.body
-    expect(orderResponse.meta).toStrictEqual({"pagination": {"page": 2, "pageCount": 1, "pageSize": 5, "total": 2}});
+    const OrdersResponse:OrdersResponse = response.body
+    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 2, "pageCount": 2, "pageSize": 5, "total": 8}});
   });
 });
 
@@ -167,9 +167,9 @@ describe('Verify protected get orders', () => {
     const ordersForUser = referenceData.filter(order => order.userId === "679f961099319abc13a97ed3")
     expect(response.status).toBe(200);
     
-    const orderResponse: OrderResponse = response.body;
-    expect(orderResponse.meta?.pagination.total).toStrictEqual(1);
-    expect(orderResponse.data).toStrictEqual(ordersForUser);
+    const OrdersResponse: OrdersResponse = response.body;
+    expect(OrdersResponse.meta?.pagination.total).toStrictEqual(1);
+    expect(OrdersResponse.data).toStrictEqual(ordersForUser);
   });
 })
 
@@ -190,7 +190,7 @@ describe('Verify protected create order', () => {
     agent = null as unknown as request.SuperTest<request.Test>;
   });
 
-  it('should return order number 3 for a newly created order', async () => {
+  it('should return order number 9 for a newly created order', async () => {
     // Arrange / Act
     const response = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
 
@@ -200,7 +200,7 @@ describe('Verify protected create order', () => {
     const {message, order} = response.body;
 
     expect(message).toStrictEqual("Created Order");
-    expect(order.orderId).toStrictEqual(3);
+    expect(order.orderId).toStrictEqual(9);
     expect(capturedLogs).toContain('Order successfully created');
   });
 
@@ -232,7 +232,7 @@ describe('Verify protected create order', () => {
             "format": "35mm"
           }
         ],
-        "numberItemsInCart": 3
+        "numberOfItemsInCart": 3
       }
     };
 
@@ -274,7 +274,7 @@ describe('Verify protected create order', () => {
             "format": "35mm"
           }
         ],
-        "numberItemsInCart": 3
+        "numberOfItemsInCart": 3
       }
     };
 
@@ -316,7 +316,7 @@ describe('Verify protected create order', () => {
             "format": "35mm"
           }
         ],
-        "numberItemsInCart": 3
+        "numberOfItemsInCart": 3
       }
     };
 
@@ -332,9 +332,9 @@ describe('Verify protected create order', () => {
   it('should should populate the order with the correct userId', async () => {
     // Arrange / Act
 
-    const createOrderResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
-    expect(createOrderResponse.statusCode).toBe(201);
-    const { order } = createOrderResponse.body;
+    const createOrdersResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
+    expect(createOrdersResponse.statusCode).toBe(201);
+    const { order } = createOrdersResponse.body;
     order as Order;
 
     // Assert

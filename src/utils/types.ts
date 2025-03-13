@@ -16,7 +16,7 @@ export type CartItem = {
 
 export type CartState = {
   cartItems: CartItem[];
-  numberItemsInCart: number;
+  numberOfItemsInCart: number;
   cartTotal: number;
   shipping: number;
   tax: number;
@@ -29,5 +29,5 @@ export type Checkout = {
   chargeTotal: number;
   orderTotal: string;
   cartItems: CartItem[];
-  numberItemsInCart: number;
+  numberOfItemsInCart: number;
 }

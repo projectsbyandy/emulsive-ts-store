@@ -5,7 +5,7 @@ import { CartItemList, SectionTitle, CartTotals } from "@/components";
 
 function Cart() {
   const user = useAppSelector(state => state.userState.user);
-  const numberOfItemsInCart = useAppSelector(state => state.cartState.numberItemsInCart);
+  const numberOfItemsInCart = useAppSelector(state => state.cartState.numberOfItemsInCart);
 
   if (numberOfItemsInCart === 0)
     return <SectionTitle text='Empty Cart'/>

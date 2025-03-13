@@ -3,7 +3,7 @@ import { RequestWithUser } from "../interfaces/RequestWithUser";
 import { IOrderRepository } from "../repositories/order/IOrderRepository";
 import OrderRepositoryFactory from "../repositories/order/OrderRepositoryFactory";
 import { CreateOrderRequest } from "../interfaces/CreateOrderRequest";
-import { OrderFilterParams, OrderResponse } from "../types";
+import { Order, OrderFilterParams, OrderMeta, OrdersResponse } from "../types";
 import { paginateSplit } from "../helpers/pagination";
 
 let orderRepo: IOrderRepository;
@@ -19,14 +19,19 @@ export const getAllOrders = async (req: RequestWithUser, res: Response, next: Ne
       page: Number(req.query.page ?? 1)
     }
 
-    let orderResponse = await orderRepo.getOrders();
-    parseMeta(orderResponse, filters);
+    let orders = await orderRepo.getOrders();
+    const processedMeta = parseMeta(orders, filters);
 
     if (filters.page) {
-      orderResponse = paginate(orderResponse);
+      orders = paginate(orders, processedMeta.pagination.page);
     }
 
-    res.status(200).json(orderResponse).end();
+    const response: OrdersResponse = {
+      data: orders,
+      meta: processedMeta
+    }
+
+    res.status(200).json(response).end();
   } catch(error) {
     console.log(error);
     next(error);
@@ -45,17 +50,20 @@ export const getOrdersForUser = async (req: RequestWithUser, res: Response, next
         page: Number(req.query.page ?? 1)
       }
   
-      let orderResponse = {
-        data: (await orderRepo.getOrders()).data.filter(order => order.userId === req.user?.userId)
-      }
+     let orders = (await orderRepo.getOrders()).filter(order => order.userId === req.user?.userId)
 
-      parseMeta(orderResponse, filters);
+     const processedMeta = parseMeta(orders, filters);
 
       if (filters.page) {
-        orderResponse = paginate(orderResponse);
+        orders = paginate(orders, processedMeta.pagination.page);
       }
 
-      res.status(200).json(orderResponse).end();
+      const response: OrdersResponse = {
+        data: orders,
+        meta: processedMeta
+      }
+
+      res.status(200).json(response).end();
     }
   } catch(error) {
     console.log(error);
@@ -82,21 +90,18 @@ export const createOrder = async (req: RequestWithUser, res: Response, next: Nex
   }
 }
 
-const paginate = (orderResponse: OrderResponse
-) : OrderResponse => {
-  orderResponse.data = paginateSplit(orderResponse.data, pageSize, orderResponse.meta!.pagination.page)
-
-  return orderResponse;
+const paginate = (orders: Order[], page: number) : Order[] => {
+  return paginateSplit(orders, pageSize, page)
 }
 
-const parseMeta = (orderResponse: OrderResponse, orderFilterParams: OrderFilterParams): OrderResponse => {
-  orderResponse.meta = orderResponse.meta || { pagination: { total:0, pageCount:0, pageSize:0, page:0} };
-  orderResponse.meta.pagination.total ?? orderResponse.data.length;
+const parseMeta = (orders: Order[], orderFilterParams: OrderFilterParams): OrderMeta => {
 
-  orderResponse.meta.pagination.total = orderResponse.data.length;
-  orderResponse.meta.pagination.pageCount = Math.ceil(orderResponse.data.length / pageSize);
-  orderResponse.meta.pagination.pageSize = pageSize;
-  orderResponse.meta.pagination.page = Number(orderFilterParams.page);
-
-  return orderResponse;
+  return {
+    pagination : {
+      total: orders.length,
+      pageCount: Math.ceil(orders.length / pageSize),
+      pageSize: pageSize,
+      page: Number(orderFilterParams.page)
+    }
+  }
 }

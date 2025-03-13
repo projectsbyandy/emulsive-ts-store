@@ -5,7 +5,7 @@ import { toast } from '@/hooks/use-toast';
 
 const defaultState:CartState = {
   cartItems: [],
-  numberItemsInCart: 0,
+  numberOfItemsInCart: 0,
   cartTotal: 0,
   shipping: 300,
   tax: 0,
@@ -30,7 +30,7 @@ const cartSlice = createSlice({
         state.cartItems.push(newCartItem);
       }
 
-      state.numberItemsInCart += newCartItem.quantity;
+      state.numberOfItemsInCart += newCartItem.quantity;
       state.cartTotal += Number(newCartItem.price) * newCartItem.quantity;
       cartSlice.caseReducers.calculateTotal(state);
 
@@ -47,7 +47,7 @@ const cartSlice = createSlice({
       if(!cartItem) return;
       
       state.cartItems = state.cartItems.filter(item => item.cartId !== cartId);
-      state.numberItemsInCart -= cartItem.quantity;
+      state.numberOfItemsInCart -= cartItem.quantity;
       state.cartTotal -= Number(cartItem.price) * cartItem.quantity;
       cartSlice.caseReducers.calculateTotal(state);
       
@@ -59,7 +59,7 @@ const cartSlice = createSlice({
 
       if(!cartItem) return;
 
-      state.numberItemsInCart += quantity - cartItem.quantity;
+      state.numberOfItemsInCart += quantity - cartItem.quantity;
       state.cartTotal += Number(cartItem.price) * (quantity - cartItem.quantity);
       cartItem.quantity = quantity;
       

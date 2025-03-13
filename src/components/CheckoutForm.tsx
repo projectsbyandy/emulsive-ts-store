@@ -24,7 +24,7 @@ export const action = (store: ReduxStore): ActionFunction =>
       return redirect('/login');
     }
 
-    const {cartItems, orderTotal, numberItemsInCart} = store.getState().cartState;
+    const {cartItems, orderTotal, numberOfItemsInCart} = store.getState().cartState;
     
     const info: Checkout = {
       name,
@@ -32,7 +32,7 @@ export const action = (store: ReduxStore): ActionFunction =>
       chargeTotal: orderTotal,
       orderTotal: formatAsPounds(orderTotal),
       cartItems,
-      numberItemsInCart
+      numberOfItemsInCart
     };
 
     try {

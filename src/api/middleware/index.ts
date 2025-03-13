@@ -1,6 +1,5 @@
 import { NextFunction, Response } from 'express';
 import _ from 'lodash';
-
 import { verifyJwt } from '../helpers/auth';
 import { type User } from '../types';
 import { RequestWithUser } from '../interfaces/RequestWithUser';
