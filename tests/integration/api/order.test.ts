@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
 import { performLogin } from './helpers/utils';
-import { Order } from '@/api/types';
+import { Order, OrderResponse } from '@/api/types';
 
 let server: any;
 let consoleSpy: jest.SpyInstance
@@ -65,7 +65,7 @@ afterEach(async () => {
   }
 });
 
-describe('Verify calling order endpoints with no auth returns 401', () => {
+describe('Verify calling protected order endpoints with no auth returns 401', () => {
 
   it('should return 401 for get order with no auth', async () => {
     // Arrange
@@ -92,6 +92,50 @@ describe('Verify calling order endpoints with no auth returns 401', () => {
   });
 });
 
+describe('Verify calling get all order endpoints with no auth returns 200', () => {
+
+  it('should return 401 for get order with no auth', async () => {
+    // Arrange
+    const rawData = await readFile(PATHS_TO_FAKE_DATA)
+    console.log(rawData);
+    // Act
+    const response = await request(app).get('/api/orders/all');
+
+    // Assert
+    expect(response.status).toBe(200);
+    const orderResponse:OrderResponse = response.body
+    expect(orderResponse.data.length).toStrictEqual(2);
+  });
+});
+
+describe('Verify correct meta data returned for /orders/all', () => {
+  it('should return correct meta data when no filter params passed in', async () => {
+    // Arrange
+    const rawData = await readFile(PATHS_TO_FAKE_DATA)
+    console.log(rawData);
+    // Act
+    const response = await request(app).get('/api/orders/all');
+
+    // Assert
+    expect(response.status).toBe(200);
+    const orderResponse:OrderResponse = response.body
+    expect(orderResponse.meta).toStrictEqual({"pagination": {"page": 1, "pageCount": 1, "pageSize": 5, "total": 2}});
+  });
+
+  it('should return correct meta data when page filter params passed in', async () => {
+    // Arrange
+    const rawData = await readFile(PATHS_TO_FAKE_DATA)
+    console.log(rawData);
+    // Act
+    const response = await request(app).get('/api/orders/all?page=2');
+
+    // Assert
+    expect(response.status).toBe(200);
+    const orderResponse:OrderResponse = response.body
+    expect(orderResponse.meta).toStrictEqual({"pagination": {"page": 2, "pageCount": 1, "pageSize": 5, "total": 2}});
+  });
+});
+
 describe('Verify protected get orders', () => {
   let agent: request.SuperTest<request.Test>;
 
@@ -110,7 +154,7 @@ describe('Verify protected get orders', () => {
     agent = null as unknown as request.SuperTest<request.Test>;
   });
 
-  it('should return back mock order data', async () => {
+  it('should return back mock order data for user', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
 
@@ -118,9 +162,14 @@ describe('Verify protected get orders', () => {
     const response = await agent.get('/api/orders');
 
     // Assert
+
+    const referenceData: Order[] = JSON.parse(rawData)
+    const ordersForUser = referenceData.filter(order => order.userId === "679f961099319abc13a97ed3")
     expect(response.status).toBe(200);
-    expect(response.body).toHaveLength(2);
-    expect(response.body).toStrictEqual(JSON.parse(rawData));
+    
+    const orderResponse: OrderResponse = response.body;
+    expect(orderResponse.meta?.pagination.total).toStrictEqual(1);
+    expect(orderResponse.data).toStrictEqual(ordersForUser);
   });
 })
 

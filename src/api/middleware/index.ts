@@ -28,6 +28,10 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
      next();
   } catch(error) {
     console.log(error);
+    if (error instanceof Error && error.message === 'Invalid token') {
+      res.status(401).send('Session token is invalid');
+      return;
+    }
     next(error);
   }
 }

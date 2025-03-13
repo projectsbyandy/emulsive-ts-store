@@ -1,3 +1,5 @@
+import { Pagination } from ".";
+
 export type FilmsResponse = {
   data: Film[],
   meta: FilmsMeta;
@@ -27,11 +29,4 @@ export type FilmsMeta = {
   formats: string[];
   manufacturers: string[];
   pagination: Pagination;
-};
-
-export type Pagination = {
-  page: number;
-  pageCount: number;
-  pageSize: number;
-  total: number;
 };

@@ -1,3 +1,14 @@
+import { Pagination } from ".";
+
+export type OrderResponse = {
+  data: Order[],
+  meta?: OrderMeta;
+}
+
+export type OrderMeta = {
+  pagination: Pagination
+}
+
 export type Order = {
   orderId?: number
   userId?: string
@@ -6,7 +17,8 @@ export type Order = {
   chargeTotal: number
   orderTotal: string
   cartItems: CartItem[]
-  numberOfItemsInCart: number
+  numberOfItemsInCart: number,
+  createdOn: string
 }
 
 export type CartItem = {

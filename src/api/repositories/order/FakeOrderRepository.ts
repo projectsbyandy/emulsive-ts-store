@@ -1,5 +1,5 @@
 import { CreateOrderRequest } from "@/api/interfaces/CreateOrderRequest";
-import { Order } from "@/api/types";
+import { Order, OrderResponse } from "@/api/types";
 import { IOrderRepository } from "./IOrderRepository";
 import { readFile } from "@/api/helpers/fileReader";
 
@@ -9,12 +9,17 @@ class FakeOrderRepository implements IOrderRepository {
   private static orders: Order[];
   private static initialRead = true;
 
-  async getOrdersForUser(userId: string): Promise<Order[]> {
+  async getOrdersForUser(userId: string): Promise<OrderResponse> {
     const orders = FakeOrderRepository.orders = await this.readOrders();
-    return orders.filter(order => order.userId === userId);
-  }
+    return {
+        data: orders.filter(order => order.userId === userId)}
+    };
 
-  async getOrders(): Promise<Order[]> { return await this.readOrders()};
+  async getOrders(): Promise<OrderResponse> { 
+    return { 
+      data: await this.readOrders(),
+    }
+  };
 
   async createOrder(orderToCreate: CreateOrderRequest, userId: string): Promise<Order | null> {
     try {
@@ -23,7 +28,8 @@ class FakeOrderRepository implements IOrderRepository {
       const order : Order = {
         ...orderToCreate.data as Order,
         userId: userId,
-        orderId: newOrderId
+        orderId: newOrderId,
+        createdOn: new Date().toUTCString()
       }
   
       FakeOrderRepository.orders.push(order);
