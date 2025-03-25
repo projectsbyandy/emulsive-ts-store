@@ -10,6 +10,7 @@ Typescript
     - Mongo repo
 - Jest API tests
   - note to switch to using mocks set the environment variable `process.env.Emulsive_Fake` or update the `/api/appConfig.json`
+- Playwright E2E tests
 
 # Setup
 1. From the location `emulsive-store`
@@ -27,6 +28,12 @@ Typescript
   - e.g. 
     - supertest will not handle transient cookies when the domain is set to localhost
     - tests are decoupled from external dependencies like db so use fakes
+- only jest tests within the `tests/integration` directory and must have `.api.test.ts` extension will be picked up.
+
+## E2E Integration test notes
+- To run
+  - install playwright runner extension in vscode
+  - or from cmd in the root directory `npm run test:playwright`
 
 ## Config support
 The api uses config values defined in `apiConfig.json`

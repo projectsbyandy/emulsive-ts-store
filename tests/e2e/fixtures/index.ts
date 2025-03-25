@@ -1,0 +1,1 @@
+export { uiFixtures, test } from './fixtures';

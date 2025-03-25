@@ -1,12 +1,15 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+  testPathIgnorePatterns: ['<rootDir>/tests/endtoend/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
+  testMatch: [
+    '<rootDir>/tests/integration/**/*.test.[jt]s?(x)' // Only run tests in "specific-directory"
+  ],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
+    '^<rootDir>/tests/integration/.+api\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json',
       "__Emulsive_Fake__": true,
        "__RCTProfileIsProfiling": false
     }],
