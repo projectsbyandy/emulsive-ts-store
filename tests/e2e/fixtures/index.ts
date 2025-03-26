@@ -1,1 +1,1 @@
-export { uiFixtures, test } from './fixtures';
+export { uiTest } from './fixtures';

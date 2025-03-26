@@ -6,7 +6,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1'
   },
   testMatch: [
-    '<rootDir>/tests/integration/**/*.test.[jt]s?(x)' // Only run tests in "specific-directory"
+    '<rootDir>/tests/integration/**/*.test.[jt]s?(x)'
   ],
   transform: {
     '^<rootDir>/tests/integration/.+api\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json',

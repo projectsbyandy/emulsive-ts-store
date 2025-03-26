@@ -16,4 +16,4 @@ export const uiFixtures = base.extend<{
   }
 });
 
-export const test = uiFixtures;
+export const uiTest = uiFixtures;
