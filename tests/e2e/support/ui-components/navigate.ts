@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import { Section } from "../types";
 import { Ui } from "./ui";
 import { z } from 'zod';

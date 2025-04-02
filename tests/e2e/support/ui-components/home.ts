@@ -1,10 +1,8 @@
-import { Page } from "playwright/test";
+import { ProductOverview } from "../types";
+import { getProductOverviews } from "./productGrid";
 import { Ui } from "./ui";
 
 export class Home extends Ui {
-  constructor(page: Page) {
-    super(page);
-  }
 
   async getIntroContent() {
       const introContent = this.page.getByTestId('IntroContent');
@@ -15,5 +13,10 @@ export class Home extends Ui {
       heading,
       introBody
     };
+  }
+
+  async getFeaturedProductOverviews(): Promise<ProductOverview[]> {
+    const productElements = this.page.getByTestId('products').locator("a[href^='/products']");
+    return await getProductOverviews(productElements);
   }
 }

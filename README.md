@@ -33,6 +33,7 @@ Typescript
 ## E2E Integration test notes
 - Configuration
   - config to target is controlled by `ENV_IN_TEST` environment variable. If not defined, this is local by default.
+  - environment configs are located in `e2e\configs`
 - To run
   - install playwright runner extension in vscode
   - or from cmd in the root directory `npm run test:playwright`
