@@ -1,4 +1,4 @@
-import { Section } from "../types";
+import { Section } from "../models";
 import { Ui } from "./ui";
 import { z } from 'zod';
 

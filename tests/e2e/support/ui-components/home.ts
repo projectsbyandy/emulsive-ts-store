@@ -1,4 +1,4 @@
-import { ProductOverview } from "../types";
+import { ProductOverview } from "../models";
 import { getProductOverviews } from "./productGrid";
 import { Ui } from "./ui";
 
