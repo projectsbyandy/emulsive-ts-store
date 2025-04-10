@@ -1,18 +1,15 @@
 import {expect, Locator } from '@playwright/test';
 import z from 'zod';
-import { ProductOverview } from '../models';
+import { IProductOverview } from '../models';
 
-export const getProductOverviews = async (source: Locator) : Promise<ProductOverview[]> => {
-   let productOverviews : ProductOverview[] = [];
+export const getProductOverviews = async (source: Locator, expCount: string|number) : Promise<IProductOverview[]> => {
+   let productOverviews : IProductOverview[] = [];
 
    let productCount = 0;
-   let retries = 0;
+   const expectedCount = (typeof expCount === 'string' ? Number(expCount) : expCount);
 
-   while(productCount === 0 && retries <= 3) {
-       productCount = await source.count();
-       retries++;
-       console.log('Retrying');
-   }
+   await expect(source).toHaveCount(expectedCount)
+   productCount = await source.count();
 
    for(let i=0; i<productCount; i++) {
       await expect(source.nth(i).locator('div img')).toBeVisible();
@@ -20,7 +17,7 @@ export const getProductOverviews = async (source: Locator) : Promise<ProductOver
       const product = source.nth(i);
       const productDetailUrl = z.string().parse(await product.getAttribute('href'));
 
-      const productOverview : ProductOverview = {
+      const productOverview : IProductOverview = {
          id: z.number().parse(Number(await SelectIdFromProductDetailUrl(productDetailUrl))),
          imageUrl: z.string().parse(await product.locator("div img").getAttribute("src")),
          name: z.string().parse(await product.locator("h2").textContent()),

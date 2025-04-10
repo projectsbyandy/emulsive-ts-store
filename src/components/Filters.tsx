@@ -11,7 +11,7 @@ function Filters() {
   const {keyword, format, manufacturer, orderby, price, onsale } = params;
   
   return (
-    <Form className='border rounded-md px-8 py-4 grid gap-x-4 gap-y-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center'>
+    <Form data-testid='filters' className='border rounded-md px-8 py-4 grid gap-x-4 gap-y-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center'>
       <FormInput type='keyword' label='search films' name='keyword' defaultValue={keyword}/>
       <FormSelect name='format' label='select format' options={meta.formats} defaultValue={format}/>
       <FormSelect name='manufacturer' label='select manufacturers' options={meta.manufacturers} defaultValue={manufacturer}/>
