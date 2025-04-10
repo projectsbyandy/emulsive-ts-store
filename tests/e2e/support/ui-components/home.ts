@@ -6,10 +6,17 @@ import z from 'zod';
 
 export class Home extends Ui {
 
+  // Locators
+  private introContent = this.page.getByTestId('IntroContent');
+  private featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
+  private carouselItems = this.page.getByRole('group').locator('img[alt="hero"]');
+  private carouselRightArrow = this.page.locator('.lucide-arrow-right');
+  private productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
+
+  // Operations
   async getIntroContent() {
-      const introContent = this.page.getByTestId('IntroContent');
-      const heading = await introContent.locator('h1').innerText();
-      const introBody = await introContent.locator('p').innerText();
+    const heading = await this.introContent.locator('h1').innerText();
+      const introBody = await this.introContent.locator('p').innerText();
 
     return {
       heading,
@@ -18,27 +25,25 @@ export class Home extends Ui {
   }
 
   async getFeaturedProductOverviews(): Promise<IProductOverview[]> {
-    const productElements = this.page.getByTestId('products').locator("a[href^='/products']");
-    return await getProductOverviews(productElements, z.string().parse(process.env.PAGINATION_ITEMS_PER_PAGE));
+    return await getProductOverviews(this.featuredProductsSection, z.string().parse(process.env.PAGINATION_ITEMS_PER_PAGE));
   }
 
-  get productsLink(): Locator {
-    return this.page.locator('a[href="/products"]:text("Our Products")');
+  getProductsLink(): Locator {
+    return this.productsLink;
   }
 
   async getAllCarouselDetail(expectedImageCount: number): Promise<ICarouselItem[]> {
-    const caroselImages = this.page.getByRole('group').locator('img[alt="hero"]');
-    await expect(caroselImages).toHaveCount(expectedImageCount);
+   
+    await expect(this.carouselItems).toHaveCount(expectedImageCount);
     
     let items: ICarouselItem[] = [];
 
     for (let i=0; i<expectedImageCount; i++) {
-      const img = caroselImages.nth(i);
+      const img = this.carouselItems.nth(i);
       await expect(img).toBeInViewport();
       
-      const rightArrow = this.page.locator('.lucide-arrow-right');
-      if(await rightArrow.isEnabled())
-        await rightArrow.click();
+      if(await this.carouselRightArrow.isEnabled())
+        await this.carouselRightArrow.click();
 
       items.push({
         imageUrl: z.string().parse(await img.getAttribute('src')),

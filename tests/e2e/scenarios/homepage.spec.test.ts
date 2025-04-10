@@ -1,6 +1,6 @@
 import { uiTest } from '../fixtures';
 import { expect } from '@playwright/test';
-import { IProductOverview, Section } from '../support/models';
+import { ICarouselItem, IProductOverview, Section } from '../support/models';
 
 uiTest.describe('Emulsive Store Home Page', () => {
   uiTest.beforeEach(async ({ui}) => {
@@ -19,14 +19,15 @@ uiTest.describe('Emulsive Store Home Page', () => {
   })
 
   uiTest('should display the carousel', async ({ui})=> {
-    expect(await ui.home.getAllCarouselDetail(5)).toStrictEqual(
-      [
-        {"imageUrl":"/src/assets/hero1.webp","visible":true},
-        {"imageUrl":"/src/assets/hero2.webp","visible":true},
-        {"imageUrl":"/src/assets/hero3.webp","visible":true},
-        {"imageUrl":"/src/assets/hero4.webp","visible":true},
-        {"imageUrl":"/src/assets/hero5.webp","visible":true}
-      ]);
+    const expectedCarouselInfo: ICarouselItem[] = [
+      {"imageUrl":"/src/assets/hero1.webp","visible":true},
+      {"imageUrl":"/src/assets/hero2.webp","visible":true},
+      {"imageUrl":"/src/assets/hero3.webp","visible":true},
+      {"imageUrl":"/src/assets/hero4.webp","visible":true},
+      {"imageUrl":"/src/assets/hero5.webp","visible":true}
+    ];
+
+    expect(await ui.home.getAllCarouselDetail(5)).toStrictEqual(expectedCarouselInfo);
   })
 
   uiTest('should display correct featured products', async ({ui}) => {
