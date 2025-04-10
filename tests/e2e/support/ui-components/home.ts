@@ -1,17 +1,18 @@
-import { Locator, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { ICarouselItem, IProductOverview } from "../models";
 import { getProductOverviews } from "./productGrid";
 import { Ui } from "./ui";
 import z from 'zod';
+import { ILoadable } from ".";
+import { customExpect } from "../playwright-ext/expectExtensions";
 
-export class Home extends Ui {
-
+export class Home extends Ui implements ILoadable {
   // Locators
   private introContent = this.page.getByTestId('IntroContent');
-  private featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
   private carouselItems = this.page.getByRole('group').locator('img[alt="hero"]');
   private carouselRightArrow = this.page.locator('.lucide-arrow-right');
-  private productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
+  public productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
+  public featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
 
   // Operations
   async getIntroContent() {
@@ -26,10 +27,6 @@ export class Home extends Ui {
 
   async getFeaturedProductOverviews(): Promise<IProductOverview[]> {
     return await getProductOverviews(this.featuredProductsSection, z.string().parse(process.env.PAGINATION_ITEMS_PER_PAGE));
-  }
-
-  getProductsLink(): Locator {
-    return this.productsLink;
   }
 
   async getAllCarouselDetail(expectedImageCount: number): Promise<ICarouselItem[]> {
@@ -52,5 +49,10 @@ export class Home extends Ui {
     }
 
     return items;
+  }
+
+  async loaded(): Promise<void> {
+    await customExpect(this.introContent).toBeInScrolledViewPort();
+    await customExpect(this.carouselRightArrow).toBeInScrolledViewPort();
   }
 }

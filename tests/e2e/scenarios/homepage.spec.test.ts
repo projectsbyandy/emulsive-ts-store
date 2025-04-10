@@ -73,7 +73,7 @@ uiTest.describe('Emulsive Store Home Page', () => {
 
     expect(featureProducts).toStrictEqual(expectedFeaturedProducts);
   });
-
+  
   uiTest.afterEach(async ({page}) => {
     await page.close();
   });

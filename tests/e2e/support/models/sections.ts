@@ -1,4 +1,6 @@
 export enum Section {
   Home,
-  Products
+  About,
+  Products,
+  Cart
 }

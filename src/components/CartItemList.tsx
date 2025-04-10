@@ -15,7 +15,7 @@ function CartItemList() {
               <ImageColumn imageUrl={imageUrl} name={name} />
               <DetailsColumn name={name} manufacturer={manufacturer} format={format} />
               <QuantityColumn quantity={quantity} cartId={cartId} />
-              <ItemRowCostColumn price={price} />
+              <ItemRowCostColumn price={Number.parseFloat(price)} />
             </Card>
           )
       })}
