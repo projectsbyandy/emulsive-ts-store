@@ -31,12 +31,7 @@ Typescript
 - only jest tests within the `tests/integration` directory and must have `.api.test.ts` extension will be picked up.
 
 ## E2E Integration test notes
-- Configuration
-  - config to target is controlled by `ENV_IN_TEST` environment variable. If not defined, this is local by default. See `playwright.config.ts` for more details.
-  - environment configs are located in `e2e\configs`.
-- To run
-  - install playwright runner extension in vscode
-  - or from cmd in the root directory `npm run test:playwright`
+[Link to Readme](./tests/e2e/README.md)
 
 ## Config support
 The api uses config values defined in `apiConfig.json`

@@ -1,5 +1,5 @@
 import { uiTest } from "../fixtures";
-import { Section } from "../support/models/sections";
+import { Section } from "@e2e-shared/models";
 
 uiTest.describe('Header navigation tests', () => {
   uiTest.beforeEach(async ({ui}) => {

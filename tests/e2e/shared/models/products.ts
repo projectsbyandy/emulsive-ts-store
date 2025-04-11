@@ -1,4 +1,4 @@
-export interface IProductOverview {
+export type ProductOverview = {
   id: number,
   imageUrl: string,
   name: string,
@@ -6,7 +6,7 @@ export interface IProductOverview {
   detailsUrlPart: string
 }
 
-export interface IProductDetail extends IProductOverview {
+export interface ProductDetail extends ProductOverview {
   iso: string,
   format: string,
   manufacturer: string,

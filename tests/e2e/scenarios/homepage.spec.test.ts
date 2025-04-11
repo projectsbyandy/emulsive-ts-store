@@ -1,6 +1,6 @@
 import { uiTest } from '../fixtures';
 import { expect } from '@playwright/test';
-import { ICarouselItem, IProductOverview, Section } from '../support/models';
+import { type CarouselItem, type ProductOverview, Section } from '@e2e-shared/models';
 
 uiTest.describe('Emulsive Store Home Page', () => {
   uiTest.beforeEach(async ({ui}) => {
@@ -14,12 +14,12 @@ uiTest.describe('Emulsive Store Home Page', () => {
   });
 
   uiTest('should return a link to Products', async ({ui}) => {
-    await ui.home.productsLink.click();
+    await ui.home.selectProductLink();
     await expect(ui.products.Filters.Section).toBeVisible();
   })
 
   uiTest('should display the carousel', async ({ui})=> {
-    const expectedCarouselInfo: ICarouselItem[] = [
+    const expectedCarouselInfo: CarouselItem[] = [
       {"imageUrl":"/src/assets/hero1.webp","visible":true},
       {"imageUrl":"/src/assets/hero2.webp","visible":true},
       {"imageUrl":"/src/assets/hero3.webp","visible":true},
@@ -33,7 +33,7 @@ uiTest.describe('Emulsive Store Home Page', () => {
   uiTest('should display correct featured products', async ({ui}) => {
     const featureProducts = await ui.home.getFeaturedProductOverviews();
 
-    const expectedFeaturedProducts: IProductOverview[] = [
+    const expectedFeaturedProducts: ProductOverview[] = [
       {
         id: 19,
         imageUrl: 'https://iili.io/2iqmyF9.webp',
