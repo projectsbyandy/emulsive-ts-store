@@ -3,7 +3,7 @@ import { IHeader } from "../IHeader";
 import { IUserManagement } from "../IUserManagement";
 import { INavLinks } from "../INavLinks";
 import { NavLinks } from "./navLinks";
-import { UserMangement } from "./userManagement";
+import { UserManagement } from "./userManagement";
 
  export class Header extends Ui implements IHeader{
   // Locators
@@ -16,6 +16,6 @@ import { UserMangement } from "./userManagement";
   }
   
   get UserManagement(): IUserManagement {
-    return new UserMangement(this.page);
+    return new UserManagement(this.page);
   }
  }

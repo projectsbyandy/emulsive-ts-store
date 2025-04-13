@@ -2,13 +2,23 @@ import { Section } from "@e2e-shared/models";
 import { Ui } from "@/e2e/shared/playwright-helpers/ui";
 import { IUserManagement } from "../IUserManagement";
 
-export class UserMangement extends Ui implements IUserManagement {
+export class UserManagement extends Ui implements IUserManagement {
   // Locators
-  public loginLink = this.page.locator('a[href="/login"]:text("log in / Guest');    
+  public signInLink = this.page.locator('a[href="/login"]:text("Sign in / Guest")');    
   public registerLink = this.page.locator('a[href="/register"]:text("register")');
+  public logoutLink = this.page.locator('//button[text()="Logout"]');
 
   // Operations
   async select(link: Section): Promise<void> {
-    await this.page.getByTestId(`nav-link-${Section[link].toLowerCase()}`).click();
+    switch(link) {
+      case Section.SignIn:
+        await this.signInLink.click();
+        break;
+      case Section.Register:
+        await this.registerLink.click();
+         break;
+      case Section.Logout:
+        await this.logoutLink.click();
+    }
   }
 }

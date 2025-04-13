@@ -2,5 +2,10 @@ export enum Section {
   Home,
   About,
   Products,
-  Cart
+  Cart,
+  Checkout,
+  Orders,
+  SignIn,
+  Register,
+  Logout
 }

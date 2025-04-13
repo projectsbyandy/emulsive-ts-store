@@ -7,10 +7,10 @@ function OrdersList() {
 
   return (
     <div className="mt-16">
-      <h4 className="mb-4 capitalize">
+      <h4 className="mb-4 capitalize" data-testid='totalOrders'>
         total orders : {meta?.pagination.total}
       </h4>
-      <Table>
+      <Table data-testid='OrdersTable'>
         <TableCaption>List of recent orders</TableCaption>
         <TableHeader>
           <TableRow>  
@@ -23,12 +23,12 @@ function OrdersList() {
         </TableHeader>
         <TableBody>
           {data.map((order) => {              
-            return <TableRow key={order.orderId}>
-              <TableCell>{order.name}</TableCell>
-              <TableCell>{order.address}</TableCell>
-              <TableCell className="text-centre">{order.numberOfItemsInCart}</TableCell>
-              <TableCell>{order.orderTotal}</TableCell>
-              <TableCell>{order.createdOn}</TableCell>
+            return <TableRow data-testid={order.orderId} key={order.orderId}>
+              <TableCell data-testid='name'>{order.name}</TableCell>
+              <TableCell data-testid='address'>{order.address}</TableCell>
+              <TableCell data-testid='numberCartItems' className="text-centre">{order.numberOfItemsInCart}</TableCell>
+              <TableCell data-testid='orderTotal'>{order.orderTotal}</TableCell>
+              <TableCell data-testid='createdOn'>{order.createdOn}</TableCell>
             </TableRow>
           })}
         </TableBody>

@@ -1,6 +1,6 @@
 import { test as base } from 'playwright/test';
-import { IHome, IProducts, INavigate, IHeader, ICart, IAbout } from '@e2e-shared/ui-components';
-import { Home, Products, Navigate, Header, Cart, About } from '@e2e-shared/ui-components';
+import { IHome, IProducts, INavigate, IHeader, ICart, IAbout, ISignIn, ICheckout, IOrders } from '@e2e-shared/ui-components';
+import { Home, Products, Navigate, Header, Cart, About, SignIn, Checkout, Orders } from '@e2e-shared/ui-components';
 const uiFixtures = base.extend<{
   ui: {
     home: IHome,
@@ -8,7 +8,10 @@ const uiFixtures = base.extend<{
     products: IProducts,
     header: IHeader,
     about: IAbout,
-    cart: ICart
+    cart: ICart,
+    checkout: ICheckout,
+    orders: IOrders,
+    signIn: ISignIn
   };
  }>({
   ui: async ({page}, use) => {
@@ -18,7 +21,10 @@ const uiFixtures = base.extend<{
       products: new Products(page),
       header: new Header(page),
       about: new About(page),
-      cart: new Cart(page)
+      cart: new Cart(page),
+      checkout: new Checkout(page),
+      orders: new Orders(page),
+      signIn: new SignIn(page)
     })
   }
 });
