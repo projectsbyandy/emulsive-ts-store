@@ -15,7 +15,7 @@ uiTest.describe('Emulsive Store Home Page', () => {
 
   uiTest('should return a link to Products', async ({ui}) => {
     await ui.home.selectProductLink();
-    await expect(ui.products.Filters.Section).toBeVisible();
+    expect(await ui.products.Filters.hasLoaded()).toBe(true);
   })
 
   uiTest('should display the carousel', async ({ui})=> {
@@ -74,6 +74,12 @@ uiTest.describe('Emulsive Store Home Page', () => {
     expect(featureProducts).toStrictEqual(expectedFeaturedProducts);
   });
   
+  uiTest.afterEach(async ({ page }, testInfo) => {
+    if (testInfo.status !== "passed") {
+        await page.screenshot({ path: `screenshots/${testInfo.title}.png` });
+    }
+  });
+
   uiTest.afterEach(async ({page}) => {
     await page.close();
   });

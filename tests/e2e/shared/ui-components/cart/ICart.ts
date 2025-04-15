@@ -1,4 +1,4 @@
-import { ILoadable } from "../common/ILoadable";
+import { ILoadVerification } from "../common/ILoadVerification";
 
-export interface ICart extends ILoadable {
+export interface ICart extends ILoadVerification {
 }

@@ -1,7 +1,6 @@
 import { Section } from "@e2e-shared/models";
-import { Ui } from "@/e2e/shared/playwright-helpers/ui";
+import { Ui, isComponentInViewport } from "@/e2e/shared/playwright-helpers";
 import { INavLinks } from "../INavLinks";
-import { expect } from '@playwright/test';
 
 export class NavLinks extends Ui implements INavLinks {
 
@@ -13,11 +12,6 @@ export class NavLinks extends Ui implements INavLinks {
     }
 
     async isLinkVisible(link: Section): Promise<boolean> {
-      try {
-        await expect(this.page.getByTestId(`nav-link-${Section[link].toLowerCase()}`)).not.toBeInViewport({timeout: 3000});
-        return false;
-      } catch(error) {
-        return true;
-      }
+      return isComponentInViewport(this.page.getByTestId(`nav-link-${Section[link].toLowerCase()}`));      
     }
  }

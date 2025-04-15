@@ -1,5 +1,5 @@
-import { ILoadable } from "../common/ILoadable";
+import { ILoadVerification } from "../common/ILoadVerification";
 
-export interface IAbout extends ILoadable {
+export interface IAbout extends ILoadVerification {
 
 }

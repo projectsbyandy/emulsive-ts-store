@@ -1,3 +1,3 @@
-import { ILoadable } from "../common";
+import { ILoadVerification } from "../common";
 
-export interface ICheckout extends ILoadable {}
+export interface ICheckout extends ILoadVerification {}

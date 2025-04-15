@@ -1,10 +1,9 @@
 import { expect } from "@playwright/test";
 import { type CarouselItem, ProductOverview } from "@e2e-shared/models";
 import { getProductOverviews } from "../../common/productGrid";
-import { Ui } from "@/e2e/shared/playwright-helpers/ui";
 import z from 'zod';
-import { customExpect } from "@/e2e/shared/playwright-helpers/expectExtensions";
 import { IHome } from "../IHome";
+import { hasContentLoaded, Ui } from "@/e2e/shared/playwright-helpers";
 
 export class Home extends Ui implements IHome {
   // Locators
@@ -55,8 +54,7 @@ export class Home extends Ui implements IHome {
     await this.productsLink.click();
   }
 
-  async loaded(): Promise<void> {
-    await customExpect(this.introContent).toBeInScrolledViewPort();
-    await customExpect(this.carouselRightArrow).toBeInScrolledViewPort();
+  async hasLoaded(): Promise<boolean> {
+    return hasContentLoaded(this.introContent, this.carouselRightArrow);  
   }
 }

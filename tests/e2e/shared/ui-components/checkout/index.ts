@@ -1,2 +1,2 @@
 export { type ICheckout } from './ICheckout';
-export { Checkout } from './internal/ Checkout';
+export { Checkout } from './internal/Checkout';

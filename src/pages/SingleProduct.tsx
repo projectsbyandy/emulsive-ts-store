@@ -63,7 +63,7 @@ function SingleProduct() {
           </p>
           <p data-testid='description' className='mt-6 leading-8'>{description}</p>
           <SelectProductQuantity mode={QuantityMode.SingleProduct} quantity={quantity} setQuantity={setQuantity}/>
-          <Button size='lg' className='mt-10' onClick={addToCart}>
+          <Button data-testid='addToCart' size='lg' className='mt-10' onClick={addToCart}>
             Add to Cart
           </Button>
         </div>

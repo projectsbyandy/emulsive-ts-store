@@ -1,4 +1,4 @@
-import { Section } from "../../../models";
+import { Section } from "@e2e-shared/models";
 import { Ui } from "@/e2e/shared/playwright-helpers/ui";
 import { z } from 'zod';
 import { INavigate } from "../INavigate";

@@ -19,22 +19,25 @@ uiTest.describe('Header navigation tests', () => {
       await ui.header.NavLinks.select(section);
       
       // Assert
+      let hasLoadedContent: Boolean = false;
       switch(section){
         case Section.Home:
-          await ui.home.loaded();
+          hasLoadedContent = await ui.home.hasLoaded();
           break;
         case Section.About:
-          await ui.about.loaded();
+          hasLoadedContent = await ui.about.hasLoaded();
           break;
         case Section.Products:
-          await ui.products.loaded();
+          hasLoadedContent = await ui.products.hasLoaded();
           break;
         case Section.Cart:
-          await ui.cart.loaded();
+          hasLoadedContent = await ui.cart.hasLoaded();
           break;
         default:
           throw new Error(`Section: ${section} not supported in test`);
       }
+
+      expect(hasLoadedContent).toBe(true);
     });
   });
 
@@ -59,17 +62,24 @@ uiTest.describe('Header navigation tests', () => {
 
       // Act    
       await ui.header.NavLinks.select(section);
+      
       // Assert
       switch(section){
         case Section.Checkout:
-          await ui.checkout.loaded();
+          await ui.checkout.hasLoaded();
           break;
         case Section.Orders:
-          await ui.orders.loaded();
+          await ui.orders.hasLoaded();
           break;       
         default:
           throw new Error(`Section: ${section} not supported in test`);
       }
     });
+  });
+
+  uiTest.afterEach(async ({ page }, testInfo) => {
+    if (testInfo.status !== "passed") {
+        await page.screenshot({ path: `screenshots/${testInfo.title}.png` });
+    }
   });
 });

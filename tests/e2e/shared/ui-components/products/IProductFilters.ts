@@ -1,5 +1,6 @@
-import { Locator } from "@playwright/test";
+import { Filter } from "@e2e-shared/models/filter";
+import { ILoadVerification } from "../common";
 
-export interface IProductFilters {
-  get Section(): Locator;
+export interface IProductFilters extends ILoadVerification {
+  set(filters: Filter[]): Promise<void>;
 }

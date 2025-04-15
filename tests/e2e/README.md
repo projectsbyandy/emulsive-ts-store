@@ -44,11 +44,12 @@ Note a UI Component can be a functional area that makes up a screen or it can ma
 2. In the section folder, create an interface and detail the operations that will be performed using the ui component
   e.g. Create the interface file `IAuthentication.ts` with the operations. Remember to create any supporting models.
   ```typescript
-  export interface IAuthentication {
+  export interface IAuthentication extends ILoadVerification {
     performLogin(user: User): Promise<void>;
   }
   ```
-3. Create an `internals` folder inside the section folder and write the concrete implementation of the interface above. Remember to extend `Ui` as this will provide access to the playwright `page`
+3. Create an `internals` folder inside the section folder and write the concrete implementation of the interface above. Remember to extend `Ui` as this will provide access to the playwright `page`.
+   - implement the hasLoaded method passing in the locators that can be used signify that component has fully loaded before continuing the test.
 4. Make the section folder a module. In the new `index.ts` add export references to both the interface and class.
 5. Add an export of the section folder to the existing `index.ts` found the root of the `ui-components` folder
   e.g. 
