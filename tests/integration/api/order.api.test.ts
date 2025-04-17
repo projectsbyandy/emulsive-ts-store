@@ -4,6 +4,7 @@ import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
 import { performLogin } from './helpers/utils';
 import { Order, OrdersResponse } from '@/api/types';
+import z from 'zod';
 
 let server: any;
 let consoleSpy: jest.SpyInstance
@@ -119,7 +120,7 @@ describe('Verify correct meta data returned for /orders/all', () => {
     // Assert
     expect(response.status).toBe(200);
     const OrdersResponse:OrdersResponse = response.body
-    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 1, "pageCount": 2, "pageSize": 5, "total": 8}});
+    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 1, "pageCount": 2, "pageSize": 5, "total": 9}});
   });
 
   it('should return correct meta data when page filter params passed in', async () => {
@@ -132,7 +133,7 @@ describe('Verify correct meta data returned for /orders/all', () => {
     // Assert
     expect(response.status).toBe(200);
     const OrdersResponse:OrdersResponse = response.body
-    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 2, "pageCount": 2, "pageSize": 5, "total": 8}});
+    expect(OrdersResponse.meta).toStrictEqual({"pagination": {"page": 2, "pageCount": 2, "pageSize": 5, "total": 9}});
   });
 });
 
@@ -164,13 +165,24 @@ describe('Verify protected get orders', () => {
     // Assert
 
     const referenceData: Order[] = JSON.parse(rawData)
-    const ordersForUser = referenceData.filter(order => order.userId === "679f961099319abc13a97ed3")
+    const ordersForUser = referenceData.filter(order => order.userId === "679f961099319abc13a97ed3").sort((a, b) => Number(b.orderId) - Number(a.orderId))
     expect(response.status).toBe(200);
     
     const OrdersResponse: OrdersResponse = response.body;
-    expect(OrdersResponse.meta?.pagination.total).toStrictEqual(1);
+    expect(OrdersResponse.meta?.pagination.total).toStrictEqual(2);
     expect(OrdersResponse.data).toStrictEqual(ordersForUser);
   });
+
+  it("should return orders sorted by orderId descending", async () => {
+    // Act
+    const response = await agent.get('/api/orders');
+
+    const ordersResponse: OrdersResponse = response.body;
+    const orderIds = ordersResponse.data.map(order => order.orderId);
+
+    // Assert
+    expect(orderIds).toEqual([...orderIds].sort((a, b) => z.number().parse(b) - z.number().parse(a)));
+});
 })
 
 describe('Verify protected create order', () => {
@@ -200,7 +212,7 @@ describe('Verify protected create order', () => {
     const {message, order} = response.body;
 
     expect(message).toStrictEqual("Created Order");
-    expect(order.orderId).toStrictEqual(9);
+    expect(order.orderId).toStrictEqual(10);
     expect(capturedLogs).toContain('Order successfully created');
   });
 

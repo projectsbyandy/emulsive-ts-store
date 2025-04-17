@@ -50,7 +50,7 @@ export const getOrdersForUser = async (req: RequestWithUser, res: Response, next
         page: Number(req.query.page ?? 1)
       }
   
-     let orders = (await orderRepo.getOrders()).filter(order => order.userId === req.user?.userId)
+     let orders = await orderRepo.getOrdersForUser(req.user?.userId);
 
      const processedMeta = parseMeta(orders, filters);
 

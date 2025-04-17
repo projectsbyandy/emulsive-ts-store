@@ -24,6 +24,7 @@ function OrdersList() {
         <TableBody>
           {data.map((order) => {              
             return <TableRow data-testid={order.orderId} key={order.orderId}>
+              <TableCell data-testid='id'>{order.orderId}</TableCell>
               <TableCell data-testid='name'>{order.name}</TableCell>
               <TableCell data-testid='address'>{order.address}</TableCell>
               <TableCell data-testid='numberCartItems' className="text-centre">{order.numberOfItemsInCart}</TableCell>

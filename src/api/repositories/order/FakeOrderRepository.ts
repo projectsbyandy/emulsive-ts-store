@@ -11,7 +11,7 @@ class FakeOrderRepository implements IOrderRepository {
 
   async getOrdersForUser(userId: string): Promise<Order[]> {
     const orders = FakeOrderRepository.orders = await this.readOrders();
-    return orders.filter(order => order.userId === userId)
+    return orders.filter(order => order.userId === userId).sort((a, b) => Number(b.orderId) - Number(a.orderId));
   }
 
   async getOrders(): Promise<Order[]> { 
