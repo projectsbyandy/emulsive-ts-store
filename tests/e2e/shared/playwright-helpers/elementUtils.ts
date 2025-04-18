@@ -14,3 +14,13 @@ export const sliderSet = async (slider: Locator, page: Page, maxValue: number, v
   await page.mouse.move(targetX, box.y + box.height / 2);
   await page.mouse.up();  
 }
+
+export const traverseUp = (child: Locator,  times: number): Locator => {
+  let parent: Locator = child;
+
+  for (let i=0; i<times; i++) {
+    parent = child.locator('..');
+  }
+
+  return parent;
+}

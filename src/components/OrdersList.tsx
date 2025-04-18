@@ -14,6 +14,7 @@ function OrdersList() {
         <TableCaption>List of recent orders</TableCaption>
         <TableHeader>
           <TableRow>  
+            <TableHead>Id</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Address</TableHead>
             <TableHead className="w-[100px]">Products</TableHead>

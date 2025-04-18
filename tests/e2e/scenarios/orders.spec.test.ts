@@ -2,6 +2,7 @@ import { uiTest } from '../fixtures';
 import { FilterOption, Section } from '@e2e-shared/models';
 import z from "zod";
 import {v4 as uuidv4} from 'uuid';
+import { expect } from '@playwright/test';
 
 uiTest.describe('Emulsive Store Home Page', () => {
   uiTest.beforeEach(async ({ui}) => {
@@ -24,12 +25,16 @@ uiTest.describe('Emulsive Store Home Page', () => {
     
     await ui.products.addToCart("Portra 400", 2);
     await ui.header.NavLinks.select(Section.Checkout);
-    const uuid = uuidv4();
-    await ui.checkout.placeOrder(`andy - ${uuid}`,"12 Barney Road, Teddington, London KT1 4DL");
+    const orderName = `andy - ${uuidv4()}`;
+    await ui.checkout.placeOrder(orderName, "12 Barney Road, Teddington, London KT1 4DL");
   
     // Assert
     await ui.header.NavLinks.select(Section.Orders);
-    //ui.orders.getOrderDetails()
+    const order = await ui.orders.getOrder(orderName)
+    expect(order.productCount).toStrictEqual(2);
+    const oneMinAgo = new Date(new Date().getTime() - 60 * 1000).getTime();
+    expect(order.purchased.getTime()).toBeGreaterThan(oneMinAgo);
+    
   });
 
   uiTest.afterEach(async ({ page }, testInfo) => {
