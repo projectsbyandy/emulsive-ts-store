@@ -34,7 +34,6 @@ uiTest.describe('Emulsive Store Home Page', () => {
     expect(order.productCount).toStrictEqual(2);
     const oneMinAgo = new Date(new Date().getTime() - 60 * 1000).getTime();
     expect(order.purchased.getTime()).toBeGreaterThan(oneMinAgo);
-    
   });
 
   uiTest.afterEach(async ({ page }, testInfo) => {

@@ -4,10 +4,17 @@ import z from 'zod';
 import { IProductFilters } from "../IProductFilters";
 import { ProductFilters } from "./productFilters";
 import { IProducts } from "../IProducts";
-import { Locator } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 import { hasContentLoaded, Ui } from "@/e2e/shared/playwright-helpers";
 
 export class Products extends Ui implements IProducts{
+
+  private readonly productFilters: IProductFilters;
+
+  constructor(page: Page) {
+    super(page);
+    this.productFilters = new ProductFilters(page);
+  }
 
   // Locators
   private products: Locator = this.page.getByTestId('products').locator("a[href^='/products']");
@@ -19,7 +26,7 @@ export class Products extends Ui implements IProducts{
 
   // Operations
   get Filters() : IProductFilters {
-     return new ProductFilters(this.page)
+     return this.productFilters;
   }
 
   async getProductsOverview(): Promise<ProductOverview[]> {
