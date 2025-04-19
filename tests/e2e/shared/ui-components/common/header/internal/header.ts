@@ -1,9 +1,9 @@
-import { Ui } from "@/e2e/shared/playwright-helpers/ui";
+import { Ui } from "@/e2e/shared/playwright-helpers/Ui";
 import { IHeader } from "../IHeader";
 import { IUserManagement } from "../IUserManagement";
 import { INavLinks } from "../INavLinks";
-import { NavLinks } from "./navLinks";
-import { UserManagement } from "./userManagement";
+import { NavLinks } from "./NavLinks";
+import { UserManagement } from "./UserManagement";
 import { Page } from '@playwright/test';
 
 export class Header extends Ui implements IHeader {
@@ -18,8 +18,8 @@ export class Header extends Ui implements IHeader {
   }
 
   // Locators
-  public theme = this.page.getByTestId('theme');
-  public cartSummaryIcon = this.page.getByTestId('cartSummaryIcon');
+  public readonly theme = this.page.getByTestId('theme');
+  public readonly cartSummaryIcon = this.page.getByTestId('cartSummaryIcon');
   
   // Sections
   get NavLinks(): INavLinks {

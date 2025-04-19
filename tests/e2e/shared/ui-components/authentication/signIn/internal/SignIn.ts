@@ -5,10 +5,10 @@ import { hasContentLoaded, Ui } from "@/e2e/shared/playwright-helpers";
 
 export class SignIn extends Ui implements ISignIn{
   // locators
-  private asGuestUser: Locator = this.page.locator('//button[text()="Guest User"]')
-  private email: Locator = this.page.locator('input[type="email"]');
-  private password: Locator = this.page.locator('input[type="password"]');
-  private loginButton: Locator = this.page.getByRole('button', {name: 'Login'});
+  private readonly asGuestUser: Locator = this.page.locator('//button[text()="Guest User"]')
+  private readonly email: Locator = this.page.locator('input[type="email"]');
+  private readonly password: Locator = this.page.locator('input[type="password"]');
+  private readonly loginButton: Locator = this.page.getByRole('button', {name: 'Login'});
 
   // operations
   async loginAsGuest(): Promise<void> {

@@ -7,11 +7,11 @@ import { hasContentLoaded, Ui } from "@/e2e/shared/playwright-helpers";
 
 export class Home extends Ui implements IHome {
   // Locators
-  private introContent = this.page.getByTestId('IntroContent');
-  private carouselItems = this.page.getByRole('group').locator('img[alt="hero"]');
-  private carouselRightArrow = this.page.locator('.lucide-arrow-right');
-  private productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
-  private featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
+  private readonly introContent = this.page.getByTestId('IntroContent');
+  private readonly carouselItems = this.page.getByRole('group').locator('img[alt="hero"]');
+  private readonly carouselRightArrow = this.page.locator('.lucide-arrow-right');
+  private readonly productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
+  private readonly featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
 
   // Operations
   async getIntroContent() : Promise<{ heading: string; introBody: string }> {
@@ -29,7 +29,6 @@ export class Home extends Ui implements IHome {
   }
 
   async getAllCarouselDetail(expectedImageCount: number): Promise<CarouselItem[]> {
-   
     await expect(this.carouselItems).toHaveCount(expectedImageCount);
     
     let items: CarouselItem[] = [];

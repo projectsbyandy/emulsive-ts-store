@@ -1,5 +1,5 @@
 import { Section } from "@e2e-shared/models";
-import { Ui } from "@/e2e/shared/playwright-helpers/ui";
+import { Ui } from "@/e2e/shared/playwright-helpers/Ui";
 import { z } from 'zod';
 import { INavigate } from "../INavigate";
 

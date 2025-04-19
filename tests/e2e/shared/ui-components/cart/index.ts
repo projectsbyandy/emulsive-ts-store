@@ -1,2 +1,2 @@
 export { type ICart } from './ICart';
-export { Cart } from './internal/cart';
+export { Cart } from './internal/Cart';

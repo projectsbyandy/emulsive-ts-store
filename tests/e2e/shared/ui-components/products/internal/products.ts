@@ -2,7 +2,7 @@ import { ProductOverview } from "@e2e-shared/models";
 import { getProductOverviews } from "../../common/productGrid";
 import z from 'zod';
 import { IProductFilters } from "../IProductFilters";
-import { ProductFilters } from "./productFilters";
+import { ProductFilters } from "./ProductFilters";
 import { IProducts } from "../IProducts";
 import { Page, Locator } from "@playwright/test";
 import { hasContentLoaded, Ui } from "@/e2e/shared/playwright-helpers";

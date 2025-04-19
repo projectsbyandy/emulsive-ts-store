@@ -6,9 +6,9 @@ import z from 'zod';
 
 export class Orders extends Ui implements IOrders {
   // locators
-  private totalOrders: Locator = this.page.getByTestId("totalOrders");
-  private ordersTable: Locator = this.page.getByTestId("OrdersTable");
-  private nextButton: Locator = this.page.locator("a span:text('Next')");
+  private readonly totalOrders: Locator = this.page.getByTestId("totalOrders");
+  private readonly ordersTable: Locator = this.page.getByTestId("OrdersTable");
+  private readonly nextButton: Locator = this.page.locator("a span:text('Next')");
   
   // operations
   async getOrder(name: string): Promise<Order> {
