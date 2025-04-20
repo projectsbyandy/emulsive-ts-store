@@ -1,8 +1,14 @@
 # Emulsive Store
-The one stop location for all of your film needs
+The one stop location for all of your film needs. 
+
+<img src="./src/assets/emulsivestore.png" alt="screenshot" width="600"/>
 
 # Implementation
-Typescript 
+Tests
+- API integration tests using Supertest and Jest
+- E2E tests using playwright
+
+Front and Backend 
 - with vite, react and shadcn for the store
 - express for backend
     - Using HMAC (password handling) and jwt (auth)
@@ -10,7 +16,6 @@ Typescript
     - Mongo repo
 - Jest API tests
   - note to switch to using mocks set the environment variable `process.env.Emulsive_Fake` or update the `/api/appConfig.json`
-- Playwright E2E tests
 
 # Setup
 1. From the location `emulsive-store`
@@ -31,7 +36,7 @@ Typescript
 - only jest tests within the `tests/integration` directory and must have `.api.test.ts` extension will be picked up.
 
 ## E2E Integration test notes
-[Link to Readme](./tests/e2e/README.md)
+[Link to e2e test Readme](./tests/e2e/README.md)
 
 ## Config support
 The api uses config values defined in `apiConfig.json`
