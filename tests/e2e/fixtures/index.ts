@@ -1,1 +1,1 @@
-export { uiTest } from './uiTestFixture';
+export { uiTest } from './uiTest';

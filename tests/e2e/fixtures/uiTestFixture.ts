@@ -1,7 +1,8 @@
 import { test as base } from 'playwright/test';
 import { IHome, IProducts, INavigate, IHeader, ICart, IAbout, ISignIn, ICheckout, IOrders } from '@e2e-shared/ui-components';
 import { Home, Products, Navigate, Header, Cart, About, SignIn, Checkout, Orders } from '@e2e-shared/ui-components';
-const uiFixtures = base.extend<{
+
+export const uiFixture = base.extend<{
   ui: {
     home: IHome,
     navigate: INavigate,
@@ -28,5 +29,3 @@ const uiFixtures = base.extend<{
     })
   }
 });
-
-export const uiTest = uiFixtures;

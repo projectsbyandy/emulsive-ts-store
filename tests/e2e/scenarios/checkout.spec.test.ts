@@ -1,16 +1,12 @@
-import { uiTest } from "../fixtures";
 import { FilterOption, Section } from "@e2e-shared/models";
-import z from 'zod'
-import { hasToastAppeared } from "../shared/ui-components/common/Toast";
 import { expect } from '@playwright/test';
+import { hasToastAppeared } from "@e2e-shared/ui-components/common/toast";
+import { uiTest } from "../fixtures/uiTest";
 
 uiTest.describe('Checkout tests', () => {
-  uiTest.beforeEach(async ({ui}) => {
+  uiTest.beforeEach(async ({ui, loginHelper}) => {
     // Arrange
-    await ui.navigate.To(Section.Home);
-    await ui.header.UserManagement.select(Section.SignIn);
-    await ui.signIn.login({email: z.string().parse(process.env.USER_EMAIL), password: z.string().parse(process.env.USER_PASSWORD)});
-    await ui.home.hasLoaded();
+    await loginHelper.asTestUser();
     await ui.navigate.To(Section.Products);
   
     await ui.products.Filters.set([

@@ -1,20 +1,16 @@
-import { uiTest } from '../fixtures';
 import { FilterOption, Section } from '@e2e-shared/models';
-import z from "zod";
 import {v4 as uuidv4} from 'uuid';
 import { expect } from '@playwright/test';
+import { uiTest } from '../fixtures/uiTest';
 
 uiTest.describe('Ordering film tests', () => {
-  uiTest.beforeEach(async ({ui}) => {
+  uiTest.beforeEach(async ({ui, loginHelper}) => {
     // Arrange
-    await ui.navigate.To(Section.Home);
-    await ui.header.UserManagement.select(Section.SignIn);
-    await ui.signIn.login({email: z.string().parse(process.env.USER_EMAIL), password: z.string().parse(process.env.USER_PASSWORD)});
+    await loginHelper.asTestUser();
   });
 
   uiTest('should be able to order Portra400 film', async ({ ui }) => {
     // Arrange
-    await ui.home.hasLoaded();
     await ui.navigate.To(Section.Products);
 
     // Act
