@@ -58,6 +58,13 @@ Note a UI Component can be a functional area that makes up a screen or it can ma
   ```
 6. Update the UiTest fixture with a reference to the new ui component.
 
+## Adding helper fixtures
+To reduce the number of common groups of steps, composite helper functions can be created e.g. performLogin which checks the home page is loaded, browses to the login page and uses the standard credentials to authenticate.
+
+These are created in the `fixtures` folder and extend `uiFixture` which provides them access to the ui components.
+
+Once created, the `mergeTests` function is updated to make the helper functions available to the `uiTest` fixture. See `uiTest.ts` for example of merging multiple fixtures.
+
 The UI component should now be accessible within the tests.
 
 ## Playwright extension methods

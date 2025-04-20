@@ -1,25 +1,19 @@
-import { FilterOption, Section } from '@e2e-shared/models';
+import { Section } from '@e2e-shared/models';
 import {v4 as uuidv4} from 'uuid';
 import { expect } from '@playwright/test';
 import { uiTest } from '../fixtures/uiTest';
 
 uiTest.describe('Ordering film tests', () => {
-  uiTest.beforeEach(async ({ui, loginHelper}) => {
+  uiTest.beforeEach(async ({ loginHelper }) => {
     // Arrange
     await loginHelper.asTestUser();
   });
 
-  uiTest('should be able to order Portra400 film', async ({ ui }) => {
+  uiTest('should be able to order Portra400 film', async ({ ui, productsHelper }) => {
     // Arrange
-    await ui.navigate.To(Section.Products);
-
-    // Act
-    await ui.products.Filters.set([
-      { option: FilterOption.Manufacturer, value: "Kodak" },
-      { option: FilterOption.Format, value: "35mm" }
-    ]);
+    await productsHelper.addItemToCart("Portra 400", 2)
     
-    await ui.products.addToCart("Portra 400", 2);
+    // Act
     await ui.header.NavLinks.select(Section.Checkout);
     const orderName = `andy - ${uuidv4()}`;
     await ui.checkout.placeOrder(orderName, "12 Barney Road, Teddington, London KT1 4DL");

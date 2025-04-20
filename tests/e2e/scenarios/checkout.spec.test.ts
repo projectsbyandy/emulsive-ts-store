@@ -1,20 +1,13 @@
-import { FilterOption, Section } from "@e2e-shared/models";
+import { Section } from "@e2e-shared/models";
 import { expect } from '@playwright/test';
 import { hasToastAppeared } from "@e2e-shared/ui-components/common/toast";
-import { uiTest } from "../fixtures/uiTest";
+import { uiTest } from "../fixtures";
 
 uiTest.describe('Checkout tests', () => {
-  uiTest.beforeEach(async ({ui, loginHelper}) => {
+  uiTest.beforeEach(async ({ui, loginHelper, productsHelper }) => {
     // Arrange
     await loginHelper.asTestUser();
-    await ui.navigate.To(Section.Products);
-  
-    await ui.products.Filters.set([
-      { option: FilterOption.Manufacturer, value: "Kodak" },
-      { option: FilterOption.Format, value: "35mm" }
-    ]);
-  
-    await ui.products.addToCart("Portra 400", 2);
+    await productsHelper.addItemToCart("Portra 400", 2);
     await ui.header.NavLinks.select(Section.Checkout);
   });
 
