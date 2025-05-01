@@ -7,7 +7,6 @@ export const hasContentLoaded = async (...components: Locator[]): Promise<boolea
     try {
       await customExpect(component).toBeInScrolledViewPort();
     } catch (error) {
-      console.error("Not loaded due to: ", error);
       return false;
     }
   }

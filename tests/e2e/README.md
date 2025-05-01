@@ -25,6 +25,9 @@ Tests are coupled to abstractions (interfaces) enabling the underling concrete i
 ##### ___Scenarios___
 The E2E test scenarios use Playwright Test structure and runner. All tests have the `spec.test.ts` extension.
 
+##### ___Hooks___
+In `globalSetup.ts` functionality that should run before any tests are executed (regardless of parallelism setup) is defined and referenced in the `playwright.config.ts`. A health check has been implemented however other activities such as database setup can also be added.
+
 ### Configs
 - config to target is controlled by `ENV_IN_TEST` environment variable. If not defined, this is __local__ by default. See `playwright.config.ts` for more details.
 - environment configs are located in `e2e\configs`.
