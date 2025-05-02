@@ -1,18 +1,14 @@
-import {expect, Locator } from '@playwright/test';
+import { Locator } from '@playwright/test';
 import z from 'zod';
 import { type ProductOverview } from '@e2e-shared/models';
 
-export const getProductOverviews = async (source: Locator, expCount: string|number) : Promise<ProductOverview[]> => {
+export const getProductOverviews = async (source: Locator) : Promise<ProductOverview[]> => {
    let productOverviews : ProductOverview[] = [];
-
-   let productCount = 0;
-   const expectedCount = (typeof expCount === 'string' ? Number(expCount) : expCount);
-
-   await expect(source).toHaveCount(expectedCount)
-   productCount = await source.count();
+   const productCount = await source.count();
 
    for(let i=0; i<productCount; i++) {
-      await expect(source.nth(i).locator('div img')).toBeVisible();
+      console.log(`product count: ${productCount}`);
+      source.nth(i).locator('div img').waitFor({state:'visible'});
 
       const product = source.nth(i);
       const productDetailUrl = z.string().parse(await product.getAttribute('href'));

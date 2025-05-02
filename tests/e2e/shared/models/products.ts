@@ -1,9 +1,9 @@
 export type ProductOverview = {
-  id: number,
+  id?: number,
   imageUrl: string,
   name: string,
   priceWithCurrency: string
-  detailsUrlPart: string
+  detailsUrlPart?: string
 }
 
 export interface ProductDetail extends ProductOverview {

@@ -14,7 +14,8 @@ export const productsHelper = uiFixture.extend<{
             { option: FilterOption.Keyword, value: productName },
           ]);
           
-        await ui.products.addToCart(productName, items);   
+        await ui.products.select(productName);
+        await ui.products.Details.addQuantityToCart(items);
       }
     }
 

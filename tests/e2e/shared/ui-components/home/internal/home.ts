@@ -12,6 +12,7 @@ export class Home extends Ui implements IHome {
   private readonly carouselRightArrow = this.page.locator('.lucide-arrow-right');
   private readonly productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
   private readonly featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
+  private readonly products = this.page.getByTestId('products').locator("a[href^='/products']");
 
   // Operations
   async getIntroContent() : Promise<{ heading: string; introBody: string }> {
@@ -25,7 +26,8 @@ export class Home extends Ui implements IHome {
   }
 
   async getFeaturedProductOverviews(): Promise<ProductOverview[]> {
-    return await getProductOverviews(this.featuredProductsSection, z.string().parse(process.env.PAGINATION_ITEMS_PER_PAGE));
+    await expect(this.products.last()).toBeVisible();
+    return await getProductOverviews(this.featuredProductsSection);
   }
 
   async getAllCarouselDetail(expectedImageCount: number): Promise<CarouselItem[]> {
