@@ -36,35 +36,35 @@ uiTest.describe('Emulsive Store Home Page', () => {
     const expectedFeaturedProducts: ProductOverview[] = [
       {
         id: 19,
-        imageUrl: 'https://iili.io/2iqmyF9.webp',
+        imageUrl: "http://localhost:3003/assets/KodakGold200-35mmFilm-36exp.webp",
         name: 'Gold 200',
         priceWithCurrency: '£9.50',
         detailsUrlPart: '/products/19'
       },
       {
         id: 6,
-        imageUrl: 'https://iili.io/2iqmbGS.webp',
+        imageUrl: "http://localhost:3003/assets/Ilford_HP5_Plus_-_35mm_Film_-_Retro_Packaging.webp",
         name: 'Hp5 Plus',
         priceWithCurrency: '£7.35',
         detailsUrlPart: '/products/6'
       },
       {
         id: 7,
-        imageUrl: 'https://iili.io/2iqmm67.webp',
+        imageUrl: "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
         name: 'Portra 400',
         priceWithCurrency: '£12.90',
         detailsUrlPart: '/products/7'
       },
       {
         id: 24,
-        imageUrl: 'https://iili.io/2iqmiyG.webp',
+        imageUrl: "http://localhost:3003/assets/cinestill-800t-120-film-471304.webp",
         name: '800T',
         priceWithCurrency: '£19.00',
         detailsUrlPart: '/products/24'
       },
       {
         id: 25,
-        imageUrl: 'https://iili.io/2iqm43X.webp',
+        imageUrl: "http://localhost:3003/assets/rollei-infrared-120-film-at-analogue-wonderland-922102.webp",
         name: 'Rollei Infrared',
         priceWithCurrency: '£19.00',
         detailsUrlPart: '/products/25'

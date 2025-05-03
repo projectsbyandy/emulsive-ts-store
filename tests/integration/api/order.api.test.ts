@@ -20,7 +20,7 @@ const VALID_ORDER_REQUEST = {
       {
         "cartId": "12",
         "productId": 12,
-        "imageUrl": "https://iili.io/2iqmZZl.webp",
+        "imageUrl": "http://localhost:3003/assets/KodakUltraMax-35mmFilm.webp",
         "name": "Ultra Max",
         "price": "820",
         "quantity": 2,
@@ -30,8 +30,8 @@ const VALID_ORDER_REQUEST = {
       {
         "cartId": "7",
         "productId": 7,
-        "imageUrl": "https://iili.io/2iqmm67.webp",
-        "name": "Portra 200",
+        "imageUrl": "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
+        "name": "Portra 400",
         "price": "1290",
         "quantity": 1,
         "manufacturer": "Kodak",
@@ -226,7 +226,7 @@ describe('Verify protected create order', () => {
           {
             "cartId": "12",
             "productId": 12,
-            "imageUrl": "https://iili.io/2iqmZZl.webp",
+            "imageUrl": "http://localhost:3003/assets/KodakUltraMax-35mmFilm.webp",
             "name": "Ultra Max",
             "price": "820",
             "quantity": 2,
@@ -236,8 +236,8 @@ describe('Verify protected create order', () => {
           {
             "cartId": "7",
             "productId": 7,
-            "imageUrl": "https://iili.io/2iqmm67.webp",
-            "name": "Portra 200",
+            "imageUrl": "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
+            "name": "Portra 400",
             "price": "1290",
             "quantity": 1,
             "manufacturer": "Kodak",
@@ -268,7 +268,7 @@ describe('Verify protected create order', () => {
           {
             "cartId": "12",
             "productId": 12,
-            "imageUrl": "https://iili.io/2iqmZZl.webp",
+            "imageUrl": "http://localhost:3003/assets/KodakUltraMax-35mmFilm.webp",
             "name": "Ultra Max",
             "price": "820",
             "quantity": 2,
@@ -278,8 +278,8 @@ describe('Verify protected create order', () => {
           {
             "cartId": "7",
             "productId": 7,
-            "imageUrl": "https://iili.io/2iqmm67.webp",
-            "name": "Portra 200",
+            "imageUrl": "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
+            "name": "Portra 400",
             "price": "1290",
             "quantity": 1,
             "manufacturer": "Kodak",
@@ -310,7 +310,7 @@ describe('Verify protected create order', () => {
           {
             "cartId": "12",
             "productId": 12,
-            "imageUrl": "https://iili.io/2iqmZZl.webp",
+            "imageUrl": "http://localhost:3003/assets/KodakUltraMax-35mmFilm.webp",
             "name": "Ultra Max",
             "price": "820",
             "quantity": 2,
@@ -320,8 +320,8 @@ describe('Verify protected create order', () => {
           {
             "cartId": "7",
             "productId": 7,
-            "imageUrl": "https://iili.io/2iqmm67.webp",
-            "name": "Portra 200",
+            "imageUrl": "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
+            "name": "Portra 400",
             "price": "1290",
             "quantity": 1,
             "manufacturer": "Kodak",

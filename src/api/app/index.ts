@@ -37,7 +37,7 @@ const initializeApp = async () => {
 
   if (process.env.NODE_ENV !== 'test') {
     server.listen(config.port, () => {
-      console.log(`Server has started on http://localhost:${config.port}`);
+      console.log(`Emulsive Api Server has started on http://localhost:${config.port}`);
     });
   }
   

@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "apiTemp": "npx tsx ./src/api/app/index.ts",
     "api": "nodemon",
-    "all": "concurrently \"npm run api\" \"npm run ui\"",
+    "image-server": "npx tsx ./src/image-server/image-server.ts",
+    "all": "concurrently \"npm run api\" \"npm run ui\" \"npm run image-server\"",
     "test:playwright": "npx playwright test",
     "test:jest": "jest --detectOpenHandles"
   },

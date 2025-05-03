@@ -10,7 +10,7 @@
         "description": "Kodak Gold 35mm film is a colour negative film perfect for all types of photography. With its vibrant colours, fine grain and wide exposure latitude, it can handle any light you throw at it. A firm favourite for analogue photographers around the world!",
         "featured": true,
         "createdAt": "2023-08-10T10:07:41.876Z",
-        "imageUrl": "https://iili.io/2iqmyF9.webp",
+        "imageUrl": "http://localhost:3003/assets/KodakGold200-35mmFilm-36exp.webp",
         "price": "950",
         "onSale": false
       }
@@ -25,7 +25,7 @@
         "description": "Kodak Ultramax 35mm film is a versatile colour negative film suitable for a variety of photography situations. It offers vivid, accurate colours and sharp, fine imagery. Its wide exposure latitude allows for capturing vibrant colours in daylight, and beautiful portrait shots too.",
         "featured": false,
         "createdAt": "2023-08-10T09:32:58.392Z",
-        "imageUrl": "https://iili.io/2iqmZZl.webp",
+        "imageUrl": "http://localhost:3003/assets/KodakUltraMax-35mmFilm.webp",
         "price": "820",
         "onSale": true
       }
@@ -40,7 +40,7 @@
         "description": "Ilford HP5 Plus is the best-selling black-and-white film in our store, and with very good reason! Beloved by film shooters, HP5 is an iconic Ilford emulsion with a gorgeous grain structure that will provide the perfect vintage look to your photos.",
         "featured": true,
         "createdAt": "2023-08-02T14:32:02.775Z",
-        "imageUrl": "https://iili.io/2iqmbGS.webp",
+        "imageUrl": "http://localhost:3003/assets/Ilford_HP5_Plus_-_35mm_Film_-_Retro_Packaging.webp",
         "price": "735",
         "onSale": false
       }
@@ -55,7 +55,7 @@
         "description": "Capture life’s vibrancy and passion with the classic film that inspired a whole crop of new portrait photographers. Kodak Portra 400 is one of the world’s most popular colour negative film and is perfect for both studio and location shoots. It is loved by experienced film shooters for its accurate skin tones, sharp focus, fine grain structure and superior flexibility in exposure.",
         "featured": true,
         "createdAt": "2023-08-02T14:34:10.146Z",
-        "imageUrl": "https://iili.io/2iqmm67.webp",
+        "imageUrl": "http://localhost:3003/assets/kodak-portra-400-35mm-film-877035.webp",
         "price": "1290",
         "onSale": false
       }
@@ -70,7 +70,7 @@
         "description": "Kodak ColorPlus 200 35mm film is a great budget film for analogue photographers and a best-seller around the world. For a small investment per roll you will get great colour reproduction, a forgiving exposure range, and good detail.",
         "featured": false,
         "createdAt": "2023-08-10T09:34:24.429Z",
-        "imageUrl": "https://iili.io/2iqp9ae.webp",
+        "imageUrl": "http://localhost:3003/assets/KodakColorplus35mmfilm.webp",
         "price": "1590",
         "onSale": true
       }
@@ -85,7 +85,7 @@
         "description": "Kentmere Pan 400 is a great starter-film for people trying 35mm film photography for the first time. For this reason it is often known as a 'student' film!",
         "featured": false,
         "createdAt": "2023-08-10T10:08:58.922Z",
-        "imageUrl": "https://iili.io/2iqmDn2.webp",
+        "imageUrl": "http://localhost:3003/assets/kentmere-400-35mm-film-36-exp-672716.webp",
         "price": "600",
         "onSale": false
       }
@@ -100,7 +100,7 @@
         "description": "Kodak Portra 160 is a professional-grade colour negative film that delivers exceptional skin tones and fine grain. It's perfect for capturing portraits, landscapes, and everyday moments with a classic, timeless look.",
         "featured": false,
         "createdAt": "2023-08-10T10:02:51.583Z",
-        "imageUrl": "https://iili.io/2iqmQj4.webp",
+        "imageUrl": "http://localhost:3003/assets/Kodak-portra-160.webp",
         "price": "1800",
         "onSale": false
       }
@@ -115,7 +115,7 @@
         "description": "Kodak Tri-X 35mm is a truly legendary film. Kodak Tri-X emulsion was first introduced in 1940 in sheet film, making it over 80 years old ",
         "featured": false,
         "createdAt": "2023-08-10T10:10:46.803Z",
-        "imageUrl": "https://iili.io/2iqm6an.webp",
+        "imageUrl": "http://localhost:3003/assets/KodakTri-X-35mmFilm-36exp.webp",
         "price": "1100",
         "onSale": false
       }
@@ -130,7 +130,7 @@
         "description": "Kodak Portra 800 is a professional-grade colour negative film that is perfect for low light conditions. It has a high ISO of 800, which means it can capture images in dimly lit environments without the need for a flash. The film produces natural skin tones, vibrant colours, and fine grain, making it a favourite among professional photographers.",
         "featured": false,
         "createdAt": "2023-08-10T10:11:38.696Z",
-        "imageUrl": "https://iili.io/2iqmPvs.webp",
+        "imageUrl": "http://localhost:3003/assets/kodak-portra-800-35mm-colour-film-258200.webp",
         "price": "2500",
         "onSale": false
       }
@@ -145,7 +145,7 @@
         "description": "Cinestill 800T is a medium format film with high light sensitivity and is balanced for providing gorgeous natural colours and skin tones under artificial light. CineStill 800 Tungsten is the perfect companion for partygoers and night owls who want to capture an authentic view of their medium-format twilight world.",
         "featured": true,
         "createdAt": "2023-08-10T10:13:29.629Z",
-        "imageUrl": "https://iili.io/2iqmiyG.webp",
+        "imageUrl": "http://localhost:3003/assets/cinestill-800t-120-film-471304.webp",
         "price": "1900",
         "onSale": false
       }
@@ -160,7 +160,7 @@
         "description": "Rollei Infrared is the optimum creative tool",
         "featured": true,
         "createdAt": "2023-08-10T10:13:29.629Z",
-        "imageUrl": "https://iili.io/2iqm43X.webp",
+        "imageUrl": "http://localhost:3003/assets/rollei-infrared-120-film-at-analogue-wonderland-922102.webp",
         "price": "1900",
         "onSale": false
       }
