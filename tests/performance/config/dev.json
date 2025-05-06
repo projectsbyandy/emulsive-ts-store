@@ -1,0 +1,7 @@
+{
+  "emulsive_api_url":"http://emulsive.dev:8085",
+  "film_sla_ms": 50,
+  "film_with_filtering_ms": 50,
+  "auth_sla_ms": 90,
+  "auth_pw": "1234"
+}

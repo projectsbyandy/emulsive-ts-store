@@ -36,7 +36,18 @@ Front and Backend
 - only jest tests within the `tests/integration` directory and must have `.api.test.ts` extension will be picked up.
 
 ## E2E Integration test notes
+- `/tests/e2e`
 [Link to e2e test Readme](./tests/e2e/README.md)
+
+## Performance Testing
+- `/tests/performance`
+- Using K6 implementation of performance tests with checks that could be included for functional testing
+- SLAs are defined in the config files
+- Examples of test scenario to target each api endpoint. There is also a mixture test which combines the scenarios with ramping, variable load and durations. 
+
+### Running a test
+- navigate to `/tests/performance`
+- run cmd `k6 run -e ENV=<environment-to-target> <relative-path-to-test>` e.g. to target local emulsive api e.g. `k6 run -e ENV=local mixed/filmsAndAuth.ts`
 
 ## Config support
 The api uses config values defined in `apiConfig.json`
