@@ -35,7 +35,7 @@ export class ProductFilters extends Ui implements IProductFilters{
       await filterOptions.get(filter.option)?.(filter.value) ?? new Error(`Option not found: ${filter.option}`);
     }
 
-    await this.searchButton.click()
+    await this.searchButton.click();
   }
 
   async hasLoaded(): Promise<boolean> {

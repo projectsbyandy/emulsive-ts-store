@@ -1,7 +1,7 @@
 import { ProductOverview } from "@e2e-shared/models";
 import { getProductOverviews } from "../../common/productGrid";
 import { IProductFilters } from "../IProductFilters";
-import { ProductFilters } from "./ProductFilters";
+import { ProductFilters } from "./productFilters";
 import { IProducts } from "../IProducts";
 import { Page, Locator, expect } from "@playwright/test";
 import { hasContentLoaded, traverseUp, Ui } from "@/e2e/shared/playwright-helpers";
@@ -70,7 +70,7 @@ export class Products extends Ui implements IProducts {
 
   private async getProductsOnPage():Promise<ProductOverview[]> {
     await expect(this.productsContainer.last()).toBeVisible();
-    return await getProductOverviews(this.productsContainer);
+    return await getProductOverviews(this.page);
   } 
 
   async hasLoaded(): Promise<boolean> {

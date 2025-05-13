@@ -15,7 +15,7 @@
       } catch(error) {
         return {
           pass: false,
-          message: () => `Failed to verify: Element was not scrolled and verified the viewport within ${timeout}ms.`,
+          message: () => `Failed to verify: Element was not scrolled and verified the viewport within ${timeout}ms. Due to ${error}`,
         };
       }
     }

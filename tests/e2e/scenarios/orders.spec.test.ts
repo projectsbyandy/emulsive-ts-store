@@ -2,6 +2,7 @@ import { Section } from '@e2e-shared/models';
 import {v4 as uuidv4} from 'uuid';
 import { expect } from '@playwright/test';
 import { uiTest } from '../fixtures/uiTest';
+import './hooks/afterHooks';
 
 uiTest.describe('Ordering film tests', () => {
   uiTest.beforeEach(async ({ loginHelper }) => {
@@ -24,11 +25,5 @@ uiTest.describe('Ordering film tests', () => {
     expect(order.productCount).toStrictEqual(2);
     const oneMinAgo = new Date(new Date().getTime() - 60 * 1000).getTime();
     expect(order.purchased.getTime()).toBeGreaterThan(oneMinAgo);
-  });
-
-  uiTest.afterEach(async ({ page }, testInfo) => {
-    if (testInfo.status !== "passed") {
-        await page.screenshot({ path: `screenshots/${testInfo.title}.png` });
-    }
   });
 });

@@ -11,7 +11,6 @@ export class Home extends Ui implements IHome {
   private readonly carouselItems = this.page.getByRole('group').locator('img[alt="hero"]');
   private readonly carouselRightArrow = this.page.locator('.lucide-arrow-right');
   private readonly productsLink = this.page.locator('a[href="/products"]:text("Our Products")');
-  private readonly featuredProductsSection = this.page.getByTestId('products').locator("a[href^='/products']");
   private readonly products = this.page.getByTestId('products').locator("a[href^='/products']");
 
   // Operations
@@ -27,7 +26,7 @@ export class Home extends Ui implements IHome {
 
   async getFeaturedProductOverviews(): Promise<ProductOverview[]> {
     await expect(this.products.last()).toBeVisible();
-    return await getProductOverviews(this.featuredProductsSection);
+    return await getProductOverviews(this.page);
   }
 
   async getAllCarouselDetail(expectedImageCount: number): Promise<CarouselItem[]> {

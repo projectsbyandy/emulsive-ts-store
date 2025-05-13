@@ -1,6 +1,7 @@
 import { uiTest } from '../fixtures';
 import { expect } from '@playwright/test';
 import { type CarouselItem, type ProductOverview, Section } from '@e2e-shared/models';
+import './hooks/afterHooks';
 
 uiTest.describe('Emulsive Store Home Page', () => {
   uiTest.beforeEach(async ({ui}) => {
@@ -74,12 +75,6 @@ uiTest.describe('Emulsive Store Home Page', () => {
     expect(featureProducts).toStrictEqual(expectedFeaturedProducts);
   });
   
-  uiTest.afterEach(async ({ page }, testInfo) => {
-    if (testInfo.status !== "passed") {
-        await page.screenshot({ path: `screenshots/${testInfo.title}.png` });
-    }
-  });
-
   uiTest.afterEach(async ({page}) => {
     await page.close();
   });
