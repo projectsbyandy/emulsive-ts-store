@@ -1,0 +1,10 @@
+FROM grafana/k6:latest
+
+# Default if no script supplied
+ARG DEFAULT_SCRIPT=./tests/performance/mixed/filmsAndAuth.ts
+ENV TEST_SCRIPT=${DEFAULT_SCRIPT}
+
+WORKDIR /performance
+COPY . .
+ENTRYPOINT ["/bin/sh", "-c"]
+CMD ["k6 run ${TEST_SCRIPT}"]

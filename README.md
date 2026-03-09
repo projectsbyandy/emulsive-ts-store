@@ -42,12 +42,19 @@ Front and Backend
 ## Performance Testing
 - `/tests/performance`
 - Using K6 implementation of performance tests with checks that could be included for functional testing
-- SLAs are defined in the config files
+- SLAs are defined in the ENV config files e.g. dev.json, local-docker.json
 - Examples of test scenario to target each api endpoint. There is also a mixture test which combines the scenarios with ramping, variable load and durations. 
 
-### Running a test
-- navigate to `/tests/performance`
-- run cmd `k6 run -e ENV=<environment-to-target> <relative-path-to-test>` e.g. to target local emulsive api e.g. `k6 run -e ENV=local mixed/filmsAndAuth.ts`
+### Running a test locally
+- From the route EMULSIVE-STORE folder
+- 
+- run cmd `k6 run -e ENV=<environment-to-target> <relative-path-to-test>` e.g. to target local emulsive api e.g. `k6 run -e ENV=local ./tests/performance/individual/filmsWithFiltering.ts`
+
+### Running tests from docker
+- From the route EMULSIVE-STORE folder
+- Build the docker container
+  - `docker build -f tests/performance/deploy/dockerfile -t k6-performance-test .`
+- to run a specific test `docker run -it --rm -e ENV=<name of config to target> -e TEST_SCRIPT=<location of test script>` e.g. `docker run -it --rm -e ENV=local-docker -e TEST_SCRIPT=./tests/performance/individual/authentication.ts k6-performance-test`
 
 ## Config support
 The api uses config values defined in `apiConfig.json`

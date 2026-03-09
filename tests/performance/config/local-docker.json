@@ -1,5 +1,5 @@
 {
-  "emulsive_api_url":"http://localhost:8085",
+  "emulsive_api_url":"http://host.docker.internal:8085",
   "film_sla_ms": 2,
   "films_with_param_sla_ms": 2,
   "auth_sla_ms": 7,
