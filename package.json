@@ -13,7 +13,9 @@
     "image-server": "npx tsx ./src/image-server/image-server.ts",
     "all": "concurrently \"npm run api\" \"npm run ui\" \"npm run image-server\"",
     "test:playwright": "npx playwright test",
-    "test:jest": "jest --detectOpenHandles"
+    "test:jest": "jest --detectOpenHandles",
+    "test:performance-docker": "docker build -f tests/performance/deploy/dockerfile -t k6-performance-test . && docker run --rm -e ENV=local-docker k6-performance-test",
+    "test:performance": "k6 run -e ENV=local ./tests/performance/individual/filmsWithFiltering.ts"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.3",
