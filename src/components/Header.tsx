@@ -26,14 +26,14 @@ function Header() {
         
         { user ? ( 
             <div className="flex gap-x-2 sm:gap-x-8 items-center">
-              <p className='text-xs sm:text.sm'>Hello {user.username}</p>
-              <Button variant='link' size='sm' onClick={handleLogout}>
+              <p data-testid='greeting' className='text-xs sm:text.sm'>Hello {user.username}</p>
+              <Button data-testid='logout' variant='link' size='sm' onClick={handleLogout}>
               Logout
               </Button>
             </div>
           ) : (
             <div className='flex gap-x-6 justify-centre items-centre -mr-4'>
-              <Button asChild variant='link' size='sm'>
+              <Button data-testid='login' asChild variant='link' size='sm'>
                 <Link to='/login'>Sign in / Guest</Link>
               </Button>
 

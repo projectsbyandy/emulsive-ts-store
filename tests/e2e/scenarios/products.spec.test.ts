@@ -24,7 +24,7 @@ uiTest.describe('Product tests', () => {
       // Assert
       const filteredProducts = await ui.products.getProductsOverview();
 
-      for (let product of filteredProducts) {
+      for (const product of filteredProducts) {
         const detail = await (await ui.products.select(z.number().parse(product.id))).details();
 
         expect(detail.name.toLocaleLowerCase().includes(keywordCriteria) 

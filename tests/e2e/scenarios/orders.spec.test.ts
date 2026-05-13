@@ -5,13 +5,10 @@ import { uiTest } from '../fixtures/uiTest';
 import './hooks/afterHooks';
 
 uiTest.describe('Ordering film tests', () => {
-  uiTest.beforeEach(async ({ loginHelper }) => {
+  uiTest('should be able to order Portra400 film', async ({ ui, loginHelper, productsHelper }) => {
     // Arrange
     await loginHelper.asTestUser();
-  });
 
-  uiTest('should be able to order Portra400 film', async ({ ui, productsHelper }) => {
-    // Arrange
     await productsHelper.addItemToCart("Portra 400", 2)
     
     // Act
