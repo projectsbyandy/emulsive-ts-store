@@ -1,10 +1,11 @@
 import { app, serverPromise } from '@/api/app';
 import { readFile } from '@/api/helpers/fileReader';
 import { Film, FilmsResponse } from '@/api/types';
+import { Server } from 'http';
 import mongoose from 'mongoose';
 import request from 'supertest';
 
-let server: any;
+let server: Server;
 const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'films.json'];
 let mockFilms: FilmsResponse;
 

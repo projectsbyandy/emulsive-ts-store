@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 import { serverPromise, app } from '@/api/app';
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { performLogin } from './helpers/utils';
+import { Server } from 'http';
 
-let server: any;
+let server: Server;
 let consoleSpy: jest.SpyInstance
 let capturedLogs: string[] = [];
 let agent: request.SuperTest<request.Test>;

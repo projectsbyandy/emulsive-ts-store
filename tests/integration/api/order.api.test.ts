@@ -5,8 +5,9 @@ import { serverPromise, app } from '@/api/app';
 import { performLogin } from './helpers/utils';
 import { Order, OrdersResponse } from '@/api/types';
 import z from 'zod';
+import { Server } from 'http';
 
-let server: any;
+let server: Server;
 let consoleSpy: jest.SpyInstance
 let capturedLogs: string[] = [];
 const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'orders.json'];

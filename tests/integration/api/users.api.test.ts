@@ -4,8 +4,9 @@ import { readFile } from '@/api/helpers/fileReader';
 import { serverPromise, app } from '@/api/app';
 import { performLogin, performRegistration } from './helpers/utils';
 import { User } from '@/api/types';
+import { Server } from 'http';
 
-let server: any;
+let server: Server;
 let consoleSpy: jest.SpyInstance
 let capturedLogs: string[] = [];
 const PATHS_TO_FAKE_DATA = ['.', 'src/api/fakedata', 'users.json'];
