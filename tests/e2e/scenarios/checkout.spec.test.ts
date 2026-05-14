@@ -1,6 +1,6 @@
-import { Section } from "@e2e-shared/models";
+import { Section, CheckoutToast } from "@e2e-shared/models";
 import { expect } from '@playwright/test';
-import { hasToastAppeared } from "@e2e-shared/ui-components/common/toast";
+import { hasToastAppeared, toastText } from "@e2e-shared/ui-components/common/toast";
 import { uiTest } from "../fixtures";
 import './hooks/afterHooks';
 
@@ -18,11 +18,12 @@ uiTest.describe('Checkout tests', () => {
       { name: "", address: "12 Letby road" }
     ]) {
       uiTest(`Should display error message when creating an order with invalid values: ${name} ${address}`, async ({ ui, page }) => {
-      // Act
-      await ui.checkout.placeOrder(name, address);
-      
-      // Assert
-      expect(await hasToastAppeared("Please complete all fields", page)).toBe(true);
+        // Act
+        await ui.checkout.placeOrder(name, address);
+        
+        // Assert
+        expect(await hasToastAppeared(CheckoutToast.MissingFields, page)).toBeTruthy();
+        expect(await toastText(CheckoutToast.MissingFields, page)).toBe("Please complete all fields");
       });
-  };
-});
+    }
+  });

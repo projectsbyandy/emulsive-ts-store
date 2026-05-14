@@ -1,6 +1,7 @@
 import { uiTest } from "../fixtures/uiTest";
 import { expect } from '@playwright/test';
-import { Section } from "../shared/models";
+import { LoginToast, Section } from "../shared/models";
+import { dismissToast, hasToastAppeared, toastText } from "../shared/ui-components/common/toast";
 
 uiTest.describe('Login tests', () => {
   uiTest('should display greeting when logged in', async ({ loginHelper, ui }) => {  
@@ -27,7 +28,7 @@ uiTest.describe('Login tests', () => {
     expect(await ui.header.UserManagement.isDisplayed(Section.SignIn)).toBeFalsy();
   });
 
-  uiTest('should not display Register option after logging in', async ({ ui }) => {
+  uiTest('should display Login Failed toast when logging in with invalid credentials', async ({ ui, page }) => {
       // Arrange
       await ui.navigate.To(Section.Home);
       await ui.header.UserManagement.select(Section.SignIn);
@@ -36,6 +37,19 @@ uiTest.describe('Login tests', () => {
       await ui.signIn.login({email: "InvalidEmail@test.com", password: "InvalidPassword"});
     
       // Assert
-      // TODO: immplent toast manager and add check for toast error message here.
+      expect(await toastText(LoginToast.LoginFailed, page)).toBe("Login failed: Unable to login");
+  });
+
+   uiTest('should be able to dismiss a Login Failed toast', async ({ ui, page }) => {
+      // Arrange
+      await ui.navigate.To(Section.Home);
+      await ui.header.UserManagement.select(Section.SignIn);
+      await ui.signIn.login({email: "InvalidEmail@test.com", password: "InvalidPassword"});
+
+      // Act
+      await dismissToast(LoginToast.LoginFailed, page);
+
+      // Assert
+      expect(await hasToastAppeared(LoginToast.LoginFailed, page)).toBeFalsy();
   });
 });

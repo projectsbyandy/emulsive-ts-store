@@ -23,7 +23,7 @@ export const action = (store: ReduxStore) : ActionFunction => async({request}): 
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error);
-      toast({description: `Login failed: ${error.response?.data.error}`});
+      toast({testId: 'login-failed', description: `Login failed: ${error.response?.data.error}`});
      }
 
      return null;
@@ -47,7 +47,7 @@ function Login() {
     } catch(error) {
        if (error instanceof AxiosError) {
         console.log(error);
-        toast({description: `Login failed: ${error.response?.data.error}`});
+        toast({testId: 'login-failed', description: `Login failed: ${error.response?.data.error}`});
        }
     }
   }

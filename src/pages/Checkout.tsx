@@ -8,7 +8,7 @@ export const loader = (store: ReduxStore): LoaderFunction => async (): Promise<R
   const user = store.getState().userState.user;
 
   if (!user) {
-    toast({description: 'Please login to continue'});
+    toast({testId: 'checkout-login-reminder', description: 'Please login to continue'});
     return redirect('/login');
   }
 

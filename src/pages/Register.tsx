@@ -17,14 +17,14 @@ export const action: ActionFunction = async ({request}) : Promise<Response | nul
       await Sleep(1000);
     
     await emulsiveApi.post('/auth/register', data);
-    toast({description: 'Registered'});
+    toast({testId: 'register-success', description: 'Registered'});
 
     return redirect('/login')
   } catch(error) {
     const errorMessage = error instanceof AxiosError 
       ? error.response?.data.error 
       : 'Registration failed'
-    toast({description: errorMessage});
+    toast({testId: 'register-failed', description: errorMessage});
 
     return null;
   }

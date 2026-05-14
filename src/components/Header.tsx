@@ -16,7 +16,7 @@ function Header() {
   const handleLogout = () => {
     dispatch(clearCart());
     dispatch(logoutUser());
-    toast({description: 'Logged Out'})
+    toast({testId: 'you-are-logged-out', description: 'Logged Out'})
     navigate('/')
   };
 

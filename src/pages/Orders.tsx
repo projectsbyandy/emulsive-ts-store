@@ -10,7 +10,7 @@ export const loader = (store: ReduxStore): LoaderFunction => async ({request}): 
   const user = store.getState().userState.user;
 
   if (!user) {
-    toast({description: 'Please login to continue'});
+    toast({testId: 'orders-login-reminder', description: 'Please login to continue'});
     return redirect('/login');
   }
 
@@ -28,7 +28,7 @@ export const loader = (store: ReduxStore): LoaderFunction => async ({request}): 
     return {...response.data}
   } catch(error) {
     console.log(error);
-    toast({ description: 'Failed to fetch orders'});
+    toast({testId: 'orders-fetch-failed', description: 'Failed to fetch orders'});
     return null;
   }
 }

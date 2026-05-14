@@ -29,11 +29,11 @@ const userSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(user));
 
       if (user.username === import.meta.env.VITE_GUEST_USERNAME) {
-        toast({description: 'Welcome Guest User'});
+        toast({testId: 'welcome-guest', description: 'Welcome Guest User'});
         return;
       }
 
-      toast({description: 'Login Successful'});
+      toast({testId: 'login-successful', description: 'Login Successful'});
     },
     logoutUser:(state) => {
       state.user = null;

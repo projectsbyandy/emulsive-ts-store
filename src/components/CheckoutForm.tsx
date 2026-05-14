@@ -14,13 +14,13 @@ export const action = (store: ReduxStore): ActionFunction =>
     const address = formData.get('address') as string;
 
     if (!name || !address) {
-      toast({description:'Please complete all fields'});
+      toast({testId: 'checkout-fields-incomplete', description:'Please complete all fields'});
       return null;
     }
 
     const user = store.getState().userState.user;
     if (!user) {
-      toast({description:'Please login first'})
+      toast({testId: 'checkout-login-required', description:'Please login first'})
       return redirect('/login');
     }
 
@@ -43,10 +43,10 @@ export const action = (store: ReduxStore): ActionFunction =>
       });
 
       store.dispatch(clearCart());
-      toast({description:'Order placed'});
+      toast({testId: 'order-placed', description:'Order placed'});
       return redirect('/orders');
     } catch(error) {
-      toast({description: 'Order creation failed'});
+      toast({testId: 'order-creation-failed', description: 'Order creation failed'});
       return null;
     }
   }
