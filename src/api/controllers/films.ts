@@ -36,7 +36,7 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
 
     res.status(200).json(filmsResponse).end();
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }
@@ -44,13 +44,22 @@ export const films = async (req: Request, res: Response, next: NextFunction) : P
 const film = async (req: Request, res: Response, next: NextFunction) : Promise<void>  =>  {
   try {
       const {id} = req.params;
-      let filmResponse = await getFilm(Number(id));
 
-      filmResponse
-        ? res.status(200).json(filmResponse)
-        : res.status(404).json({message: `Film with id: ${id} not found`});               
+      const numericId = Number(id);
+      if (isNaN(numericId)) {
+        res.status(400).json({ message: `Invalid id: "${id}"` })
+        return
+      }
+      
+      const filmResponse = await getFilm(numericId);
+
+      if(filmResponse) {
+        res.status(200).json(filmResponse)
+      } else {
+        res.status(404).json({message: `Film with id: ${id} not found`});        
+      }       
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }

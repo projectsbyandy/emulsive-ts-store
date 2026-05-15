@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false,
+    "noEmit": true,
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "src",
+    "tests/integration"
+  ],
+  "exclude": [
+    "tests/endtoend",
+    "tests/e2e"
+  ]
+}

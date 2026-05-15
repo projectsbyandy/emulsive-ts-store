@@ -1,6 +1,6 @@
 import { app, serverPromise } from '@/api/app';
 import { readFile } from '@/api/helpers/fileReader';
-import { Film, FilmsResponse } from '@/api/types';
+import { Film, FilmsResponse, FilmsResponseSchema } from '@/api/types/FilmsResponse';
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import request from 'supertest';
@@ -16,7 +16,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await server.close();
+  server.close();
 });
 
 
@@ -39,7 +39,7 @@ describe('Verify get /api/films with mocks', () => {
     // Assert
     expect(response.status).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
     expect(filmsResponse.data).toStrictEqual(mockFilms.data.slice(0, 5));
 
     expect(filmsResponse.meta.formats).toStrictEqual(['all', '35mm', '120mm'])
@@ -53,17 +53,23 @@ describe('Verify get /api/films with mocks', () => {
     // Assert
     expect(response.status).toBe(200);
 
-    var filmsResponse : Film = response.body;
+    const filmsResponse : Film = response.body;
     expect(filmsResponse.id).toStrictEqual(12);
   });
 
   it('should return 404 when film with id 1 not located', async () => {
 
-    // Arrange / Act
+    // Arrange
+      const capturedLogs : string[] = []; 
+      jest.spyOn(console, 'error').mockImplementation((...args) => {
+      capturedLogs.push(args.join(' '));
+    });
+
     const response = await agent.get('/api/films/1');
 
     // Assert
     expect(response.status).toBe(404);
+    expect(capturedLogs).toContain('Unable to locate film');
   });
 
   it('should return the correct default paginated metadata mock films', async () => {
@@ -74,7 +80,7 @@ describe('Verify get /api/films with mocks', () => {
     // Assert
     expect(response.status).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
 
     expect(filmsResponse.meta.pagination.page).toBe(1);
     expect(filmsResponse.meta.pagination.pageCount).toBe(Math.ceil(mockFilms.data.length / 5));
@@ -88,7 +94,7 @@ describe('Verify get /api/films with mocks', () => {
     const response = await agent.get('/api/films');
     expect(response.status).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
     
     // Assert
 
@@ -102,8 +108,7 @@ describe('Verify get /api/films with mocks', () => {
     const response = await agent.get('/api/films?keyword=cinestill');
     expect(response.status).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
-    
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
     // Assert
     expect(filmsResponse.meta.manufacturers).not.toContain(["all"]);
     expect(filmsResponse.meta.manufacturers).toStrictEqual(["Cinestill"]);
@@ -114,8 +119,8 @@ describe('Verify get /api/films with mocks', () => {
     // Arrange / Act
     const response = await agent.get('/api/films?keyword=cinestill');
     expect(response.status).toBe(200);
-
-    var filmsResponse : FilmsResponse = response.body;
+    expect(response.body).toBeTruthy();
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
     
     // Assert
     expect(filmsResponse.meta.formats).not.toContain(["all"]);
@@ -127,13 +132,13 @@ describe('Verify get /api/films with mocks', () => {
     ['should return featured films with flag off', false, 6]
   ])(
     '%s',
-    async (_, isFeatured, expectedFilmCount) => {
+    async (_ : string, isFeatured : boolean, expectedFilmCount : number) => {
 
       // Arrange / Act
       const response = await agent.get(`/api/films?featured=${isFeatured}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse = FilmsResponseSchema.parse(response.body);
 
       // Assert
       expect(filmsResponse.data.every(film => film.attributes.featured === isFeatured)).toBe(true);
@@ -153,7 +158,7 @@ describe('Verify get /api/films with mocks', () => {
       // Arrange / Act
       const response = await agent.get(`/api/films?keyword=${keyword}`)
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse = FilmsResponseSchema.parse(response.body);
 
       // Assert
       keyword = keyword.toLocaleLowerCase();
@@ -178,7 +183,7 @@ describe('Verify get /api/films with mocks', () => {
       const response = await agent.get(`/api/films?format=${format}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse = FilmsResponseSchema.parse(response.body);
 
       // Assert
       expect(filmsResponse.data.every(film => film.attributes.format === format)).toBe(true);
@@ -190,7 +195,7 @@ describe('Verify get /api/films with mocks', () => {
      const response = await agent.get('/api/films?format=all')
      expect(response.statusCode).toBe(200);
 
-     var filmsResponse : FilmsResponse = response.body;
+     const filmsResponse = FilmsResponseSchema.parse(response.body);
 
      // Assert
      expect(filmsResponse.data.every(film => ["35mm", "120mm"].includes(film.attributes.format))).toBe(true);
@@ -207,7 +212,7 @@ describe('Verify get /api/films with mocks', () => {
       const response = await agent.get(`/api/films?price=${price}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse : FilmsResponse = response.body;
       
       // Assert
       expect(filmsResponse.data.length).toBe(expectedItemCount)
@@ -220,7 +225,7 @@ describe('Verify get /api/films with mocks', () => {
     const response = await agent.get(`/api/films?onsale=on`)
     expect(response.statusCode).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
+    const filmsResponse : FilmsResponse = response.body;
     
     // Assert
     expect(filmsResponse.data.length).toBe(2);
@@ -233,8 +238,9 @@ describe('Verify get /api/films with mocks', () => {
     const response = await agent.get(`/api/films?onsale=off`)
     expect(response.statusCode).toBe(200);
 
-    var filmsResponse : FilmsResponse = response.body;
-    
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
+    type ParsedType = ReturnType<typeof FilmsResponseSchema.parse>;
+
     // Assert
     expect(filmsResponse.data.length).toBe(5);
     expect(filmsResponse.meta.pagination.total).toBe(11);
@@ -253,7 +259,7 @@ describe('Verify get /api/films with mocks', () => {
       const response = await agent.get(`/api/films?manufacturer=${manufacturer}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse : FilmsResponse = response.body;
       
       // Assert
       expect(filmsResponse.meta.pagination.total).toBe(total);
@@ -273,7 +279,7 @@ describe('Verify get /api/films with mocks', () => {
       const response = await agent.get(`/api/films?keyword=${keyword}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse : FilmsResponse = response.body;
       
       // Assert
       expect(filmsResponse.meta.pagination.page).toBe(page);
@@ -298,7 +304,7 @@ describe('Verify get /api/films with mocks', () => {
       const response = await agent.get(`/api/films?page=${pageNumber}`)
       expect(response.statusCode).toBe(200);
 
-      var filmsResponse : FilmsResponse = response.body;
+      const filmsResponse : FilmsResponse = response.body;
       
       // Assert
       expect(filmsResponse.data).toStrictEqual(expectedFilmsForPage);

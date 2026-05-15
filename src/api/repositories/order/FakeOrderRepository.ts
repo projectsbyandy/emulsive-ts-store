@@ -14,6 +14,7 @@ class FakeOrderRepository implements IOrderRepository {
     return orders.filter(order => order.userId === userId).sort((a, b) => Number(b.orderId) - Number(a.orderId));
   }
 
+
   async getOrders(): Promise<Order[]> { 
     return await this.readOrders()
   };
@@ -33,10 +34,22 @@ class FakeOrderRepository implements IOrderRepository {
   
       return order;
     } catch (error) {
-      console.log(`Problem creating Order: ${error}}`)
+      console.error(`Problem creating Order: ${error}}`)
       return null;
     }
   }
+
+  deleteOrder(orderId: number, userId: string): Promise<void> {
+    const orderPresent = FakeOrderRepository.orders.find(order => order.orderId === orderId && order.userId === userId)
+    
+    if(!orderPresent)
+      throw new Error("Order not found");
+      
+    FakeOrderRepository.orders = FakeOrderRepository.orders.filter(order => order.orderId !== orderId);
+    
+    return Promise.resolve();
+  }
+
 
   private async readOrders() : Promise<Order[]> {
     if (FakeOrderRepository.initialRead) {

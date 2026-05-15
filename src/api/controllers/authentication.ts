@@ -24,13 +24,13 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
     const retrievedUser: User | null = await userRepo.getUserByEmail(email);
 
     if (!retrievedUser) {
-      console.log(`User: ${email} does not exist`);
+      console.error(`User: ${email} does not exist`);
        res.status(401).send({ error:'Unable to login' });
        return;
     }
 
     if (!verifyPassword(retrievedUser.authentication.salt, password, retrievedUser.authentication.passwordHash)) {
-      console.log(`Password hash did not match for user: ${email}`);
+      console.error(`Password hash did not match for user: ${email}`);
        res.status(401).send({ error:'Unable to login' });
        return
     }
@@ -53,7 +53,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) : Pr
 
      res.status(200).send(authResponse);
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }
@@ -70,7 +70,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const existingUser = await userRepo.getUserByEmail(email);
 
     if (existingUser) {
-      console.log(`Unable to register user as ${email} already exists`);
+      console.error(`Unable to register user as ${email} already exists`);
       res.status(400).send({ error: 'Unable to register user' });
       return;
     }
@@ -109,7 +109,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     
     res.status(201).json(authResponse).end();
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }

@@ -33,7 +33,7 @@ export const getAllOrders = async (req: RequestWithUser, res: Response, next: Ne
 
     res.status(200).json(response).end();
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }
@@ -66,26 +66,26 @@ export const getOrdersForUser = async (req: RequestWithUser, res: Response, next
       res.status(200).json(response).end();
     }
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }
 
 export const createOrder = async (req: RequestWithUser, res: Response, next: NextFunction ) : Promise<void> => {
   try {
-    let order: CreateOrderRequest = req.body;
+    const order: CreateOrderRequest = req.body;
     if (!order.data?.name ||  !order.data.address) {
-      console.log('One or more fields: name, address are missing')
+      console.error('One or more fields: name, address are missing')
       res.status(400).send({error:'One or more fields: name, address are missing'});
       return;
     }
 
-    var createdOrder = await orderRepo.createOrder(order, req.user?.userId as string);
+    const createdOrder = await orderRepo.createOrder(order, req.user?.userId as string);
     
     console.log('Order successfully created');
     res.status(201).send({message: "Created Order", order: createdOrder})
   } catch(error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 }

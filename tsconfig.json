@@ -22,19 +22,22 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*",
         "./tests/*"
       ],
-      "@playwright-misc/*": ["tests/e2e/shared/playwright-helpers/*"],
-      "@e2e-shared/*": ["tests/e2e/shared/*"]
+      "@playwright-misc/*": ["./tests/e2e/shared/playwright-helpers/*"],
+      "@e2e-shared/*": ["./tests/e2e/shared/*"]
     }
+    
   },
   "include": [
     "src",
     "tests"
+  ],
+  "exclude": [
+    "tests/integration"
   ],
   "references": [
     {

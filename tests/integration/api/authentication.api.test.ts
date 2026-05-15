@@ -16,7 +16,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await server.close();
+  server.close();
 });
 
 describe('Verify auth/login with mocks', () => {
@@ -63,7 +63,7 @@ describe('Verify auth/login with mocks', () => {
 
   it('should return user details', async () => {
     // Assert
-    expect(loginResponse.body.user.userId).not.toBeNull;
+    expect(loginResponse.body.user.userId).not.toBeNull();
     expect(loginResponse.body.user.username).toBe('BobDoe');
     expect(loginResponse.body.user.email).toBe('bobdoe@test.com');
     expect(loginResponse.body.user.active).toBe(true);
@@ -74,7 +74,7 @@ describe('Verify unsuccessful auth/login with mocks', () => {
   beforeEach(async () => {
     // Arrange
     capturedLogs = [];
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
       capturedLogs.push(args.join(' '));
     });
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;

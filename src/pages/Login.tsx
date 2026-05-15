@@ -22,7 +22,7 @@ export const action = (store: ReduxStore) : ActionFunction => async({request}): 
     return redirect('/');
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error);
+      console.error(error);
       toast({testId: 'login-failed', description: `Login failed: ${error.response?.data.error}`});
      }
 
@@ -46,7 +46,7 @@ function Login() {
       navigate('/');
     } catch(error) {
        if (error instanceof AxiosError) {
-        console.log(error);
+        console.error(error);
         toast({testId: 'login-failed', description: `Login failed: ${error.response?.data.error}`});
        }
     }

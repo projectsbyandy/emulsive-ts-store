@@ -6,4 +6,5 @@ export interface IOrderRepository
   getOrdersForUser(userId: string) : Promise<Order[]>;
   getOrders() : Promise<Order[]>;
   createOrder(order: CreateOrderRequest, userId: string) : Promise<Order | null>;
+  deleteOrder(orderId: number, userId: string) : Promise<void>;
 }

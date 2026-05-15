@@ -22,7 +22,7 @@ export const getFilm = async (id: number) : Promise<Film|undefined> => {
   if(film)
     return film;
 
-  console.log("Unable to locate film");
+  console.error("Unable to locate film");
 
   return;
 }

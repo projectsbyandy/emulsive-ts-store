@@ -45,7 +45,7 @@ const initializeApp = async () => {
     const MONGO_URL = `mongodb+srv://${config.mongoConfig.username}:${config.mongoConfig.password}@emulsive.wzsg3.mongodb.net/?retryWrites=true&w=majority&appName=emulsive`;
     mongoose.Promise = Promise;
     mongoose.connect(MONGO_URL);
-    mongoose.connection.on('error', (error: Error) => console.log(error));
+    mongoose.connection.on('error', (error: Error) => console.error(error));
   }
   
   app.use('/', router());

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 
 function Error() {
   const error = useRouteError();
-  console.log(error);
+  console.error(error);
   
   if (isRouteErrorResponse(error) && error.status === 404) {
     return <main className='grid min-h-[100vh] place-items-center px-8'>

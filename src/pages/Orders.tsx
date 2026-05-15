@@ -27,7 +27,7 @@ export const loader = (store: ReduxStore): LoaderFunction => async ({request}): 
     });
     return {...response.data}
   } catch(error) {
-    console.log(error);
+    console.error(error);
     toast({testId: 'orders-fetch-failed', description: 'Failed to fetch orders'});
     return null;
   }

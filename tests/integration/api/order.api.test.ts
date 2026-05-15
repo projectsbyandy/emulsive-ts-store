@@ -49,12 +49,12 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await server.close();
+  server.close();
 });
 
 beforeEach(async () => {
   capturedLogs = [];
-  consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+  consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
     capturedLogs.push(args.join(' '));
   });
 });
@@ -72,7 +72,7 @@ describe('Verify calling protected order endpoints with no auth returns 401', ()
   it('should return 401 for get order with no auth', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-    console.log(rawData);
+
     // Act
     const response = await request(app).get('/api/orders');
 
@@ -84,7 +84,7 @@ describe('Verify calling protected order endpoints with no auth returns 401', ()
   it('should return 401 for create order with no auth', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-    console.log(rawData);
+
     // Act
     const response = await request(app).post('/api/orders');
 
@@ -99,7 +99,7 @@ describe('Verify calling get all order endpoints with no auth returns 200', () =
   it('should return 401 for get order with no auth', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-    console.log(rawData);
+
     // Act
     const response = await request(app).get('/api/orders/all');
 
@@ -114,7 +114,7 @@ describe('Verify correct meta data returned for /orders/all', () => {
   it('should return correct meta data when no filter params passed in', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-    console.log(rawData);
+
     // Act
     const response = await request(app).get('/api/orders/all');
 
@@ -127,7 +127,7 @@ describe('Verify correct meta data returned for /orders/all', () => {
   it('should return correct meta data when page filter params passed in', async () => {
     // Arrange
     const rawData = await readFile(PATHS_TO_FAKE_DATA)
-    console.log(rawData);
+
     // Act
     const response = await request(app).get('/api/orders/all?page=2');
 

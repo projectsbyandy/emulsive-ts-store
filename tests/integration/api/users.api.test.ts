@@ -56,7 +56,7 @@ describe('Verify protected /users', () => {
 
   beforeEach(async () => {
     capturedLogs = [];
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
       capturedLogs.push(args.join(' '));
     });
 
@@ -97,7 +97,7 @@ describe('Verify protected Delete /User', ()=> {
   
   beforeEach(async () => {
     capturedLogs = [];
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
       capturedLogs.push(args.join(' '));
     });
 
@@ -183,6 +183,26 @@ describe('Verify protected Delete /User', ()=> {
     expect(deleteResponse.statusCode).toBe(204);
     expect(capturedLogs).toContain(`Deleted user with id: ${idForRegisteredUser}`);
   });
+
+  it('should be able to delete a user that does not exist', async ()=> {
+    // Arrange
+    await performRegistration(agent, "larry.p@test.com", "test", "Larry Parker");
+    await performLogin(agent, "larry.p@test.com", "test");
+    const userResponse = await agent.get('/api/users');
+
+    const users: User[]= userResponse.body;
+    const idForRegisteredUser = users.find(user => user.email === 'larry.p@test.com')?.userId;
+
+    await performLogin(agent, "larry.p@test.com", "test");
+
+    // Act
+    await agent.delete(`/api/user/${idForRegisteredUser}`);
+    const deleteResponse = await agent.delete(`/api/user/${idForRegisteredUser}`);
+
+    // Assert
+    expect(deleteResponse.statusCode).toBe(404);
+    expect(deleteResponse.text).toContain(`User with id: ${idForRegisteredUser} not found`);
+  });
 });
 
 describe('Verify Get with Id', () => {
@@ -247,7 +267,7 @@ describe('Verify User filtering options', () => {
 
     expect(usersResponse.statusCode).toBe(200);
 
-    let users : User[] = usersResponse.body;
+    const users : User[] = usersResponse.body;
 
     expect(users.length).toBe(expectedUserCount);
     }
@@ -266,7 +286,7 @@ describe('Verify protected /users with Jwt in Auth Header', () => {
 
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
 
-    var response: Response = await performLogin(agent, 'bobdoe@test.com', '1234');
+    const response: Response = await performLogin(agent, 'bobdoe@test.com', '1234');
     const {jwt} = response.body;
     extractedJwt = jwt;
   });

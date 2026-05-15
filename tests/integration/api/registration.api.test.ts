@@ -16,14 +16,14 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await server.close();
+  server.close();
 });
 
 describe('Verify registration', () => {
 
    beforeEach(async () => {
       capturedLogs = [];
-      consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
+      consoleSpy = jest.spyOn(console, 'error').mockImplementation((...args) => {
         capturedLogs.push(args.join(' '));
       });
       agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
@@ -63,9 +63,10 @@ describe('Verify registration', () => {
     
     // Assert
     const registeredUser = users.find(user => user.email == registeredUserDetails.email)
-    expect(registeredUser?.userId).toBeDefined;
-    expect(registeredUser?.username).toBe(registeredUserDetails.username);
-    expect(registeredUser?.authentication).toBeDefined;
+    expect(registeredUser?.email).toBe(registeredUserDetails.email);
+    expect(registeredUser.userId).toBeDefined();
+    expect(registeredUser.username).toBe(registeredUserDetails.username);
+    expect(registeredUser.authentication).toBeDefined();
   });
 
   it('should not register a user with the same email', async () => {

@@ -8,7 +8,7 @@ export const readFile = async (paths: string[]) : Promise<string> => {
     const data = await fs.readFile(filePath, 'utf-8');
     return data;
   } catch (err) {
-    console.log('There was a problem reading the file')
+    console.error('There was a problem reading the file')
     throw err;
   }
 }

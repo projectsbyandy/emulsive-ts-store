@@ -15,7 +15,7 @@
       }
       console.log(`Health check passed: ${url} is accessible`);
     } catch (error) {
-      console.log(`Health check failed: ${url} is not accessible`);
+      console.error(`Health check failed: ${url} is not accessible`);
       console.error(error);
       process.exit(1);
     } finally {
