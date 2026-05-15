@@ -78,6 +78,3 @@ To use the variables
   if (import.meta.env.VITE_QA_TEST_DELAY)
     await Sleep(1000);
 ```
-
-# External dependencies
-- film product images are served from https://freeimage.host/
