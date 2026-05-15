@@ -239,7 +239,6 @@ describe('Verify get /api/films with mocks', () => {
     expect(response.statusCode).toBe(200);
 
     const filmsResponse = FilmsResponseSchema.parse(response.body);
-    type ParsedType = ReturnType<typeof FilmsResponseSchema.parse>;
 
     // Assert
     expect(filmsResponse.data.length).toBe(5);
@@ -330,7 +329,7 @@ describe('Verify get /api/films with mocks', () => {
 
     // Assert
     expect(response.statusCode).toBe(200);
-    var filmsResponse : FilmsResponse = response.body;
+    const filmsResponse = FilmsResponseSchema.parse(response.body);
 
     expect(filmsResponse.data.every(film => keywordCondition(keyword, film))).toBe(true);
     expect(filmsResponse.data.every(film => film.attributes.price <= maxPrice)).toBe(true);

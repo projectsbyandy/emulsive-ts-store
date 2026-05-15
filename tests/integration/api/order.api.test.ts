@@ -70,10 +70,7 @@ afterEach(async () => {
 describe('Verify calling protected order endpoints with no auth returns 401', () => {
 
   it('should return 401 for get order with no auth', async () => {
-    // Arrange
-    const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
-    // Act
+    // Arrange / Act
     const response = await request(app).get('/api/orders');
 
     // Assert
@@ -82,10 +79,7 @@ describe('Verify calling protected order endpoints with no auth returns 401', ()
   });
 
   it('should return 401 for create order with no auth', async () => {
-    // Arrange
-    const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
-    // Act
+    // Arrange / Act
     const response = await request(app).post('/api/orders');
 
     // Assert
@@ -97,10 +91,7 @@ describe('Verify calling protected order endpoints with no auth returns 401', ()
 describe('Verify calling get all order endpoints with no auth returns 200', () => {
 
   it('should return 401 for get order with no auth', async () => {
-    // Arrange
-    const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
-    // Act
+    // Arrange / Act
     const response = await request(app).get('/api/orders/all');
 
     // Assert
@@ -112,10 +103,7 @@ describe('Verify calling get all order endpoints with no auth returns 200', () =
 
 describe('Verify correct meta data returned for /orders/all', () => {
   it('should return correct meta data when no filter params passed in', async () => {
-    // Arrange
-    const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
-    // Act
+    // Arrange / Act
     const response = await request(app).get('/api/orders/all');
 
     // Assert
@@ -125,10 +113,7 @@ describe('Verify correct meta data returned for /orders/all', () => {
   });
 
   it('should return correct meta data when page filter params passed in', async () => {
-    // Arrange
-    const rawData = await readFile(PATHS_TO_FAKE_DATA)
-
-    // Act
+    // Arrange / Act
     const response = await request(app).get('/api/orders/all?page=2');
 
     // Assert
@@ -348,8 +333,7 @@ describe('Verify protected create order', () => {
     const createOrdersResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
     expect(createOrdersResponse.statusCode).toBe(201);
     const { order } = createOrdersResponse.body;
-    order as Order;
-
+    
     // Assert
     expect(order.userId).toStrictEqual("679f961099319abc13a97ed3");
   });

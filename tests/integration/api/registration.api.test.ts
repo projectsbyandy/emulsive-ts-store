@@ -63,10 +63,11 @@ describe('Verify registration', () => {
     
     // Assert
     const registeredUser = users.find(user => user.email == registeredUserDetails.email)
-    expect(registeredUser?.email).toBe(registeredUserDetails.email);
-    expect(registeredUser.userId).toBeDefined();
-    expect(registeredUser.username).toBe(registeredUserDetails.username);
-    expect(registeredUser.authentication).toBeDefined();
+    expect(registeredUser).toBeDefined();
+    expect(registeredUser!.email).toBe(registeredUserDetails.email);
+    expect(registeredUser!.userId).toBeDefined();
+    expect(registeredUser!.username).toBe(registeredUserDetails.username);
+    expect(registeredUser!.authentication).toBeDefined();
   });
 
   it('should not register a user with the same email', async () => {
