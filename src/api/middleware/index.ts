@@ -22,6 +22,12 @@ export const isAuthenticated = async (req: RequestWithUser, res: Response, next:
      }
 
      const user = verifyJwt<User>(sessionToken);
+     
+     if (!user?.userId) {
+        res.status(401).send('Not authenticated');
+        return;
+     }
+     
      req.user = user;
 
      next();

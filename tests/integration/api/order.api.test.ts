@@ -69,7 +69,7 @@ afterEach(async () => {
 
 describe('Verify calling protected order endpoints with no auth returns 401', () => {
 
-  it('should return 401 for get order with no auth', async () => {
+  it('should return 401 for Get order with no auth', async () => {
     // Arrange / Act
     const response = await request(app).get('/api/orders');
 
@@ -78,9 +78,18 @@ describe('Verify calling protected order endpoints with no auth returns 401', ()
     expect(capturedLogs).toContain('Session cookie not found');
   });
 
-  it('should return 401 for create order with no auth', async () => {
+  it('should return 401 for Create order with no auth', async () => {
     // Arrange / Act
     const response = await request(app).post('/api/orders');
+
+    // Assert
+    expect(response.status).toBe(401);
+    expect(capturedLogs).toContain('Session cookie not found');
+  });
+
+  it('should return 401 for Delete order with no auth', async () => {
+    // Arrange / Act
+    const response = await request(app).delete('/api/orders/123');
 
     // Assert
     expect(response.status).toBe(401);
@@ -127,13 +136,7 @@ describe('Verify protected get orders', () => {
   let agent: request.SuperTest<request.Test>;
 
   beforeEach(async () => {
-    capturedLogs = [];
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation((...args) => {
-      capturedLogs.push(args.join(' '));
-    });
-
     agent = request.agent(app) as unknown as request.SuperTest<request.Test>;
-
     await performLogin(agent, 'bobdoe@test.com', '1234');
   });
 
@@ -149,7 +152,6 @@ describe('Verify protected get orders', () => {
     const response = await agent.get('/api/orders');
 
     // Assert
-
     const referenceData: Order[] = JSON.parse(rawData)
     const ordersForUser = referenceData.filter(order => order.userId === "679f961099319abc13a97ed3").sort((a, b) => Number(b.orderId) - Number(a.orderId))
     expect(response.status).toBe(200);
@@ -329,12 +331,38 @@ describe('Verify protected create order', () => {
 
   it('should should populate the order with the correct userId', async () => {
     // Arrange / Act
-
     const createOrdersResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
     expect(createOrdersResponse.statusCode).toBe(201);
     const { order } = createOrdersResponse.body;
-    
+
     // Assert
     expect(order.userId).toStrictEqual("679f961099319abc13a97ed3");
+  });
+
+  describe('Verify protected delete order', () => {
+    it('should be able to delete an order', async () => {
+      // Arrange
+      const orderCreationResponse = await agent.post('/api/orders').send(VALID_ORDER_REQUEST);
+      expect(orderCreationResponse.statusCode).toBe(201);
+      const orderId = orderCreationResponse.body.order.orderId;
+      
+      // Act
+      const orderDeletionResponse = await agent.delete(`/api/orders/${orderId}`).send();
+
+      // Assert
+      expect(orderDeletionResponse.statusCode).toBe(200);
+      expect(orderDeletionResponse.body).toStrictEqual({message: "Deleted Order", orderId: String(orderId)});
+    });
+
+     it('should return a 404 when trying to delete an order that does not exist', async () => {
+      // Arrange
+      
+      // Act
+      const orderDeletionResponse = await agent.delete(`/api/orders/999}`).send();
+
+      // Assert
+      expect(orderDeletionResponse.statusCode).toBe(404);
+      expect(orderDeletionResponse.body).toStrictEqual({ "error": "Order not found for user" });
+    });
   });
 });
