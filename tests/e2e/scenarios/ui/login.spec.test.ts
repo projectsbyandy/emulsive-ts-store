@@ -1,7 +1,7 @@
-import { uiTest } from "../fixtures/uiTest";
+import { uiTest } from "@e2e-fixtures/uiTest";
 import { expect } from '@playwright/test';
-import { LoginToast, Section } from "../shared/models";
-import { dismissToast, hasToastAppeared, toastText } from "../shared/ui-components/common/toast";
+import { LoginToast, Section } from "@e2e-shared/models";
+import { dismissToast, hasToastAppeared, toastText } from "@e2e-shared/ui-components/common/toast";
 
 uiTest.describe('Login tests', () => {
   uiTest('should display greeting when logged in', async ({ loginHelper, ui }) => {  

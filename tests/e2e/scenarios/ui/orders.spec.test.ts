@@ -1,11 +1,11 @@
 import { OrdersToast, Section } from '@e2e-shared/models';
 import {v4 as uuidv4} from 'uuid';
 import { expect } from '@playwright/test';
-import { uiApiTest } from '../fixtures/ui-api-fixture';
-import { toastText } from "../shared/ui-components/common/toast";
+import { uiApiTest } from '@e2e-fixtures';
+import { toastText } from "@e2e-shared/ui-components/common/toast";
 
 import './hooks/afterHooks';
-import { uiTest } from '../fixtures';
+import { uiTest } from '../../fixtures';
 
 uiTest.describe('Ordering film tests', () => {
   uiApiTest.describe('should be able to order Portra400 film', async() => {

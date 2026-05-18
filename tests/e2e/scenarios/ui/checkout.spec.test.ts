@@ -1,7 +1,7 @@
 import { Section, CheckoutToast } from "@e2e-shared/models";
 import { expect } from '@playwright/test';
 import { hasToastAppeared, toastText } from "@e2e-shared/ui-components/common/toast";
-import { uiTest } from "../fixtures";
+import { uiTest } from "@e2e-fixtures";
 import './hooks/afterHooks';
 
 uiTest.describe('Checkout tests', () => {

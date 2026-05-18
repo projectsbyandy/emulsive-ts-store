@@ -1,5 +1,5 @@
 import { FilterOption, Section } from '@e2e-shared/models';
-import { uiTest } from '../fixtures/uiTest';
+import { uiTest } from '@e2e-fixtures';
 import { z } from 'zod'
 import {expect } from '@playwright/test';
 import './hooks/afterHooks';

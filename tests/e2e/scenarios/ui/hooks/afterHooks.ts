@@ -1,4 +1,4 @@
-import { uiTest} from '../../fixtures'
+import { uiTest} from '@e2e-fixtures';
 
 uiTest.afterEach(async ({page}, testInfo) => {
     if (testInfo.status !== "passed") {

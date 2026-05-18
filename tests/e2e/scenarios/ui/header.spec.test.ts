@@ -1,4 +1,4 @@
-import { uiTest } from "../fixtures";
+import { uiTest } from "@e2e-fixtures";
 import { Section } from "@e2e-shared/models";
 import { expect } from '@playwright/test';
 import './hooks/afterHooks';

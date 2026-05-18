@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, 'tests/e2e/configs', `${envInTest}.env`) });
 
 export default defineConfig({
-  globalSetup: './tests/e2e/scenarios/hooks/globalSetup',
+  globalSetup: './tests/e2e/scenarios/ui/hooks/globalSetup',
   testDir: './tests/e2e',
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

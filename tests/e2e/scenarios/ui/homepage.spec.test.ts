@@ -1,4 +1,4 @@
-import { uiTest } from '../fixtures';
+import { uiTest } from "@e2e-fixtures";
 import { expect } from '@playwright/test';
 import { type CarouselItem, type ProductOverview, Section } from '@e2e-shared/models';
 import './hooks/afterHooks';
