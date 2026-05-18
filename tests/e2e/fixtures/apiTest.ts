@@ -2,7 +2,7 @@ import { ApiClient } from '../shared/api-components/apiClient.ts';
 import { test as base, request as playwrightRequest } from '@playwright/test';
 import { z } from 'zod';
 
-type ApiFixtures = {
+type Api = {
   apiClient: ApiClient;
   apiClientWithoutAuth: ApiClient;
 };
@@ -14,10 +14,11 @@ const baseConfig = {
   },
 };
 
-export const apiFixture = base.extend<ApiFixtures>({
+export const apiTest = base.extend<Api>({
   // eslint-disable-next-line no-empty-pattern
   apiClientWithoutAuth: async ({}, use) => {
     const context = await playwrightRequest.newContext(baseConfig);
+
     await use(new ApiClient(context));
     await context.dispose();
   },
