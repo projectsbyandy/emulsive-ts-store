@@ -1,29 +1,42 @@
 import { OrdersToast, Section } from '@e2e-shared/models';
 import {v4 as uuidv4} from 'uuid';
 import { expect } from '@playwright/test';
-import { uiTest } from '../fixtures/uiTest';
+import { uiApiTest } from '../fixtures/ui-api-fixture';
 import { toastText } from "../shared/ui-components/common/toast";
 
 import './hooks/afterHooks';
+import { uiTest } from '../fixtures';
 
 uiTest.describe('Ordering film tests', () => {
-  uiTest('should be able to order Portra400 film', async ({ ui, loginHelper, productsHelper }) => {
-    // Arrange
-    await loginHelper.asTestUser();
+  uiApiTest.describe('should be able to order Portra400 film', async() => {
+    let orderId: number | undefined;
 
-    await productsHelper.addItemToCart("Portra 400", 2)
+    uiApiTest.afterAll("Delete created order", async ({ apiClient }) => {
+      if (orderId) {
+        await apiClient.orders.deleteOrder(orderId);
+      }    
+    });
+
+    uiApiTest('should be able to place an order and see it in the orders page', async ({ ui, loginHelper, productsHelper }) => {
+      // Arrange
+      await loginHelper.asTestUser();
+
+      await productsHelper.addItemToCart("Portra 400", 2)
+      
+      // Act
+      await ui.header.NavLinks.select(Section.Checkout);
+      const orderName = `andy - ${uuidv4()}`;
+      await ui.checkout.placeOrder(orderName, "12 Barney Road, Teddington, London KT1 4DL");
     
-    // Act
-    await ui.header.NavLinks.select(Section.Checkout);
-    const orderName = `andy - ${uuidv4()}`;
-    await ui.checkout.placeOrder(orderName, "12 Barney Road, Teddington, London KT1 4DL");
-  
-    // Assert
-    await ui.header.NavLinks.select(Section.Orders);
-    const order = await ui.orders.getOrder(orderName)
-    expect(order.productCount).toStrictEqual(2);
-    const oneMinAgo = new Date(new Date().getTime() - 60 * 1000).getTime();
-    expect(order.purchased.getTime()).toBeGreaterThan(oneMinAgo);
+      // Assert
+      await ui.header.NavLinks.select(Section.Orders);
+      const order = await ui.orders.getOrder(orderName)
+      expect(order.productCount).toStrictEqual(2);
+      const oneMinAgo = new Date(new Date().getTime() - 60 * 1000).getTime();
+      expect(order.purchased.getTime()).toBeGreaterThan(oneMinAgo);
+
+      orderId = order.id;
+    });
   });
 
   uiTest('should prompt user to login when accessing orders ', async ({ ui, page }) => {
