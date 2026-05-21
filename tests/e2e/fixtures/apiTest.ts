@@ -24,11 +24,12 @@ export const apiTest = base.extend<Api>({
   },
 
   apiClient: async ({ apiClientWithoutAuth }, use) => {
-    const { jwt } = await apiClientWithoutAuth.auth.login(
+    const response = await apiClientWithoutAuth.auth.login(
       z.string().parse(process.env.USER_EMAIL),
       z.string().parse(process.env.USER_PASSWORD),
     );
 
+    const { jwt } = await response.json();
     const context = await playwrightRequest.newContext({
       ...baseConfig,
       extraHTTPHeaders: {
