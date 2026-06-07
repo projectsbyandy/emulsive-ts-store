@@ -1,6 +1,6 @@
 import { Section } from "@/e2e/shared/models";
 import { uiFixture } from "../uiTestFixture";
-import z from 'zod';
+import { testConfig } from "@/e2e/shared/models/testConfig";
 
 export const authHelper = uiFixture.extend<{
   loginHelper: {
@@ -12,7 +12,7 @@ export const authHelper = uiFixture.extend<{
       async asTestUser() {
         await ui.navigate.To(Section.Home);
         await ui.header.UserManagement.select(Section.SignIn);
-        await ui.signIn.login({email: z.string().parse(process.env.USER_EMAIL), password: z.string().parse(process.env.USER_PASSWORD)});
+        await ui.signIn.login({email: testConfig.userEmail, password: testConfig.userPassword});
         await ui.home.hasLoaded();      
       }
     }

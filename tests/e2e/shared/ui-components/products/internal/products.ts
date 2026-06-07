@@ -7,6 +7,7 @@ import { Page, Locator, expect } from "@playwright/test";
 import { hasContentLoaded, traverseUp, Ui } from "@/e2e/shared/playwright-helpers";
 import { IDetails } from "../IDetails";
 import { Details } from "./Details";
+import { testConfig } from "@/e2e/shared/models/testConfig";
 
 export class Products extends Ui implements IProducts {
 
@@ -62,7 +63,7 @@ export class Products extends Ui implements IProducts {
 
   async select(value: number | string): Promise<IDetails> {
     typeof value === 'number' 
-    ? await this.page.goto(`${process.env.EMULSIVE_STORE_URL}/products/${value}`)
+    ? await this.page.goto(`${testConfig.emulsiveStoreUrl}/products/${value}`)
     : await this.page.locator(`h2[class*='capitalize']:text('${value}')`).click();
 
     return this.details;

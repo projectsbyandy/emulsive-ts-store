@@ -1,11 +1,11 @@
 import { Section } from "@e2e-shared/models";
 import { Ui } from "@/e2e/shared/playwright-helpers/Ui";
-import { z } from 'zod';
 import { INavigate } from "../INavigate";
+import { testConfig } from "@/e2e/shared/models/testConfig";
 
 export class Navigate extends Ui implements INavigate {
   async To(section: Section) {
-     let url = z.string().parse(process.env.EMULSIVE_STORE_URL);
+     let url = testConfig.emulsiveStoreUrl;
 
     switch(section) {
       case Section.Home:

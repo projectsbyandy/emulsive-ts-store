@@ -28,8 +28,15 @@ The E2E test scenarios use Playwright Test structure and runner. All tests have 
 ##### ___Hooks___
 In `globalSetup.ts` functionality that should run before any tests are executed (regardless of parallelism setup) is defined and referenced in the `playwright.config.ts`. A health check has been implemented however other activities such as database setup can also be added.
 
+Hooks are at fixture level. For hooks that apply to all ui tests they will be part of the fixture e.g. uiTest has before and after hooks for tracing / videos and screenshots if a test fails.
+
 ### Configs
-- config to target is controlled by `ENV_IN_TEST` environment variable. If not defined, this is __local__ by default. See `playwright.config.ts` for more details.
+- config to target is controlled by ENV_IN_TEST value in .env
+- variables load in the following sequence (lowest first)
+  - .env - contains common config
+  - .env.<selected env in test>
+  - .env.local - this will be a local config file that is not checked in, can contain sensitive info.
+  - environment variables - typically supplied when running in pipeline. Specified as `process.env.<variablename> = <your value>`
 - environment configs are located in `e2e\configs`.
 
 ## Running Tests
@@ -70,4 +77,6 @@ Once created, the `mergeTests` function is updated to make the helper functions 
 
 The UI component should now be accessible within the tests.
 
-## Playwright extension methods
+## Troubleshooting
+### Test Failures
+Artifacts created from test failures are generated in the `test-results/<scenario name/< video|screesnhot|trace folder >`.

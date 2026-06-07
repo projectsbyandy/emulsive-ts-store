@@ -1,14 +1,14 @@
 import { apiTest } from "@e2e-fixtures";
 import { expect } from "@playwright/test";
 import { LoginRequest } from "@e2e-shared/models";
-import z from "zod";
+import { testConfig } from "@/e2e/shared/models/testConfig";
 
 apiTest.describe('Verify Login endpoint', () => {
   apiTest('should successfully login with valid credentials', async ({apiClientWithoutAuth}) => {
     // Arrange
     const validCredentials : LoginRequest = {
-      email : z.string().parse(process.env.USER_EMAIL),
-      password: z.string().parse(process.env.USER_PASSWORD),
+      email : testConfig.userEmail,
+      password: testConfig.userPassword,
     };
     
     // Act
