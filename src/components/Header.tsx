@@ -37,7 +37,7 @@ function Header() {
                 <Link to='/login'>Sign in / Guest</Link>
               </Button>
 
-              <Button asChild variant='link' size='sm'>
+              <Button data-testid='register' asChild variant='link' size='sm'>
                 <Link to='/register'>Register</Link>
               </Button>
             </div>
